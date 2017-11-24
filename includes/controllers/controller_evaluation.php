@@ -1,0 +1,80 @@
+<?php
+$action = isset($_GET['a'])?$_GET['a']:'view';
+include_once ROOTMODELS.'model_evaluation.php';
+include_once ROOTMODELS.'model_etudiant.php';
+include_once ROOTMODELS.'model_periodeformation.php';
+include_once ROOTMODELS.'model_module.php';
+
+$idetudiant = isset($_GET['idetudiant'])?$_GET['idetudiant']:0;
+$idpf = isset($_GET['idpf'])?$_GET['idpf']:0;
+$idModule = isset($_GET['idmodule'])?$_GET['idmodule']:0;
+
+if ($idetudiant != 0 AND $idpf != 0 AND $idModule != 0){
+	$etudiant = Etudiant::getById($idetudiant);
+	$pf = Periodeformation::getById($idpf);
+	$module = Module::getById($idModule);
+
+	$listeContenusModule = $module->getContenu();
+}elseif ($idetudiant != 0 AND $idpf != 0){
+    $etudiant = Etudiant::getById($idetudiant);
+    $pf = Periodeformation::getById($idpf);
+    $listeModules = $pf->getModules();
+}
+
+if ($action == 'view'){
+    if ($idModule == 0){
+        include_once ROOTVIEWS.'view_afficheevaluationstousmodules.php';
+    }else{
+        include_once ROOTVIEWS.'view_afficheevaluations.php';
+    }
+}elseif ($action == 'edit'){
+    if ($idModule != 0){
+        if (!empty($_POST)){
+            //J'arrive du formulaire je dois mettre à jour les évaluation si besoin
+            $commentaireModule = isset($_POST['comm_module'])?$_POST['comm_module']:'Pas de commentaire';
+            if (strtolower(trim($commentaireModule)) != 'pas de commentaire'){
+                Evaluation::updateAppreciationModule($commentaireModule, $idetudiant, $idModule, $module->getIntervenant()->getId());
+            }
+
+            foreach ($listeContenusModule as $cModule){
+                $commCmodule = $_POST['comm_'.$cModule->getId()];
+                if (strtolower(trim($commCmodule)) == 'pas de commentaire'){
+                    $commCmodule = '';
+                }
+                $evalModule = $_POST['btradioeval_'.$cModule->getId()];
+                if ($evalModule == 'A'){
+                    $acquis = 1;
+                    $enacquisition = 0;
+                    $nonacquis = 0;
+                }elseif ($evalModule == 'EA'){
+                    $acquis = 0;
+                    $enacquisition = 1;
+                    $nonacquis = 0;
+                }else{
+                    $acquis = 0;
+                    $enacquisition = 0;
+                    $nonacquis = 1;
+                }
+                Evaluation::update(new Evaluation($idetudiant, $module->getIntervenant()->getId(), $cModule->getId(), $acquis, $enacquisition, $nonacquis, $commCmodule));
+            }
+            header('Location: index.php?p=modules&a=listemodules&idetudiant='.$idetudiant.'&idpf='.$idpf);
+        }
+        include_once ROOTVIEWS.'view_editevaluations.php';
+    }else{
+        if (!empty($_POST)){
+            $commCmodule = $_POST['appreciation'];
+            if (strtolower(trim($commCmodule)) == 'pas de commentaire'){
+                $commCmodule = '';
+            }
+            Evaluation::updateAppreciationGenerale($commCmodule, $idetudiant);
+            header('Location: index.php?p=periodesformation&a=listeetudiants&idpf='.$idpf);
+        }
+        include_once ROOTVIEWS.'view_editevaluationstousmodules.php';
+    }
+
+}elseif ($action=='print') {
+    include_once ROOTVIEWS.'view_printevaluation.php';
+}else{
+	include_once ROOTVIEWS.'view_nodata.php';
+}
+?>

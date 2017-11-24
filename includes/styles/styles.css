@@ -1,0 +1,235 @@
+body, html, *{
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+    font-family: Tahoma, Verdana, Sans Serif, serif;
+}
+
+img{
+    border: none;
+}
+
+a, a:link, a:visited, a:hover{
+    text-decoration: none;
+}
+
+#logo{
+    height: 100px;
+}
+
+#logo img{
+    width: 120px;
+}
+
+#logo p{
+    font-size: 2.2em;
+    font-style: italic;
+    font-weight: bold;
+    line-height: 90px
+}
+
+nav#navgenerale{
+    height: 30px;
+    background-color: black;
+    text-align: center;
+    border-radius: 5px;
+}
+
+nav#navgenerale ul{
+    list-style-type: none;
+}
+
+nav#navgenerale li{
+    color: white;
+    text-transform: uppercase;
+    display: inline-block;
+    width: 150px;
+    text-align: center;
+    line-height: 30px;
+    font-weight: bolder;
+}
+
+nav#navgenerale a, nav#navgenerale a:link, nav#navgenerale a:hover, nav#navgenerale a:visited{
+    color: white;
+}
+
+nav.navinterne{
+    height: 30px;
+    line-height: 30px;
+
+}
+
+#content_body{
+    margin-top: 10px;
+}
+
+#content_body>header{
+	font-size: 30px;
+}
+
+#footer{
+	height: 30px;
+	background-color: black;
+	text-align: center;
+	border-radius: 5px;
+	color: white;
+	line-height: 30px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+
+table {
+    border-collapse: collapse;
+    border: solid 1px black;
+    width: 80%;
+    margin: 0 auto;
+    cursor: default;
+}
+
+table img.logotableau{
+	height: 80px;
+	margin: 5px;
+}
+
+.lignedata.pair {
+    background-color: rgba(247, 241, 14, 0.2);
+}
+
+.lignedata.impair {
+    background-color: rgba(248, 116, 19, 0.2);
+}
+
+.lignedata:hover {
+    background-color: rgba(235, 235, 235, 1);
+}
+
+th{
+    text-transform: capitalize;
+}
+
+th, td {
+    border: solid 1px black;
+    text-align: center;
+}
+
+td>a>img {
+    height: 24px;
+    margin: 2px;
+}
+
+span.badge{
+	margin-left: 5px;
+	vertical-align: bottom;
+}
+
+.lignetab:hover{
+	background-color: gainsboro;
+}
+
+td.eval_A, td.eval_EA, td.eval_NA{
+	text-align: center;
+	width: 30px;
+}
+
+label.eval_A, label.eval_EA, label.eval_NA{
+
+}
+
+td.eval_A, label.eval_A{
+	background-color: greenyellow;
+}
+
+td.eval_EA, label.eval_EA{
+	background-color: orange;
+}
+
+td.eval_NA, label.eval_NA{
+	background-color: red;
+}
+
+span.intervenant{
+	display: inline-block;
+	margin-left: 20px;
+	font-style: italic;
+	font-size: 0.9em;
+}
+
+span.intervenant:before{
+	content: '(';
+}
+
+span.intervenant:after{
+	content: ')';
+}
+
+.formaffiche p.commentaire{
+	font-style: italic;
+}
+
+.evalcontenumodule{
+	border: solid 1px black;
+	margin-top: 10px;
+}
+
+.evalcontenumodule label{
+    font-weight: normal;
+
+}
+
+.radio input[type="radio"]{
+    margin-left: 0;
+    display: inline-block;
+    position: relative;
+    vertical-align: bottom;
+}
+
+.radio label{
+	margin-left: 5px;
+    display: inline-block;
+    width: 170px;
+    text-align: left;
+    padding: 0;
+}
+
+.radio span{
+	display: inline-block;
+	width: 200px;
+	text-align: center;
+}
+
+.formbtn{
+    width: 100%;
+    text-align: center;
+}
+
+header.libelle{
+    text-decoration: underline;
+    font-size: 1.1em;
+    font-weight:bold;
+}
+
+#frmLogin {
+	width: 300px;
+	margin: 0 auto;
+	border: solid 1px black;
+	clear: both;
+}
+
+#frmLogin header{
+	background-color: black;
+	height: 20px;
+	color: white;
+	text-align: center;
+}
+
+#frmLogin label{
+	display: block;
+	width: 100%;
+}
+
+#frmLogin input[type=text], #frmLogin input[type=password]{
+	width: 95%;
+	margin-left: 5px;
+	margin-right: 5px;
+}
