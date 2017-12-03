@@ -1,7 +1,7 @@
 <?php
 	class DAO{
-//		private static $dsn = 'mysql:host=serveur;port=3306;charset=utf8;dbname=epsinet';
-		private static $dsn = 'mysql:host=localhost;port=3306;charset=utf8;dbname=epsinet';
+		private static $dsn = 'mysql:host=serveur;port=3306;charset=utf8;dbname=epsinet';
+//		private static $dsn = 'mysql:host=localhost;port=3306;charset=utf8;dbname=epsinet';
 		private static $user = 'root';
 		private static $pass = '@dmDev@tom';
 

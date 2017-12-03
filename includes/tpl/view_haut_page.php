@@ -37,7 +37,7 @@
 		<section id="wrapper" class="container">
 			<header id="logo" class="row">
 				<img class="col-xs-3" src="includes/images/logo.png" alt="logo"/>
-				<p class="col-xs-9 text-center">Les applications de l'Intranet</p>
+				<p class="col-xs-9 text-center"><?php print($pageTitle); ?></p>
 			</header>
 			<nav id="navgenerale" class="row">
 				<ul>

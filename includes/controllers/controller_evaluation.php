@@ -28,7 +28,7 @@ if ($action == 'view'){
         include_once ROOTVIEWS.'view_afficheevaluations.php';
     }
 }elseif ($action == 'edit'){
-    if ($idModule != 0){
+    if ($idModule != 0){ //Traitement appliqué pour un module
         if (!empty($_POST)){
             //J'arrive du formulaire je dois mettre à jour les évaluation si besoin
             $commentaireModule = isset($_POST['comm_module'])?$_POST['comm_module']:'Pas de commentaire';
@@ -61,6 +61,7 @@ if ($action == 'view'){
         }
         include_once ROOTVIEWS.'view_editevaluations.php';
     }else{
+        //Traitement appliqué pour l'ensemble des modules
         if (!empty($_POST)){
             $commCmodule = $_POST['appreciation'];
             if (strtolower(trim($commCmodule)) == 'pas de commentaire'){
