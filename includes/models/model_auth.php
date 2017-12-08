@@ -74,5 +74,14 @@
 			}
 			return $this->authentified;
 		}
+
+		public function canEdit($what, $pf = null, $module = null, $contenumodule = null){
+			if ($this->role == 'admin'){
+				return true;
+			}else{
+				//Edition possible en fonction de la variable $what qui dit ce qui doit être modifie, la période de formation et le statut de l'utilisateur
+				return false;
+			}
+		}
 	}
 ?>

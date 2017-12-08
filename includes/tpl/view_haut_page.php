@@ -40,11 +40,8 @@
 				<p class="col-xs-9 text-center"><?php print($pageTitle); ?></p>
 			</header>
 			<nav id="navgenerale" class="row">
-				<ul>
-					<li><a href="index.php" title="Accueil">Accueil</a></li>
-					<li><a href="index.php?p=ecoles" title="Les écoles">Ecoles</a></li>
-					<li><a href="index.php?p=periodesformation" title="Les périodes de formations">Sessions</a></li>
-					<!--<li><a href="index.php?p=modules" title="Les modules">Modules</a></li>-->
-					<!--<li><a href="index.php?p=evaluations" title="Les évaluations">Evaluations</a></li>-->
-				</ul>
+				<?php
+					$menus = NavBar::fill($user);
+					print($menus->render());
+				?>
 			</nav>

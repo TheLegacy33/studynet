@@ -1,5 +1,5 @@
 <?php
-$appreciationG = Evaluation::getAppreciationGenerale($etudiant->getId());
+$appreciationG = Evaluation::getAppreciationGenerale($etudiant->getId(), $pf->getId());
 if ($appreciationG == null){
     $appreciationG = 'Pas de commentaire';
 }
@@ -15,7 +15,7 @@ if ($appreciationG == null){
     <?php
             $script = '';
             $script .= '<section class="row col-xs-12">';
-            if ($canEdit) {
+            if ($user->canEdit('appreciation', $pf)) {
                 $script .= '<label>Appreciation générale :</label><a href="index.php?p=evaluations&a=edit&idetudiant=' . $etudiant->getId() . '&idpf=' . $pf->getId() . '" title="Modifier l\'appréciation générale"><span class="glyphicon glyphicon-edit"></span></a><br />';
             }
             $script .= '<p class="commentaire">' . $appreciationG . '</p>';

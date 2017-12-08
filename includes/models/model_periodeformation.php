@@ -2,9 +2,11 @@
 include_once ROOTMODELS.'DAO.php';
 include_once ROOTMODELS.'model_etudiant.php';
 include_once ROOTMODELS.'model_module.php';
+include_once ROOTMODELS.'model_responsablepedago.php';
+
 
 class Periodeformation {
-	private $id, $datedebut, $datefin, $promo;
+	private $id, $datedebut, $datefin, $promo, $responsable;
 	private $etudiants, $modules;
 
 	public function __construct($id = 0, $datedebut, $datefin, $promo){
@@ -43,6 +45,9 @@ class Periodeformation {
 		return count($this->modules);
 	}
 
+	public function getResponsable(){
+		return $this->responsable;
+	}
 
 	public function fillStudents($listeEtudiants){
 		$this->etudiants = $listeEtudiants;
@@ -50,6 +55,10 @@ class Periodeformation {
 
 	public function fillModules($listeModules){
 		$this->modules = $listeModules;
+	}
+
+	public function setResponsable($responsable){
+		$this->responsable = $responsable;
 	}
 
 	public static function getListe($idPf = 0){
@@ -68,6 +77,7 @@ class Periodeformation {
 			$newPf = new Periodeformation($SQLRow->pf_id, $SQLRow->pf_datedebut, $SQLRow->pf_datefin, Promotion::getById($SQLRow->promo_id));
 			$newPf->fillStudents(Etudiant::getListeFromPf($SQLRow->pf_id));
 			$newPf->fillModules(Module::getListeFromPf($SQLRow->pf_id));
+			$newPf->setResponsable(ResponsablePedago::getById($SQLRow->resp_id));
 			$retVal[] = $newPf;
 		}
 		$SQLStmt->closeCursor();
@@ -87,6 +97,7 @@ class Periodeformation {
 			$newPf = new Periodeformation($SQLRow->pf_id, $SQLRow->pf_datedebut, $SQLRow->pf_datefin, Promotion::getById($SQLRow->promo_id));
 			$newPf->fillStudents(Etudiant::getListeFromPf($SQLRow->pf_id));
 			$newPf->fillModules(Module::getListeFromPf($SQLRow->pf_id));
+			$newPf->setResponsable(ResponsablePedago::getById($SQLRow->resp_id));
 			$retVal[] = $newPf;
 		}
 		$SQLStmt->closeCursor();
@@ -101,6 +112,7 @@ class Periodeformation {
 		$newPf = new Periodeformation($SQLRow->pf_id, $SQLRow->pf_datedebut, $SQLRow->pf_datefin, Promotion::getById($SQLRow->promo_id));
 		$newPf->fillStudents(Etudiant::getListeFromPf($SQLRow->pf_id));
         $newPf->fillModules(Module::getListeFromPf($SQLRow->pf_id));
+		$newPf->setResponsable(ResponsablePedago::getById($SQLRow->resp_id));
 		$SQLStmt->closeCursor();
 		return $newPf;
 	}

@@ -6,9 +6,9 @@
 		private $idetudiant, $idintervenant, $idcontenumodule;
 
 		public function __construct($idetudiant = 0, $idintervenant = 0, $idcontenumodule = 0, $acquis = 0, $enacquisition = 0, $nonacquis = 0, $commentaire = ''){
-			$this->acquis = (intval($acquis) != 0);
-			$this->nonacquis = (intval($nonacquis) != 0);
-			$this->enacquisition = (intval($enacquisition) != 0);
+			$this->acquis = $acquis; //(intval($acquis) != 0);
+			$this->nonacquis = $nonacquis; //(intval($nonacquis) != 0);
+			$this->enacquisition = $enacquisition; //(intval($enacquisition) != 0);
 			$this->idetudiant = $idetudiant;
 			$this->idintervenant = $idintervenant;
 			$this->idcontenumodule = $idcontenumodule;
@@ -62,20 +62,15 @@
             return $retVal;
         }
 
-        public static function getAppreciationGenerale($idEtudiant, $idIntervenant = 0){
-            $SQLQuery = 'SELECT * FROM appreciationgenerale WHERE etu_id = :idetudiant ';
-            if ($idIntervenant != 0){
-                $SQLQuery .= 'AND int_id = :idintervenant';
-            }
+        public static function getAppreciationGenerale($idEtudiant, $idPf){
+            $SQLQuery = 'SELECT part_appreciation FROM participer WHERE etu_id = :idetudiant AND pf_id = :idPf';
             $SQLStmt = DAO::getInstance()->prepare($SQLQuery);
-            if ($idIntervenant != 0){
-                $SQLStmt->bindValue(':idintervenant', $idIntervenant);
-            }
             $SQLStmt->bindValue(':idetudiant', $idEtudiant);
+            $SQLStmt->bindValue(':idPf', $idPf);
             $SQLStmt->execute();
 
             $SQLRow = $SQLStmt->fetchObject();
-            $retVal = $SQLRow->app_contenu;
+            $retVal = $SQLRow->part_appreciation;
             $SQLStmt->closeCursor();
             return $retVal;
         }
@@ -104,14 +99,14 @@
             $SQLStmt->execute();
         }
 
-        public static function updateAppreciationGenerale($commentaire, $idEtudiant, $idIntervenant = 4){
-            $SQLQuery = 'UPDATE appreciationgenerale ';
-            $SQLQuery .= 'SET app_contenu = :commentaire ';
-            $SQLQuery .= 'WHERE etu_id = :idetudiant AND int_id = :idintervenant';
+        public static function updateAppreciationGenerale($appreciation, $idEtudiant, $idPf){
+            $SQLQuery = 'UPDATE participer ';
+            $SQLQuery .= 'SET part_appreciation = :appreciation ';
+            $SQLQuery .= 'WHERE etu_id = :idetudiant AND pf_id = :idpf';
             $SQLStmt = DAO::getInstance()->prepare($SQLQuery);
-            $SQLStmt->bindValue(':commentaire', $commentaire);
+            $SQLStmt->bindValue(':appreciation', $appreciation);
             $SQLStmt->bindValue(':idetudiant', $idEtudiant);
-            $SQLStmt->bindValue(':idintervenant', $idIntervenant);
+            $SQLStmt->bindValue(':idpf', $idPf);
             $SQLStmt->execute();
         }
 

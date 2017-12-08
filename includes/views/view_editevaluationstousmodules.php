@@ -1,5 +1,5 @@
 <?php
-$appreciationG = Evaluation::getAppreciationGenerale($etudiant->getId());
+$appreciationG = Evaluation::getAppreciationGenerale($etudiant->getId(), $pf->getId());
 if ($appreciationG == null){
     $appreciationG = 'Pas de commentaire';
 }

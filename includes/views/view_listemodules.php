@@ -21,9 +21,9 @@
 				foreach ($listeModules as $module){
 					$script .= '<tr>';
 					$script .= '<td style="width: 400px; font-weight: bold;">'.$module->getLibelle().'<span class="intervenant">'.$module->getIntervenant().'</span></td>';
-					$script .= '<td style="width: 30px;"><a href="index.php?p=evaluations&a=view&idetudiant='.$etudiant->getId().'&idpf='.$pf->getId().'&idmodule='.$module->getId().'" title="Voir l\'évaluation"><span class="glyphicon glyphicon-tasks"></span></a></td>';
-                    if ($canEdit) {
-                        $script .= '<td style="width: 30px;"><a href="index.php?p=evaluations&a=edit&idetudiant=' . $etudiant->getId() . '&idpf=' . $pf->getId() . '&idmodule=' . $module->getId() . '" title="Modifier l\'évaluations"><span class="glyphicon glyphicon-pencil"></span></a></td>';
+					$script .= '<td style="width: 30px;"><a href="index.php?p=evaluations&a=view&idetudiant='.$etudiant->getId().'&idpf='.$pf->getId().'&idmodule='.$module->getId().'" title="Voir les détails"><span class="glyphicon glyphicon-tasks"></span></a></td>';
+                    if ($user->canEdit('module', $pf, $module)) {
+                        $script .= '<td style="width: 30px;"><a href="index.php?p=evaluations&a=edit&idetudiant=' . $etudiant->getId() . '&idpf=' . $pf->getId() . '&idmodule=' . $module->getId() . '" title="Modifier l\'évaluation"><span class="glyphicon glyphicon-pencil"></span></a></td>';
                     }
                     $script .= '</tr>';
 					$script .= '<tr>';

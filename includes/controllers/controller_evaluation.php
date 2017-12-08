@@ -61,14 +61,14 @@ if ($action == 'view'){
         }
         include_once ROOTVIEWS.'view_editevaluations.php';
     }else{
-        //Traitement appliqué pour l'ensemble des modules
+        //Traitement appliqué pour le commentaire grlobal l'ensemble des modules
         if (!empty($_POST)){
-            $commCmodule = $_POST['appreciation'];
-            if (strtolower(trim($commCmodule)) == 'pas de commentaire'){
-                $commCmodule = '';
+            $appgenerale = $_POST['appreciation'];
+            if (strtolower(trim($appgenerale)) == 'pas de commentaire'){
+				$appgenerale = '';
             }
-            Evaluation::updateAppreciationGenerale($commCmodule, $idetudiant);
-            header('Location: index.php?p=periodesformation&a=listeetudiants&idpf='.$idpf);
+            Evaluation::updateAppreciationGenerale($appgenerale, $idetudiant, $idpf);
+            header('Location: index.php?p=evaluations&a=view&idetudiant='.$idetudiant.'&idpf='.$idpf);
         }
         include_once ROOTVIEWS.'view_editevaluationstousmodules.php';
     }

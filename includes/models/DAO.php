@@ -1,7 +1,7 @@
 <?php
 	class DAO{
-		private static $dsn = 'mysql:host=serveur;port=3306;charset=utf8;dbname=epsinet';
-//		private static $dsn = 'mysql:host=localhost;port=3306;charset=utf8;dbname=epsinet';
+		private static $dsnserveur = 'mysql:host=serveur;port=3306;charset=utf8;dbname=epsinet';
+		private static $dsnlocalhost = 'mysql:host=localhost;port=3306;charset=utf8;dbname=epsinet';
 		private static $user = 'root';
 		private static $pass = '@dmDev@tom';
 
@@ -11,13 +11,21 @@
 		}
 
 		public static function getInstance(){
-			/*if (!isset(self::$_instance)) {*/
 			if (self::$_instance == null) {
 				try {
 					/*
 					 * Ouverture de la connexion à la base de données
 					 */
-					self::$_instance = new PDO(self::$dsn, self::$user, self::$pass);
+					$dsn = null;
+					$fp = @fsockopen("serveur", -1, $errno, $errstr, 10);
+
+					if($fp) {
+						$dsn = self::$dsnserveur;
+					} else {
+						$dsn = self::$dsnlocalhost;
+					}
+
+					self::$_instance = new PDO($dsn, self::$user, self::$pass);
 					//parent::__construct($this->dsn, $this->user, $this->pass);
 				} catch (PDOException $ex) {
 					/*

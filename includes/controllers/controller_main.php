@@ -2,7 +2,6 @@
 	/**
 	 * Controller principal qui va charger l'ensemble des controllers
 	 */
-	session_start();
 
 	define('ROOTCTRL', ROOT.'/includes/controllers/');
 	define('ROOTVIEWS', ROOT.'/includes/views/');
@@ -16,6 +15,7 @@
 	define('ROOTHTMLEXPORTS', ROOTHTML.'/exports/');
 	define('ROOTHTMLUPLOADS', ROOTHTML.'/uploads/');
 
+	include_once ROOTSCRIPTS.'fonctions.php';
 	$page = basename($_SERVER['SCRIPT_NAME']);
 	if ($page != 'index.php'){
 		header('Location: '.ROOTHTML);
@@ -28,12 +28,9 @@
 
 		include_once ROOTCTRL.'controller_auth.php';
 
-		$canEdit = false;
 		if (!$user->isAuthentified()){
 			$section = '';
 			$action = '';
-		}else{
-			$canEdit = $user->getRole() == 'admin';
 		}
 
         if ($action != 'print'){
@@ -69,7 +66,7 @@
 		    //Gestion des étudiants
 			include_once ROOTCTRL.'controller_etudiant.php';
 		}else{
-				header('Location: '.ROOTHTML);
+			header('Location: '.ROOTHTML);
 		}
 
         if ($action != 'print'){
