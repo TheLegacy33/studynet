@@ -25,6 +25,10 @@ class NavBar{
 			$nav->addMenu(new Menu('index.php?p=ecoles', 'Ecoles', 'Les écoles'));
 			$nav->addMenu(new Menu('index.php?p=periodesformation', 'Sessions', 'Les périodes de formations'));
 		}
+
+		if ($user->isAdmin()){
+            $nav->addMenu(new Menu('index.php?p=users&a=listepersonnes', 'Personnes', 'Les personnes de l\'application'));
+        }
 		return $nav;
 	}
 }

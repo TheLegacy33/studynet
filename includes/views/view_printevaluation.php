@@ -27,7 +27,7 @@
 
             $this->Ln(10);
             $this->Cell(40,4,utf8_decode('Votre référent : '), 0, 0,'L');
-            $this->Cell(0,4,utf8_decode($pf->getResponsable()->getNomComplet()), 0, 1,'L');
+            $this->Cell(0,4,utf8_decode($pf->getResponsable()), 0, 1,'L');
 
             $this->Cell(0,6,utf8_decode('Période du '.$pf->getDateDebut().' au '.$pf->getDateFin()), 0, 1, 'L');
             $this->Ln(5);

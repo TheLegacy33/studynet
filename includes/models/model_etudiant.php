@@ -1,19 +1,19 @@
 <?php
 	include_once ROOTMODELS.'DAO.php';
 	include_once ROOTMODELS.'model_promotion.php';
-	include_once ROOTMODELS.'Personne.php';
+	include_once ROOTMODELS . 'model_personne.php';
 
 	class Etudiant extends Personne {
-		private $id, $photo;
+		private $etu_id, $photo;
 
-		public function __construct($id = 0, $nom, $prenom, $photo = '', $email = ''){
-			parent::__construct($id, $nom, $prenom, $email);
-			$this->id = $id;
+		public function __construct($id = 0, $nom, $prenom, $photo = '', $email = '', $idPers = 0){
+			parent::__construct($idPers, $nom, $prenom, $email);
+			$this->etu_id = $id;
 			$this->photo = $photo;
 		}
 
 		public function getId(){
-			return $this->id;
+			return $this->etu_id;
 		}
 
 		public function getPhoto(){
@@ -28,7 +28,17 @@
 			$this->promo = $promo;
 		}
 
-		public function getEvaluationContenuModule($idcmod){
+		public function setPhoto($photo){
+		    $this->photo = $photo;
+        }
+
+		public function clone($etudToClone){
+            parent::clone($etudToClone);
+            $this->setPromo($etudToClone->getPromo());
+            $this->setPhoto($etudToClone->getPhoto());
+        }
+
+        public function getEvaluationContenuModule($idcmod){
 			$SQLQuery = 'SELECT evaluer.* FROM evaluer WHERE etu_id = :idetudiant AND cmod_id = :idcmod AND int_id = :idintervenant';
 			$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
 			$SQLStmt->bindValue(':idcmod', $idcmod);
@@ -54,7 +64,7 @@
 
 			$retVal = array();
 			while ($SQLRow = $SQLStmt->fetchObject()){
-				$newEtud = new Etudiant($SQLRow->etu_id, $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->etu_photo, $SQLRow->pers_email);
+				$newEtud = new Etudiant($SQLRow->etu_id, $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->etu_photo, $SQLRow->pers_email, $SQLRow->pers_id);
 				$retVal[] = $newEtud;
 			}
 			$SQLStmt->closeCursor();
@@ -75,7 +85,7 @@
 
 			$retVal = array();
 			while ($SQLRow = $SQLStmt->fetchObject()){
-				$newEtud = new Etudiant($SQLRow->etu_id, $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->etu_photo, $SQLRow->pers_email);
+				$newEtud = new Etudiant($SQLRow->etu_id, $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->etu_photo, $SQLRow->pers_email, $SQLRow->pers_id);
 				$newEtud->setPromo(Promotion::getById($SQLRow->promo_id));
 				$retVal[] = $newEtud;
 			}
@@ -88,9 +98,35 @@
 			$SQLStmt->bindValue(':idetudiant', $id);
 			$SQLStmt->execute();
 			$SQLRow = $SQLStmt->fetchObject();
-			$newEtud = new Etudiant($SQLRow->etu_id, $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->etu_photo, $SQLRow->pers_email);
+			$newEtud = new Etudiant($SQLRow->etu_id, $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->etu_photo, $SQLRow->pers_email, $SQLRow->pers_id);
 			$newEtud->setPromo(Promotion::getById($SQLRow->promo_id));
 			$SQLStmt->closeCursor();
 			return $newEtud;
 		}
+
+		public static function getIdByIdPers($idPers){
+		    $SQLQuery = 'SELECT etu_id FROM etudiant WHERE pers_id = :idpers';
+            $stmt = DAO::getInstance()->prepare($SQLQuery);
+            $stmt->bindValue(':idpers', $idPers);
+            $stmt->execute();
+            $retVal = $stmt->fetchColumn(0);
+            $stmt->closeCursor();
+            return $retVal;
+        }
+
+        public static function update($user){
+            $SQLQuery = "UPDATE personne SET pers_nom = :nom, pers_prenom = :prenom, pers_email = :email WHERE pers_id = :idpers AND us_id = :iduser";
+            $stmt = DAO::getInstance()->prepare($SQLQuery);
+            $stmt->bindValue(':nom', $user->getNom());
+            $stmt->bindValue(':prenom', $user->getPrenom());
+            $stmt->bindValue(':email', $user->getEmail());
+            $stmt->bindValue(':idpers', $user->getParentId());
+            $stmt->bindValue(':iduser', $user->getId());
+            $stmt->execute();
+
+            $SQLQuery = "UPDATE etudiant SET etu_photo = :photo WHERE pers_id = :idpers";
+            $stmt = DAO::getInstance()->prepare($SQLQuery);
+            $stmt->bindValue(':photo', $user->getPhoto());
+            $stmt->bindValue(':idpers', $user->getParentId());
+        }
 	}

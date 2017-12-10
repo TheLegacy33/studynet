@@ -14,8 +14,10 @@
 
 	define('ROOTHTMLEXPORTS', ROOTHTML.'/exports/');
 	define('ROOTHTMLUPLOADS', ROOTHTML.'/uploads/');
+	define('ROOTHTMLSCRIPTS', ROOTHTML.'/includes/scripts/');
 
 	include_once ROOTSCRIPTS.'fonctions.php';
+
 	$page = basename($_SERVER['SCRIPT_NAME']);
 	if ($page != 'index.php'){
 		header('Location: '.ROOTHTML);
@@ -65,7 +67,13 @@
 		}elseif ($section == "etudiants"){
 		    //Gestion des étudiants
 			include_once ROOTCTRL.'controller_etudiant.php';
-		}else{
+		}elseif ($section == "intervenants"){
+            //Gestion des étudiants
+            include_once ROOTCTRL.'controller_intervenant.php';
+        }elseif ($section == "users"){
+            //Gestion des étudiants
+            include_once ROOTCTRL.'controller_users.php';
+        }else{
 			header('Location: '.ROOTHTML);
 		}
 

@@ -150,7 +150,7 @@ td.eval_NA, label.eval_NA{
 
 span.intervenant{
 	display: inline-block;
-	margin-left: 20px;
+	margin-left: 30px;
 	font-style: italic;
 	font-size: 0.9em;
 }
@@ -201,6 +201,7 @@ span.intervenant:after{
 .formbtn{
     width: 100%;
     text-align: center;
+    padding: 4px;
 }
 
 header.libelle{
@@ -210,26 +211,39 @@ header.libelle{
 }
 
 #frmLogin {
-	width: 300px;
-	margin: 0 auto;
+	width: 400px;
+	margin: 10px auto;
 	border: solid 1px black;
 	clear: both;
 }
 
-#frmLogin header{
+#frmProfile{
+    width: 500px;
+    margin: 10px auto;
+    border: solid 1px black;
+    clear: both;
+}
+
+#frmLogin header, #frmProfile header{
 	background-color: black;
 	height: 20px;
 	color: white;
 	text-align: center;
 }
 
-#frmLogin label{
-	display: block;
-	width: 100%;
+#frmLogin section, #frmProfile section{
+    padding: 5px;
 }
 
-#frmLogin input[type=text], #frmLogin input[type=password]{
+#frmLogin label, #frmProfile label{
+	display: block;
+	width: 100%;
+    padding-left: 5px;
+}
+
+#frmLogin input[type=text], #frmLogin input[type=password], #frmProfile input[type=text], #frmProfile input[type=password], #frmProfile input[type=email]{
 	width: 95%;
 	margin-left: 5px;
 	margin-right: 5px;
 }
+

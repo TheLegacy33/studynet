@@ -31,6 +31,7 @@
 			<th>Date Fin</th>
 			<th>Effectif</th>
 			<th>Nb Modules</th>
+			<th>Resp. Peda.</th>
 			<th colspan="2">Actions</th>
 		</tr>
 		<?php
@@ -48,6 +49,7 @@
 					$script .= '<td>'.$pf->getDateFin().'</td>';
 					$script .= '<td>'.$pf->getEffectif().'</td>';
 					$script .= '<td>'.$pf->getNbModules().'</td>';
+					$script .= '<td>'.$pf->getResponsable().'</td>';
 					$script .= '<td><a href="index.php?p=periodesformation&a=listeetudiants&idpf='.$pf->getId().'" title="Liste des étudiants"><span class="glyphicon glyphicon-user"></span></a></td>';
 					$script .= '<td><a href="index.php?p=periodesformation&a=listemodules&idpf='.$pf->getId().'" title="Liste des modules"><span class="glyphicon glyphicon-list"></td>';
 					$script .= '</tr>';

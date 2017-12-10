@@ -10,6 +10,6 @@
 		<label for="ttPassword">Password : </label><input type="password" name="ttPassword" id="ttPassword" />
 	</div>
 	<footer class="formbtn">
-		<input type="submit" />
+		<input type="submit" value="Connexion" />
 	</footer>
 </form>
