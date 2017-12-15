@@ -1,6 +1,6 @@
 <?php
 	include_once ROOTMODELS.'DAO.php';
-	include_once ROOTMODELS . 'model_personne.php';
+	include_once ROOTMODELS.'model_personne.php';
 	include_once ROOTMODELS.'model_etudiant.php';
 	include_once ROOTMODELS.'model_intervenant.php';
 	include_once ROOTMODELS.'model_responsablepedago.php';
@@ -96,15 +96,6 @@
 		    $this->password = $password;
         }
 
-		public function canEdit($what, $pf = null, $module = null, $contenumodule = null){
-			if ($this->isAdmin()){
-				return true;
-			}else{
-				//Edition possible en fonction de la variable $what qui dit ce qui doit être modifie, la période de formation et le statut de l'utilisateur
-				return false;
-			}
-		}
-
 		public static function getById($id){
 		    $SQLQuery = 'SELECT * FROM userAuth WHERE us_id = :idUser';
 		    $stmt = DAO::getInstance()->prepare($SQLQuery);
@@ -129,6 +120,17 @@
             $stmt->bindValue(':passworduser', $userAuth->getPassword());
             $stmt->bindValue(':iduser', $userAuth->getId());
             $stmt->execute();
+			$userAuth->exists(true);
         }
+
+        public static function insert($userAuth){
+			$SQLQuery = 'INSERT INTO userAuth(us_login, us_password) VALUES (:loginuser, :passworduser)';
+			$stmt = DAO::getInstance()->prepare($SQLQuery);
+			$stmt->bindValue(':loginuser', $userAuth->getLogin());
+			$stmt->bindValue(':passworduser', $userAuth->getPassword());
+			$stmt->execute();
+			$userAuth->exists(true);
+			$userAuth->setId(DAO::getInstance()->lastInsertId());
+		}
     }
 ?>

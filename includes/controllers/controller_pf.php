@@ -7,7 +7,7 @@ if ($action == 'listepf' && isset($_GET['idpromo'])) {
 	$idPromo = $_GET['idpromo'];
 	$promo = Promotion::getById($idPromo);
 	$listePf = Periodeformation::getListeFromPromo($idPromo);
-}elseif ($action == 'listeetudiants'){
+}elseif ($action == 'listeetudiants' OR $action == 'listemodules'){
 	$idPf = isset($_GET['idpf'])?$_GET['idpf']:0;
 	$promo = Promotion::getByIdPf($idPf);
 	$listePf = Periodeformation::getListe($idPf);
@@ -19,8 +19,12 @@ if ($action == 'listepf' && isset($_GET['idpromo'])) {
 include_once ROOTVIEWS.'view_listeperiodesformations.php';
 
 if ($action == 'listeetudiants'){
-	$idPf = $_GET['idpf'];
 	$listeEtudiants = Etudiant::getListeFromPf($idPf);
 	include_once ROOTVIEWS.'/view_listeetudiants.php';
+}elseif ($action == 'listemodules'){
+	//Affichage de la liste des modules de la pf
+	$pf = Periodeformation::getById($idPf);
+	$listeModules = Module::getListeFromPf($idPf);
+	include_once ROOTVIEWS.'view_listemodulespf.php';
 }
 ?>

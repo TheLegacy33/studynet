@@ -1,6 +1,7 @@
 <?php
 	include_once ROOTMODELS.'model_auth.php';
 
+
 	if (isset($_SESSION['user'])){
 		Authentification::loadSession();
 		$user = Authentification::getUser();
@@ -17,20 +18,19 @@
 				if ($user->checkAuth($_POST['ttLogin'], $_POST['ttPassword'])){
 
 				    $userType = Personne::getType($user->getId());
-				    if ($userType == 'etudiant'){
-				        $userTyped = new Etudiant();
-				        $userTyped->clone($user);
+				    if ($userType == Etudiant::class){
+				        $userTyped = new Etudiant(Etudiant::getIdByIdPers($user->getPersId()));
+				        $userTyped->clonepers($user);
 				        $user = $userTyped;
-                    }elseif ($userType == 'responsablepedago'){
-                        $userTyped = new ResponsablePedago();
-                        $userTyped->clone($user);
+                    }elseif ($userType == ResponsablePedago::class){
+                        $userTyped = new ResponsablePedago(ResponsablePedago::getIdByIdPers($user->getPersId()));
+                        $userTyped->clonepers($user);
                         $user = $userTyped;
-                    }elseif ($userType == 'intervenant'){
-                        $userTyped = new Intervenant();
-                        $userTyped->clone($user);
+                    }elseif ($userType == Intervenant::class){
+                        $userTyped = new Intervenant(Intervenant::getIdByIdPers($user->getPersId()));
+                        $userTyped->clonepers($user);
                         $user = $userTyped;
                     }
-
 					Authentification::setUser($user);
 					Authentification::saveSession();
 					header('Location: '.ROOTHTML);

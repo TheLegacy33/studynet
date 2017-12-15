@@ -3,6 +3,8 @@
 	 * Controller principal qui va charger l'ensemble des controllers
 	 */
 
+	define('SESSIONNAME', 'EPSINETSESS');
+
 	define('ROOTCTRL', ROOT.'/includes/controllers/');
 	define('ROOTVIEWS', ROOT.'/includes/views/');
 	define('ROOTMODELS', ROOT.'/includes/models/');
@@ -11,10 +13,20 @@
 
 	define('ROOTEXPORTS', ROOT.'/exports/');
 	define('ROOTUPLOADS', ROOT.'/uploads/');
-
 	define('ROOTHTMLEXPORTS', ROOTHTML.'/exports/');
 	define('ROOTHTMLUPLOADS', ROOTHTML.'/uploads/');
 	define('ROOTHTMLSCRIPTS', ROOTHTML.'/includes/scripts/');
+	define('ROOTHTMLSCRIPTSJS', ROOTHTMLSCRIPTS.'js/');
+
+	if (!file_exists(ROOTEXPORTS)){
+		mkdir(ROOTEXPORTS);
+		@chmod(ROOTEXPORTS, 0777);
+	}
+
+	if (!file_exists(ROOTUPLOADS)){
+		mkdir(ROOTUPLOADS);
+		@chmod(ROOTUPLOADS, 0777);
+	}
 
 	include_once ROOTSCRIPTS.'fonctions.php';
 
@@ -35,7 +47,7 @@
 			$action = '';
 		}
 
-        if ($action != 'print'){
+        if ($action != 'print' AND $section != 'api'){
             include_once ROOTTEMPLATE.'view_haut_page.php';
         }
 
@@ -68,16 +80,22 @@
 		    //Gestion des étudiants
 			include_once ROOTCTRL.'controller_etudiant.php';
 		}elseif ($section == "intervenants"){
-            //Gestion des étudiants
+            //Gestion des intervenants
             include_once ROOTCTRL.'controller_intervenant.php';
         }elseif ($section == "users"){
-            //Gestion des étudiants
-            include_once ROOTCTRL.'controller_users.php';
+            //Gestion des utilisateurs
+            include_once ROOTCTRL . 'controller_users.php';
+        }elseif ($section == "personnes"){
+            //Gestion des personnes
+            include_once ROOTCTRL.'controller_personnes.php';
+        }elseif ($section == "api"){
+            //Gestion des api
+            include_once ROOTCTRL.'controller_api.php';
         }else{
 			header('Location: '.ROOTHTML);
 		}
 
-        if ($action != 'print'){
+        if ($action != 'print' AND $section != 'api'){
             include_once ROOTTEMPLATE.'view_bas_page.php';
         }
 	}

@@ -9,10 +9,14 @@ class Personne{
 		$this->nom = $nom;
 		$this->prenom = $prenom;
 		$this->email = $email;
-		$this->userAuth = new USer();
+		$this->userAuth = new User();
 	}
 
 	public function getId(){
+		return $this->id;
+	}
+
+	public function getPersId(){
 		return $this->id;
 	}
 
@@ -79,6 +83,15 @@ class Personne{
         return $this->id == 0;
     }
 
+	public function canEdit($what, $pf = null, $module = null, $contenumodule = null){
+		if ($this->isAdmin()){
+			return true;
+		}else{
+			//Edition possible en fonction de la variable $what qui dit ce qui doit être modifie, la période de formation et le statut de l'utilisateur
+			return false;
+		}
+	}
+
     public function checkAuth($login, $password){
         if (trim($login) == '' OR trim($password) == ''){
             return false;
@@ -109,6 +122,7 @@ class Personne{
                     $this->userAuth->setPassword($password);
                     $this->userAuth->isAdmin($SQLRow->us_isadmin);
                     $this->userAuth->isAuthentified(true);
+                    $this->userAuth->exists(true);
                     $stmt->closeCursor();
                     if (!Personne::exists($this->userAuth->getId())){
                         $this->setId(0);
@@ -140,7 +154,18 @@ class Personne{
 	    $this->userAuth = $userAuth;
     }
 
-    public function clone($persToClone){
+	function get_class(){
+		if ($this instanceof Etudiant){
+			return "Etudiant";
+		}elseif ($this instanceof ResponsablePedago){
+			return "Responsable Pédagogique";
+		}elseif ($this instanceof Intervenant){
+			return "Intervenant";
+		}else{
+			return "Visiteur";
+		}
+	}
+    public function clonepers($persToClone){
         $this->setId($persToClone->getId());
         $this->setPrenom($persToClone->getPrenom());
         $this->setNom($persToClone->getNom());
@@ -180,9 +205,11 @@ class Personne{
             $retVal = Etudiant::class;
         }elseif ($estresponsablepedago){
             $retVal = ResponsablePedago::class;
-        }else{
+        }elseif ($estintervenant){
             $retVal = Intervenant::class;
-        }
+        }else{
+        	return get_class();
+		}
         return $retVal;
     }
 
@@ -202,32 +229,57 @@ class Personne{
 
         $retVal = array();
         while ($SQLRow = $SQLStmt->fetchObject()){
-
             if (self::getType($SQLRow->pers_id) == Intervenant::class){
-                $newPers = new Intervenant(Intervenant::getIdByIdPers($SQLRow->pers_id), $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->pers_email, $SQLRow->pers_id);
+            	$idInt = Intervenant::getIdByIdPers($SQLRow->pers_id);
+                $newPers = new Intervenant($idInt, $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->pers_email, $SQLRow->pers_id);
             }elseif (self::getType($SQLRow->pers_id) == ResponsablePedago::class){
-                $newPers = new ResponsablePedago(ResponsablePedago::getIdByIdPers($SQLRow->pers_id), $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->pers_email, $SQLRow->pers_id);
+            	$idResp = ResponsablePedago::getIdByIdPers($SQLRow->pers_id);
+                $newPers = new ResponsablePedago($idResp, $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->pers_email, $SQLRow->pers_id);
             }elseif (self::getType($SQLRow->pers_id) == Etudiant::class){
-                $newPers = new Etudiant(Etudiant::getIdByIdPers($SQLRow->pers_id), $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->pers_email, $SQLRow->pers_id);
+            	$idEtud = Etudiant::getIdByIdPers($SQLRow->pers_id);
+                $newPers = new Etudiant($idEtud, $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->pers_email, Etudiant::getPhotoById($idEtud), $SQLRow->pers_id);
             }else{
                 $newPers = new Personne($SQLRow->pers_id, $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->pers_email);
             }
             $newPers->fillAuth(User::getById($SQLRow->us_id));
-
             $retVal[] = $newPers;
         }
         $SQLStmt->closeCursor();
         return $retVal;
     }
 
+	public static function getById($id){
+		$SQLStmt = DAO::getInstance()->prepare('SELECT * FROM personne WHERE pers_id = :idpers');
+		$SQLStmt->bindValue(':idpers', $id);
+		$SQLStmt->execute();
+		$SQLRow = $SQLStmt->fetchObject();
+		if (self::getType($SQLRow->pers_id) == Intervenant::class){
+			$idInt = Intervenant::getIdByIdPers($SQLRow->pers_id);
+			$newPers = new Intervenant($idInt, $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->pers_email, $SQLRow->pers_id);
+		}elseif (self::getType($SQLRow->pers_id) == ResponsablePedago::class){
+			$idResp = ResponsablePedago::getIdByIdPers($SQLRow->pers_id);
+			$newPers = new ResponsablePedago($idResp, $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->pers_email, $SQLRow->pers_id);
+		}elseif (self::getType($SQLRow->pers_id) == Etudiant::class){
+			$idEtud = Etudiant::getIdByIdPers($SQLRow->pers_id);
+			$newPers = new Etudiant($idEtud, $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->pers_email, Etudiant::getPhotoById($idEtud), $SQLRow->pers_id);
+		}else{
+			$newPers = new Personne($SQLRow->pers_id, $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->pers_email);
+		}
+		$newPers->fillAuth(User::getById($SQLRow->us_id));
+
+		$retVal[] = $newPers;
+		$SQLStmt->closeCursor();
+		return $newPers;
+	}
+
     public static function update($personne){
-	    $SQLQuery = "UPDATE personne SET pers_nom = :nom, pers_prenom = :prenom, pers_email = :email WHERE pers_id = :idpers AND us_id = :iduser";
+	    $SQLQuery = "UPDATE personne SET pers_nom = :nom, pers_prenom = :prenom, pers_email = :email, us_id = :userid WHERE pers_id = :idpers";
 	    $stmt = DAO::getInstance()->prepare($SQLQuery);
 	    $stmt->bindValue(':nom', $personne->getNom());
         $stmt->bindValue(':prenom', $personne->getPrenom());
         $stmt->bindValue(':email', $personne->getEmail());
         $stmt->bindValue(':idpers', $personne->getId());
-        $stmt->bindValue(':iduser', $personne->getUserAuth()->getId());
+        $stmt->bindValue(':userid', ($personne->getUserAuth()->getId() != 0)?$personne->getUserAuth()->getId():null);
         $stmt->execute();
     }
 }
