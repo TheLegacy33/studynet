@@ -2,7 +2,6 @@
 	/**
 	 * Controller principal qui va charger l'ensemble des controllers
 	 */
-
 	define('SESSIONNAME', 'EPSINETSESS');
 
 	define('ROOTCTRL', ROOT.'/includes/controllers/');

@@ -1,8 +1,6 @@
 $(document).ready(function(){
 	$('a[data-name=sendmail]').each(function(){
 		$(this).click(function(){
-			console.log($(this).attr("data-id"));
-
 			if (confirm('Etes-vous sûr de vouloir envoyer les informations du profil à l\'utilisateur ?')){
 				$.ajax({
 					url: 'index.php',
@@ -20,5 +18,9 @@ $(document).ready(function(){
 				});
 			}
 		});
+	});
+
+	$("#cbFiltreType").change(function(){
+		$(location).attr('href', 'index.php?p=personnes&a=listepersonnes&type=' + $(this).val());
 	});
 });

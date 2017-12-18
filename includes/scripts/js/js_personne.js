@@ -82,7 +82,3 @@ $("#frmProfile").submit(function(){
     }
     return true;
 });
-
-$("#frmProfile").on("reset", function (){
-    needLogout = false;
-});

@@ -17,20 +17,19 @@
 					 * Ouverture de la connexion à la base de données
 					 */
 					$dsn = null;
-					$fp = @fsockopen("serveur:3306", -1, $errno, $errstr, 10);
-					if($fp) {
-						$dsn = self::$dsnserveur;
-					} else {
-						$dsn = self::$dsnlocalhost;
-					}
-
+//					$fp = @fsockopen("serveur:3306", -1, $errno, $errstr, 2);
+//					if($fp) {
+//					} else {
+//					}
+					$dsn = self::$dsnlocalhost;
 					self::$_instance = new PDO($dsn, self::$user, self::$pass);
-					//parent::__construct($this->dsn, $this->user, $this->pass);
 				} catch (PDOException $ex) {
-					/*
-					 * En cas d'erreur, gestion d'une exception (à voir plus tard)
-					 */
-					print($ex->getMessage());
+					try{
+						$dsn = self::$dsnserveur;
+						self::$_instance = new PDO($dsn, self::$user, self::$pass);
+					}catch (PDOException $ex){
+						print($ex->getMessage());
+					}
 				}
 			}
 			return self::$_instance;

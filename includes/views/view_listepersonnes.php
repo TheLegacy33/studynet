@@ -1,5 +1,19 @@
 <section id="content_body" class="row">
 	<header class="text-center text-info">Liste des personnes</header>
+	<section id="divfiltre" class="text-center">
+		<select id="cbFiltreType">
+			<?php
+			print('<option value="*"'.(($type=='*')?' selected':'').'>Tous</option>');
+			print('<option value="'.Etudiant::class.'"'.(($type==Etudiant::class)?' selected':'').'>Etudiant</option>');
+			print('<option value="'.Intervenant::class.'"'.(($type==Intervenant::class)?' selected':'').'>Intervenant</option>');
+			print('<option value="'.ResponsablePedago::class.'"'.(($type==ResponsablePedago::class)?' selected':'').'>Responsables Pédagogiques</option>');
+			print('<option value="visiteur"'.(($type=='visiteur')?' selected':'').'>Visiteurs</option>');
+			if ($user->isAdmin()){
+				print('<option value="administrateur"'.(($type=='administrateur')?' selected':'').'>Administrateurs</option>');
+			}
+			?>
+		</select>
+	</section>
 	<table>
 		<tr>
 			<th>Nom</th>

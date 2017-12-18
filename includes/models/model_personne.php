@@ -222,8 +222,25 @@ class Personne{
         return $retVal;
     }
 
-    public static function getListe(){
-	    $SQLQuery = "SELECT * FROM personne ORDER BY pers_nom, pers_prenom";
+    public static function getListe($critere = '*'){
+	    $SQLQuery = 'SELECT * FROM personne ';
+	    if ($critere != '*'){
+	    	if ($critere == Intervenant::class){
+	    		$SQLQuery .= 'INNER JOIN intervenant ON personne.pers_id = intervenant.pers_id ';
+			}elseif ($critere == Etudiant::class){
+				$SQLQuery .= 'INNER JOIN etudiant ON personne.pers_id = etudiant.pers_id ';
+			}elseif ($critere == ResponsablePedago::class){
+				$SQLQuery .= 'INNER JOIN responsablePedago ON personne.pers_id = responsablePedago.pers_id ';
+			}elseif ($critere == 'visiteur'){
+	    		$SQLQuery .= 'WHERE pers_id NOT IN (SELECT pers_id FROM intervenant) ';
+	    		$SQLQuery .= 'AND pers_id NOT IN (SELECT pers_id FROM etudiant) ';
+	    		$SQLQuery .= 'AND pers_id NOT IN (SELECT pers_id FROM responsablePedago) ';
+			}elseif ($critere == 'administrateur'){
+				$SQLQuery .= 'INNER JOIN userAuth ON personne.us_id = userAuth.us_id ';
+				$SQLQuery .= 'AND us_isadmin = 1 ';
+			}
+		}
+	    $SQLQuery .= 'ORDER BY pers_nom, pers_prenom';
         $SQLStmt = DAO::getInstance()->prepare($SQLQuery);
         $SQLStmt->execute();
 
