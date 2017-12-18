@@ -14,6 +14,10 @@
 			return $this->resp_id;
 		}
 
+		public function getPersId(){
+			return parent::getId();
+		}
+
         public static function getIdByIdPers($idPers){
             $SQLQuery = 'SELECT resp_id FROM responsablePedago WHERE pers_id = :idpers';
             $stmt = DAO::getInstance()->prepare($SQLQuery);

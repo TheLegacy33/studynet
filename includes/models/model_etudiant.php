@@ -4,16 +4,21 @@
 	include_once ROOTMODELS . 'model_personne.php';
 
 	class Etudiant extends Personne {
-		private $etu_id, $photo;
+		private $etu_id, $promo, $photo;
 
-		public function __construct($id = 0, $nom, $prenom, $photo = '', $email = '', $idPers = 0){
+		public function __construct($id = 0, $nom = '', $prenom = '', $email = '', $photo = '', $idPers = 0){
 			parent::__construct($idPers, $nom, $prenom, $email);
 			$this->etu_id = $id;
 			$this->photo = $photo;
+			$this->promo = null;
 		}
 
 		public function getId(){
 			return $this->etu_id;
+		}
+
+		public function getPersId(){
+			return $this->id;
 		}
 
 		public function getPhoto(){
@@ -32,10 +37,10 @@
 		    $this->photo = $photo;
         }
 
-		public function clone($etudToClone){
-            parent::clone($etudToClone);
-            $this->setPromo($etudToClone->getPromo());
-            $this->setPhoto($etudToClone->getPhoto());
+		public function clonepers($etudToClone){
+            parent::clonepers($etudToClone);
+            $this->setPromo(Promotion::getById(Etudiant::getPromoById($this->etu_id)));
+            $this->setPhoto(Etudiant::getPhotoById($this->etu_id));
         }
 
         public function getEvaluationContenuModule($idcmod){
@@ -114,19 +119,45 @@
             return $retVal;
         }
 
-        public static function update($user){
-            $SQLQuery = "UPDATE personne SET pers_nom = :nom, pers_prenom = :prenom, pers_email = :email WHERE pers_id = :idpers AND us_id = :iduser";
-            $stmt = DAO::getInstance()->prepare($SQLQuery);
-            $stmt->bindValue(':nom', $user->getNom());
-            $stmt->bindValue(':prenom', $user->getPrenom());
-            $stmt->bindValue(':email', $user->getEmail());
-            $stmt->bindValue(':idpers', $user->getParentId());
-            $stmt->bindValue(':iduser', $user->getId());
-            $stmt->execute();
+        public static function getPhotoById($idEtudiant){
+			$SQLQuery = 'SELECT etu_photo FROM etudiant WHERE etu_id = :idetudiant';
+			$stmt = DAO::getInstance()->prepare($SQLQuery);
+			$stmt->bindValue(':idetudiant', $idEtudiant);
+			$stmt->execute();
+			$retVal = $stmt->fetchColumn(0);
+			$stmt->closeCursor();
+			return $retVal;
+		}
 
-            $SQLQuery = "UPDATE etudiant SET etu_photo = :photo WHERE pers_id = :idpers";
-            $stmt = DAO::getInstance()->prepare($SQLQuery);
-            $stmt->bindValue(':photo', $user->getPhoto());
-            $stmt->bindValue(':idpers', $user->getParentId());
-        }
+        public static function getPromoById($idEtudiant){
+			$SQLQuery = 'SELECT promo_id FROM etudiant WHERE etu_id = :idetudiant';
+			$stmt = DAO::getInstance()->prepare($SQLQuery);
+			$stmt->bindValue(':idetudiant', $idEtudiant);
+			$stmt->execute();
+			$retVal = $stmt->fetchColumn(0);
+			$stmt->closeCursor();
+			return $retVal;
+		}
+
+		public static function update($etudiant){
+			$SQLQuery = "UPDATE personne SET pers_nom = :nom, pers_prenom = :prenom, pers_email = :email, us_id = :userid WHERE pers_id = :idpers";
+			$stmt = DAO::getInstance()->prepare($SQLQuery);
+			$stmt->bindValue(':nom', $etudiant->getNom());
+			$stmt->bindValue(':prenom', $etudiant->getPrenom());
+			$stmt->bindValue(':email', $etudiant->getEmail());
+			$stmt->bindValue(':idpers', $etudiant->getPersId());
+			$stmt->bindValue(':userid', (($etudiant->getUserAuth()->getId() != 0)?$etudiant->getUserAuth()->getId():null));
+			if (!$stmt->execute()){
+				var_dump($stmt->errorInfo());
+			}
+
+			$SQLQuery = "UPDATE etudiant SET etu_photo = :photo WHERE etu_id = :idetudiant";
+			$stmt = DAO::getInstance()->prepare($SQLQuery);
+			$stmt->bindValue(':photo', $etudiant->getPhoto());
+			$stmt->bindValue(':idetudiant', $etudiant->getId());
+			if (!$stmt->execute()){
+				var_dump($stmt->errorInfo());
+			}
+		}
+
 	}

@@ -17,7 +17,7 @@
 					 * Ouverture de la connexion à la base de données
 					 */
 					$dsn = null;
-					$fp = fsockopen("serveur:3306", -1, $errno, $errstr, 10);
+					$fp = @fsockopen("serveur:3306", -1, $errno, $errstr, 10);
 					if($fp) {
 						$dsn = self::$dsnserveur;
 					} else {

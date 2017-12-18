@@ -2,9 +2,9 @@
 include_once ROOTMODELS.'model_auth.php';
 
 if ($action == 'profile'){
-		//Visu profil
+	//Visu profil
 	$includeJs = true;
-	$scriptname = 'js_profile.js';
+	$scriptname[] = 'js_profile.js';
 	if (!empty($_POST)){
 		$newLogin = $_POST['ttLogin'];
 		$newPassword = $_POST['ttPassword'];
@@ -33,13 +33,20 @@ if ($action == 'profile'){
             $user->setNom($newNom);
             $user->setPrenom($newPrenom);
             $user->setEmail($newEmail);
-            Personne::update($user);
+			$user::update($user);
 
             Authentification::saveSession();
-
             if ($user->estEtudiant() AND !empty($_FILES)){
-
-            }
+				$photo = $_FILES['ttPhoto'];
+				$newNomPhoto = ROOTUPLOADS.'photo_'.$user->getNom().'_'.$user->getPrenom().'.'.pathinfo($photo['name'], PATHINFO_EXTENSION);
+				if (!move_uploaded_file($photo['tmp_name'], $newNomPhoto)){
+					$newNomPhoto = '';
+				}
+				$user->setPhoto($newNomPhoto);
+				Etudiant::update($user);
+            }else{
+				Personne::update($user);
+			}
 
             if ($logoutNeeded){
                 session_destroy();
@@ -48,9 +55,6 @@ if ($action == 'profile'){
 		}
 	}
 	include_once(ROOTVIEWS.'view_profile.php');
-}elseif ($action == 'listepersonnes'){
-    $listePersonnes = Personne::getListe();
-    include_once ROOTVIEWS.'view_listepersonnes.php';
 }elseif ($action == 'editprofile'){
 
 }elseif ($action == 'subscribe'){

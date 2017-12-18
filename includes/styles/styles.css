@@ -204,6 +204,10 @@ span.intervenant:after{
     padding: 4px;
 }
 
+.formbtn button span{
+	margin-left: 10px;
+}
+
 header.libelle{
     text-decoration: underline;
     font-size: 1.1em;

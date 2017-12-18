@@ -15,7 +15,9 @@
 
 <?php
     if (isset($includeJs) AND $includeJs == true){
-        print ('<script type="text/javascript" src="'.ROOTHTMLSCRIPTS.$scriptname.'" ></script>');
+    	foreach ($scriptname as $script){
+        	print ('<script type="text/javascript" src="'.ROOTHTMLSCRIPTSJS.$script.'" ></script>');
+		}
     }
 ?>
 </html>

@@ -7,9 +7,12 @@
 		Votre identifiant de connexion est : <?php print($user->getUserAuth()->getLogin()); ?>.<br />
         <?php
             if (!$user->estVisiteur()){
-                print('Votre profil est : '.get_class($user));
-                print('Vous pouvez accéder à votre profil <a href="index.php?p=users&a=profile" title="Votre profil">ici</a>.');
+                print('Votre profil est : '.$user->get_class().'</br>');
+                print('Vous pouvez accéder à votre profil <a href="index.php?p=users&a=profile" title="Votre profil">ici</a>.<br />');
             }
+            if ($user->isAdmin()){
+            	print("Vous disposez des droits d'administration de l'application !<br />");
+			}
         ?>
 	</section>
 	<footer class="formbtn">

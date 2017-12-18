@@ -18,6 +18,7 @@ $idetudiant = isset($_GET['idetudiant'])?$_GET['idetudiant']:0;
 $idpf = isset($_GET['idpf'])?$_GET['idpf']:0;
 if ($action == 'listemodules'){
 	if ($idetudiant != 0 AND $idpf != 0){
+		//Affichage de la liste des modules suivis par un étudiant
 		$etudiant = Etudiant::getById($idetudiant);
 		$pf = Periodeformation::getById($idpf);
 		$listeModules = Module::getListeFromPf($idpf);

@@ -16,12 +16,13 @@
 		<div><label for="ttEmail">Email : </label><input type="email" name="ttEmail" id="ttEmail" value="<?php print($user->getEmail()); ?>" /></div>
         <?php
             if ($user->estEtudiant()){
-                print('<div><label for="ttPhoto">Photo :</label><input type="file" name="ttPhoto" id="ttPhoto" value="'.$user->getLogin().'" /></div>');
+                print('<div><label for="ttPhoto">Photo :</label><input type="file" name="ttPhoto" id="ttPhoto" value="'.$user->getPhoto().'" /></div>');
             }
         ?>
 	</section>
 	<footer class="formbtn">
-		<input type="submit" value="Enregistrer les modifications" /><input type="reset" value="Annuler les modifications" />
+		<button type="submit" class="btn btn-success">Enregistrer<span class="glyphicon glyphicon-floppy-save"></span></button>
+		<button type="reset" class="btn btn-default">Annuler<span class="glyphicon glyphicon-floppy-remove"></span></button>
 	</footer>
 </form>
 <script type="text/javascript">

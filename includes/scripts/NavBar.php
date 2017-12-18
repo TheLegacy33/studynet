@@ -3,7 +3,7 @@
 include_once (ROOTSCRIPTS.'Menu.php');
 
 class NavBar{
-	private $menus = [];
+	private $menus = array();
 
 	public function addMenu($m){
 		$this->menus[] = $m;
@@ -27,7 +27,7 @@ class NavBar{
 		}
 
 		if ($user->isAdmin()){
-            $nav->addMenu(new Menu('index.php?p=users&a=listepersonnes', 'Personnes', 'Les personnes de l\'application'));
+            $nav->addMenu(new Menu('index.php?p=personnes&a=listepersonnes', 'Personnes', 'Les personnes de l\'application'));
         }
 		return $nav;
 	}

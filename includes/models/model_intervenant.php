@@ -5,13 +5,17 @@
 	class Intervenant extends Personne {
 		private $int_id;
 
-		public function __construct($id = 0, $nom, $prenom, $email = '', $idPers){
+		public function __construct($id = 0, $nom = '', $prenom = '', $email = '', $idPers = 0){
 			parent::__construct($idPers, $nom, $prenom, $email);
 			$this->int_id = $id;
 		}
 
 		public function getId(){
 			return $this->int_id;
+		}
+
+		public function getPersId(){
+			return parent::getId();
 		}
 
 		public static function getListeFromPf($idPf = 0){
