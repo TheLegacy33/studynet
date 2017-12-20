@@ -3,7 +3,7 @@
 /**
  * Définition des éléments de haut de page
  */
-
+include_once ROOTSCRIPTS.'NavBar.php';
 ?>
 <!DOCTYPE html>
 <html lang="fr">

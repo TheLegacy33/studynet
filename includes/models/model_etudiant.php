@@ -1,7 +1,7 @@
 <?php
 	include_once ROOTMODELS.'DAO.php';
 	include_once ROOTMODELS.'model_promotion.php';
-	include_once ROOTMODELS . 'model_personne.php';
+	include_once ROOTMODELS.'model_personne.php';
 
 	class Etudiant extends Personne {
 		private $etu_id, $promo, $photo;

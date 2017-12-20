@@ -56,4 +56,17 @@
 			$SQLStmt->closeCursor();
 			return $newInterv;
 		}
+
+		public static function update($intervenant){
+			$SQLQuery = "UPDATE personne SET pers_nom = :nom, pers_prenom = :prenom, pers_email = :email, us_id = :userid WHERE pers_id = :idpers";
+			$stmt = DAO::getInstance()->prepare($SQLQuery);
+			$stmt->bindValue(':nom', $intervenant->getNom());
+			$stmt->bindValue(':prenom', $intervenant->getPrenom());
+			$stmt->bindValue(':email', $intervenant->getEmail());
+			$stmt->bindValue(':idpers', $intervenant->getPersId());
+			$stmt->bindValue(':userid', (($intervenant->getUserAuth()->getId() != 0)?$intervenant->getUserAuth()->getId():null));
+			if (!$stmt->execute()){
+				var_dump($stmt->errorInfo());
+			}
+		}
 	}

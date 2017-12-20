@@ -1,7 +1,8 @@
-<?php	$action = trim(isset($_GET['action'])?$_GET['action']:'');
+<?php
+	$action = trim(isset($_GET['action'])?$_GET['action']:'');
 
 	if ($action != ''){
-		if (trim($action) == 'sendprofile'){
+		if ($action == 'sendprofile'){
 			$idPersonne = isset($_GET['id'])?$_GET['id']:0;
 			if ($idPersonne != 0){
 
@@ -88,8 +89,32 @@
 					print 'Erreur : ' . $mail->ErrorInfo;
 				}
 			}
-		}elseif (trim($action) == 'delpersonne'){
+		}elseif ($action == 'delpersonne'){
 			var_dump($_GET);
+		}elseif ($action == 'renewpassword'){
+			$idPersonne = isset($_GET['id'])?$_GET['id']:0;
+			if ($idPersonne != 0) {
+				$personne = Personne::getById($idPersonne);
+
+				if ($personne->getUserAuth()->exists()){
+					$personne->getUserAuth()->setPassword(randomPassword());
+					User::update($personne->getUserAuth());
+					print('1');
+				}else{
+					print("Opération impossible car la personne n'a pas de compte utilisateur !");
+				}
+			}
+		}elseif ($action == 'dropuserauth'){
+			$idPersonne = isset($_GET['id'])?$_GET['id']:0;
+			if ($idPersonne != 0) {
+				$personne = Personne::getById($idPersonne);
+				if ($personne->getUserAuth()->exists()){
+					$personne->removeUserAuth();
+					print('1');
+				}else{
+					print("Opération impossible car la personne n'a pas de compte utilisateur !");
+				}
+			}
 		}
 	}
 ?>

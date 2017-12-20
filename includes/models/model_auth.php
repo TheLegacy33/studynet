@@ -96,6 +96,18 @@
 		    $this->password = $password;
         }
 
+
+		public static function geneRandomPassword(){
+			$alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
+			$pass = array();
+			$alphaLength = strlen($alphabet) - 1;
+			for ($i = 0; $i < 8; $i++) {
+				$n = rand(0, $alphaLength);
+				$pass[] = $alphabet[$n];
+			}
+			return implode($pass);
+		}
+
 		public static function getById($id){
 		    $SQLQuery = 'SELECT * FROM userAuth WHERE us_id = :idUser';
 		    $stmt = DAO::getInstance()->prepare($SQLQuery);
@@ -131,6 +143,13 @@
 			$stmt->execute();
 			$userAuth->exists(true);
 			$userAuth->setId(DAO::getInstance()->lastInsertId());
+		}
+
+		public static function delete($idUSer){
+			$SQLQuery = 'DELETE FROM userAuth WHERE us_id = :idUser';
+			$stmt = DAO::getInstance()->prepare($SQLQuery);
+			$stmt->bindValue(':idUser', $idUSer);
+			$stmt->execute();
 		}
     }
 ?>

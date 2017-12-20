@@ -72,8 +72,6 @@ if ($action == 'listepersonnes'){
 	}
 }elseif ($action == 'subscribe'){
 
-}elseif ($action == 'renewpassword'){
-
 }elseif ($action == 'validateprofile'){
 
 }elseif ($action == 'deletepersonne'){

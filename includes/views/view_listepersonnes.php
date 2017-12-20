@@ -4,13 +4,13 @@
 		<select id="cbFiltreType">
 			<?php
 			print('<option value="*"'.(($type=='*')?' selected':'').'>Tous</option>');
+			if ($user->isAdmin()){
+				print('<option value="administrateur"'.(($type=='administrateur')?' selected':'').'>Administrateurs</option>');
+			}
 			print('<option value="'.Etudiant::class.'"'.(($type==Etudiant::class)?' selected':'').'>Etudiant</option>');
 			print('<option value="'.Intervenant::class.'"'.(($type==Intervenant::class)?' selected':'').'>Intervenant</option>');
 			print('<option value="'.ResponsablePedago::class.'"'.(($type==ResponsablePedago::class)?' selected':'').'>Responsables Pédagogiques</option>');
 			print('<option value="visiteur"'.(($type=='visiteur')?' selected':'').'>Visiteurs</option>');
-			if ($user->isAdmin()){
-				print('<option value="administrateur"'.(($type=='administrateur')?' selected':'').'>Administrateurs</option>');
-			}
 			?>
 		</select>
 	</section>
@@ -34,7 +34,8 @@
 					$script .= '<td style="width: 200px;">'.$personne->get_class().'</td>';
 
                     if ($personne->getUserAuth()->exists()){
-                        $hasAuth = 'Oui ('.$personne->getUserAuth()->getLogin().')';
+                        $hasAuth = 'Oui ('.$personne->getUserAuth()->getLogin().')&nbsp;<a style="cursor: pointer;" data-name="renewpassword" data-id="'.$personne->getPersId().'" class="glyphicon glyphicon-refresh" title="Renouveler le mot de passe"></a>';
+                        $hasAuth .= '&nbsp;<a style="cursor: pointer;" data-name="dropuserauth" data-id="'.$personne->getPersId().'" class="glyphicon glyphicon-remove" title="Supprimer les informations d\'authentification"></a>';
                     }else{
                         $hasAuth = 'Non';
                     }
