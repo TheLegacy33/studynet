@@ -22,11 +22,11 @@
 //					} else {
 //					}
 					$dsn = self::$dsnlocalhost;
-					self::$_instance = new PDO($dsn, self::$user, self::$pass);
+					self::$_instance = new PDO($dsn, self::$user, self::$pass, array(PDO::ATTR_PERSISTENT => true));
 				} catch (PDOException $ex) {
 					try{
 						$dsn = self::$dsnserveur;
-						self::$_instance = new PDO($dsn, self::$user, self::$pass);
+						self::$_instance = new PDO($dsn, self::$user, self::$pass, array(PDO::ATTR_PERSISTENT => true));
 					}catch (PDOException $ex){
 						print($ex->getMessage());
 					}
