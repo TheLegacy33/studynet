@@ -62,11 +62,12 @@ class Periodeformation {
 	}
 
 	public static function getListe($idPf = 0){
-		$SQLQuery = 'SELECT * FROM periodeformation ';
+		$SQLQuery = 'SELECT * ';
+		$SQLQuery .= 'FROM periodeformation INNER JOIN promotion ON periodeformation.promo_id = promotion.promo_id ';
 		if ($idPf != 0){
 			$SQLQuery .= 'WHERE pf_id = :idpf ';
 		}
-		$SQLQuery .= 'ORDER BY pf_datefin DESC, pf_datedebut DESC';
+		$SQLQuery .= 'ORDER BY promotion.promo_libelle, pf_datedebut DESC, pf_datefin DESC';
 		$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
 		if ($idPf != 0){
 			$SQLStmt->bindValue(':idpf', $idPf);
@@ -85,9 +86,10 @@ class Periodeformation {
 	}
 
 	public static function getListeFromPromo($idPromo = 0){
-		$SQLQuery = 'SELECT * FROM periodeformation ';
+		$SQLQuery = 'SELECT * ';
+		$SQLQuery .= 'FROM periodeformation INNER JOIN promotion ON periodeformation.promo_id = promotion.promo_id ';
 		$SQLQuery .= 'WHERE promo_id = :idpromo ';
-		$SQLQuery .= 'ORDER BY pf_datefin DESC, pf_datedebut DESC';
+		$SQLQuery .= 'ORDER BY promotion.promo_libelle, pf_datedebut DESC, pf_datefin DESC';
 
 		$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
 		$SQLStmt->bindValue(':idpromo', $idPromo);
