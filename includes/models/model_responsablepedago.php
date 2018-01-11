@@ -1,6 +1,6 @@
 <?php
 	include_once ROOTMODELS.'DAO.php';
-	include_once ROOTMODELS . 'model_personne.php';
+	include_once ROOTMODELS.'model_personne.php';
 
 	class ResponsablePedago extends Personne {
 		private $resp_id;

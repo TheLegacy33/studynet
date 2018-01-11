@@ -2,16 +2,18 @@
 	include_once ROOTMODELS.'DAO.php';
 	include_once ROOTMODELS.'model_contenumodule.php';
 	include_once ROOTMODELS.'model_intervenant.php';
+	include_once ROOTMODELS.'model_periodeformation.php';
 
 	class Module{
-		private $id, $libelle, $details;
+		private $id, $libelle, $details, $idpf;
 		private $intervenant;
 
-		public function __construct($id = 0, $libelle, $details = '', $intervenant){
+		public function __construct($id = 0, $libelle, $details = '', $intervenant = null, $idpf = null){
 			$this->id = $id;
 			$this->libelle = $libelle;
 			$this->details = $details;
 			$this->intervenant = $intervenant;
+			$this->idpf = $idpf;
 
 			$this->contenu = array();
 		}
@@ -36,6 +38,10 @@
 			return $this->intervenant;
 		}
 
+		public function getIdPeriodeFormation(){
+		    return $this->idpf;
+        }
+
 		public function fillContenu($contenu){
 			$this->contenu = $contenu;
 		}
@@ -51,7 +57,7 @@
 
 			$retVal = array();
 			while ($SQLRow = $SQLStmt->fetchObject()){
-				$newModule = new Module($SQLRow->mod_id, $SQLRow->mod_libelle, $SQLRow->mod_details, Intervenant::getById($SQLRow->int_id));
+				$newModule = new Module($SQLRow->mod_id, $SQLRow->mod_libelle, $SQLRow->mod_details, Intervenant::getById($SQLRow->int_id), $SQLRow->pf_id);
 				$newModule->fillContenu(ContenuModule::getListeFromModule($SQLRow->mod_id));
 				$retVal[] = $newModule;
 			}
@@ -64,7 +70,7 @@
 			$SQLStmt->bindValue(':idmodule', $id);
 			$SQLStmt->execute();
 			$SQLRow = $SQLStmt->fetchObject();
-			$newModule = new Module($SQLRow->mod_id, $SQLRow->mod_libelle, $SQLRow->mod_details, Intervenant::getById($SQLRow->int_id));
+			$newModule = new Module($SQLRow->mod_id, $SQLRow->mod_libelle, $SQLRow->mod_details, Intervenant::getById($SQLRow->int_id), $SQLRow->pf_id);
 			$newModule->fillContenu(ContenuModule::getListeFromModule($id));
 			$SQLStmt->closeCursor();
 			return $newModule;

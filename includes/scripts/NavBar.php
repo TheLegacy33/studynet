@@ -21,15 +21,17 @@ class NavBar{
 	public static function fill($user){
 		$nav = new NavBar();
 		$nav->addMenu(new Menu('index.php', 'Accueil'));
-		if ($user->isAuthentified()){
-			$nav->addMenu(new Menu('index.php?p=ecoles', 'Ecoles', 'Les écoles'));
-			$nav->addMenu(new Menu('index.php?p=periodesformation', 'Sessions', 'Les périodes de formations'));
-		}
+        if ($user->isAuthentified()){
+            if (!$user->estEtudiant()){
+                $nav->addMenu(new Menu('index.php?p=ecoles', 'Ecoles', 'Les écoles'));
+                $nav->addMenu(new Menu('index.php?p=periodesformation', 'Sessions', 'Les périodes de formations'));
+            }
+        }
 
-		if ($user->isAdmin()){
+        if ($user->isAdmin()){
             $nav->addMenu(new Menu('index.php?p=personnes&a=listepersonnes', 'Personnes', 'Les personnes de l\'application'));
         }
-		return $nav;
+        return $nav;
 	}
 }
 

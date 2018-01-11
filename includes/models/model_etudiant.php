@@ -58,6 +58,18 @@
 			return $retVal;
 		}
 
+		public function hasRattrapages(){
+		    $SQLQuery = 'SELECT COUNT(rat_id) FROM rattrapage INNER JOIN statutrattrapage ON rattrapage.statr_id = statutrattrapage.statr_id WHERE etu_id = :idetudiant AND statr_libelle = \'En cours\'';
+		    $SQLStmt = DAO::getInstance()->prepare($SQLQuery);
+		    $SQLStmt->bindValue(':idetudiant', $this->etu_id);
+		    $SQLStmt->execute();
+		    $SQLRow = $SQLStmt->fetch();
+
+		    $retVal = $SQLRow[0];
+		    $SQLStmt->closeCursor();
+		    return ($retVal > 0);
+        }
+
 		public static function getListeFromPromo($idPromo = 0){
 			$SQLQuery = "SELECT * FROM etudiant INNER JOIN personne ON etudiant.pers_id = personne.pers_id";
 			if ($idPromo != 0){
@@ -69,7 +81,7 @@
 
 			$retVal = array();
 			while ($SQLRow = $SQLStmt->fetchObject()){
-				$newEtud = new Etudiant($SQLRow->etu_id, $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->etu_photo, $SQLRow->pers_email, $SQLRow->pers_id);
+				$newEtud = new Etudiant($SQLRow->etu_id, $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->pers_email, $SQLRow->etu_photo, $SQLRow->pers_id);
 				$retVal[] = $newEtud;
 			}
 			$SQLStmt->closeCursor();
@@ -90,7 +102,7 @@
 
 			$retVal = array();
 			while ($SQLRow = $SQLStmt->fetchObject()){
-				$newEtud = new Etudiant($SQLRow->etu_id, $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->etu_photo, $SQLRow->pers_email, $SQLRow->pers_id);
+				$newEtud = new Etudiant($SQLRow->etu_id, $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->pers_email, $SQLRow->etu_photo, $SQLRow->pers_id);
 				$newEtud->setPromo(Promotion::getById($SQLRow->promo_id));
 				$retVal[] = $newEtud;
 			}
@@ -103,7 +115,7 @@
 			$SQLStmt->bindValue(':idetudiant', $id);
 			$SQLStmt->execute();
 			$SQLRow = $SQLStmt->fetchObject();
-			$newEtud = new Etudiant($SQLRow->etu_id, $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->etu_photo, $SQLRow->pers_email, $SQLRow->pers_id);
+			$newEtud = new Etudiant($SQLRow->etu_id, $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->pers_email, $SQLRow->etu_photo, $SQLRow->pers_id);
 			$newEtud->setPromo(Promotion::getById($SQLRow->promo_id));
 			$SQLStmt->closeCursor();
 			return $newEtud;
