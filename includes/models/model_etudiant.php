@@ -59,7 +59,7 @@
 		}
 
 		public function hasRattrapages(){
-		    $SQLQuery = 'SELECT COUNT(rat_id) FROM rattrapage INNER JOIN statutrattrapage ON rattrapage.statr_id = statutrattrapage.statr_id WHERE etu_id = :idetudiant AND statr_libelle = \'En cours\'';
+		    $SQLQuery = 'SELECT COUNT(rat_id) FROM rattrapage INNER JOIN statutrattrapage ON rattrapage.statr_id = statutrattrapage.statr_id WHERE etu_id = :idetudiant'; //' AND statr_libelle = \'En cours\'';
 		    $SQLStmt = DAO::getInstance()->prepare($SQLQuery);
 		    $SQLStmt->bindValue(':idetudiant', $this->etu_id);
 		    $SQLStmt->execute();

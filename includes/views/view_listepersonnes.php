@@ -42,9 +42,9 @@
 
 					$script .= '<td style="width: 150px;">'.$hasAuth.'</td>';
 
-					$script .= '<td style="width: 60px;"><a href="index.php?p=personnes&a=editprofile&idpersonne='.$personne->getPersId().'" title="Editer le profil"><span class="glyphicon glyphicon-edit"></span></a></td>';
+					$script .= '<td style="width: 30px;"><a href="index.php?p=personnes&a=editprofile&idpersonne='.$personne->getPersId().'" title="Editer le profil"><span class="glyphicon glyphicon-edit"></span></a></td>';
 					if ($user->isAdmin()) {
-						$script .= '<td style="width: 60px;">';
+						$script .= '<td style="width: 30px;">';
 						if (trim($personne->getEmail()) != ''){
 							$script .= '<a style="cursor: pointer;" data-name="sendmail" data-id="'.$personne->getPersId().'" title="Envoyer les informations du profil"><span class="glyphicon glyphicon-envelope"></span></a></td>';
 						}else{
@@ -53,8 +53,10 @@
 						$script .= '</td>';
 
 						if (($personne->getNomComplet() != $user->getNomComplet()) AND $personne->getNom() != "VISITEUR" AND !$personne->isAdmin()){
-                        	$script .= '<td style="width: 60px;"><a href="index.php?p=personnes&a=delete&idpersonne='.$personne->getPersId().'" title="Supprimer"><span class="glyphicon glyphicon-remove"></span></a></td>';
-						}
+                        	$script .= '<td style="width: 30px;"><a href="index.php?p=personnes&a=delete&idpersonne='.$personne->getPersId().'" title="Supprimer"><span class="glyphicon glyphicon-remove"></span></a></td>';
+						}else{
+                            $script .= '<td style="width: 30px;"></td>';
+                        }
                     }
 					$script .= '</tr>';
 				}

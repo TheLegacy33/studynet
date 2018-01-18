@@ -25,12 +25,13 @@ a, a:link, a:visited, a:hover{
     font-size: 2.2em;
     font-style: italic;
     font-weight: bold;
-    line-height: 90px
+    line-height: 90px;
+    color: #271549;
 }
 
 nav#navgenerale{
     height: 30px;
-    background-color: black;
+    background-color: #271549;
     text-align: center;
     border-radius: 5px;
 }
@@ -69,7 +70,7 @@ nav.navinterne{
 
 #footer{
 	height: 30px;
-	background-color: black;
+	background-color: #271549;
 	text-align: center;
 	border-radius: 5px;
 	color: white;
@@ -92,16 +93,16 @@ table img.logotableau{
 	margin: 5px;
 }
 
-.lignedata.pair {
-    background-color: rgba(247, 241, 14, 0.2);
+.lignedata.pair, .lignedata:nth-child(even) {
+    background-color: rgba(143, 192, 86, 0.2); /*#8FC056*/
 }
 
-.lignedata.impair {
-    background-color: rgba(248, 116, 19, 0.2);
+.lignedata.impair, .lignedata:nth-child(odd) {
+    background-color: rgba(56, 184, 215, 0.2); /*#38B8D7*/
 }
 
-.lignedata:hover {
-    background-color: rgba(235, 235, 235, 1);
+.lignedata:hover, .lignetab:hover {
+    background-color: rgba(210, 210, 210, 1);
 }
 
 th{
@@ -121,10 +122,6 @@ td>a>img {
 span.badge{
 	margin-left: 5px;
 	vertical-align: bottom;
-}
-
-.lignetab:hover{
-	background-color: gainsboro;
 }
 
 td.eval_A, td.eval_EA, td.eval_NA{
@@ -214,7 +211,7 @@ header.libelle{
     font-weight:bold;
 }
 
-#frmLogin {
+#frmLogin{
 	width: 400px;
 	margin: 10px auto;
 	border: solid 1px black;
@@ -222,14 +219,14 @@ header.libelle{
 }
 
 #frmProfile{
-    width: 500px;
+    width: 600px;
     margin: 10px auto;
     border: solid 1px black;
     clear: both;
 }
 
-#frmLogin header, #frmProfile header{
-	background-color: black;
+form header{
+	background-color: #271549;
 	height: 20px;
 	color: white;
 	text-align: center;
@@ -251,3 +248,8 @@ header.libelle{
 	margin-right: 5px;
 }
 
+.clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+}

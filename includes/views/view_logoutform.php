@@ -1,7 +1,7 @@
 <?php
 ?>
 <form action="index.php?p=auth" method="post" id="frmLogin">
-	<header>Authentification</header>
+	<header>Informations</header>
 	<section>
 		Bienvenue <?php print($user); ?>,<br />
 		Votre identifiant de connexion est : <?php print($user->getUserAuth()->getLogin()); ?>.<br />

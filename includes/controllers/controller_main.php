@@ -66,7 +66,7 @@
 				    if ($user->hasRattrapages()){
                         $section = 'rattrapages';
                         $action = 'listeforetudiant';
-					    include_once( ROOTCTRL.'controller_rattrapage.php');
+					    include_once(ROOTCTRL.'controller_rattrapage.php');
                     }
 				}
 			}
@@ -100,6 +100,8 @@
 		}elseif ($section == "api"){
 			//Gestion des api
 			include_once ROOTCTRL.'controller_api.php';
+		}elseif ($section == 'rattrapages'){
+            include_once(ROOTCTRL.'controller_rattrapage.php');
 		}else{
 			header('Location: '.ROOTHTML);
 		}

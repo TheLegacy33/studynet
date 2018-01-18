@@ -14,11 +14,31 @@
 			}else{
 				foreach ($listeRattrapage as $rattrapage){
 					$script .= '<tr class="lignedata">';
-					$script .= '<td style="width: 400px;">'.$rattrapage->getModule()->getLibelle().'</td>';
-					$script .= '<td style="width: 200px;">'.$rattrapage->getModule()->getIntervenant().'</td>';
-					$script .= '<td style="width: 200px;">'.$rattrapage->getStatut()->getLibelle().'</td>';
-					$script .= '<td><a target="_blank" href="index.php?p=rattrapage&a=getsujet&idrattrapage='.$rattrapage->getId().'" title="Télécharger le sujet"><span class="glyphicon glyphicon-download"></span></a></td>';
-					$script .= '<td><a href="index.php?p=rattrapage&a=envoireponse&idrattrapage='.$rattrapage->getId().'" title="Poster votre réponse"><span class="glyphicon glyphicon-upload"></span></a></td>';
+					$script .= '<td style="text-align: left">'.$rattrapage->getModule()->getLibelle().'</td>';
+					$script .= '<td style="width: 250px;">'.$rattrapage->getModule()->getIntervenant().'</td>';
+					$script .= '<td style="width: 100px;">'.$rattrapage->getStatut()->getLibelle().'</td>';
+
+					$widthColAction = '70px';
+					if ($rattrapage->getStatut() != StatutRattrapage::getByLibelle('En cours')){
+                        $script .= '<td style="width: '.$widthColAction.'"></td>';
+                        $script .= '<td style="width: '.$widthColAction.'"></td>';
+                    }else{
+                        if ($rattrapage->getStatut() == StatutRattrapage::getByLibelle('En cours') AND !$rattrapage->uploaded()) {
+                            $script .= '<td style="width: '.$widthColAction.';" title="' . ($rattrapage->downloaded() ? $rattrapage->getDateRecup() : '') . '"><a data="lnkdld" href="index.php?p=rattrapages&a=getsujet&idrattrapage=' . $rattrapage->getId() . '" title="Télécharger le sujet"><span class="glyphicon glyphicon-download"></span></a></td>';
+                        }else{
+                            $script .= '<td style="width: '.$widthColAction.'"></td>';
+                        }
+                        if ($rattrapage->downloaded()){
+                            if (!$rattrapage->uploaded()){
+                                $script .= '<td style="width: '.$widthColAction.'"><a href="index.php?p=rattrapages&a=postreponse&idrattrapage='.$rattrapage->getId().'" title="Poster votre réponse"><span class="glyphicon glyphicon-upload"></span></a></td>';
+                            }else{
+                                $script .= '<td style="width: '.$widthColAction.'">Transmis</td>';
+                            }
+                        }else{
+                            $script .= '<td style="width: '.$widthColAction.'"></td>';
+                        }
+                    }
+
 					$script .= '</tr>';
 				}
 			}
