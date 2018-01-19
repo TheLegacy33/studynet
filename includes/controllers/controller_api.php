@@ -43,14 +43,6 @@
 					//Recipients
 					$mail->setFrom('epsinet@devatom.net', 'Epsinet');
 					$mail->addAddress($personne->getEmail(), $personne->getNomComplet());     // Add a recipient
-//					$mail->addAddress('the_legacy@devatom.net');               // Name is optional
-//					$mail->addReplyTo('epsinet@devatom.net', 'Epsinet');
-//					$mail->addCC('thelegacy@devatom.net');
-//					$mail->addBCC('root@devatom.net');
-
-					//Attachments
-//					$mail->addAttachment('/var/tmp/file.tar.gz');         // Add attachments
-//					$mail->addAttachment('/tmp/image.jpg', 'new.jpg');    // Optional name
 
 					//Content
 					$mail->isHTML(true);                                  // Set email format to HTML

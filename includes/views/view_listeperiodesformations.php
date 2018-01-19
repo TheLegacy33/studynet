@@ -40,7 +40,7 @@
 				$script .= '<tr><td colspan="6">Aucune donnée disponible !</td></tr>';
 			}else{
 				foreach ($listePf as $pf){
-					$script .= '<tr>';
+					$script .= '<tr class="lignedata">';
 					if ($promo == null){
 						$script .= '<td>'.$pf->getPromo()->getEcole()->getNom().'</td>';
 						$script .= '<td>'.$pf->getPromo()->getLibelle().'</td>';

@@ -1,5 +1,5 @@
 <section id="content_body" class="row">
-	<header class="text-center text-info">Liste de vos rattrapages</header>
+	<header class="text-center text-info">Vos rattrapages</header>
 	<table>
 		<tr>
 			<th>Module</th>

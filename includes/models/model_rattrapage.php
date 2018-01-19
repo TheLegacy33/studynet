@@ -29,15 +29,15 @@
 			return $newStatut;
 		}
 
-        public static function getByLibelle($libelle){
-            $SQLStmt = DAO::getInstance()->prepare("SELECT * FROM statutrattrapage WHERE statr_libelle = :libstatut");
-            $SQLStmt->bindValue(':libstatut', $libelle);
-            $SQLStmt->execute();
-            $SQLRow = $SQLStmt->fetchObject();
-            $newStatut = new StatutRattrapage($SQLRow->statr_id, $SQLRow->statr_libelle);
-            $SQLStmt->closeCursor();
-            return $newStatut;
-        }
+		public static function getByLibelle($libelle){
+			$SQLStmt = DAO::getInstance()->prepare("SELECT * FROM statutrattrapage WHERE statr_libelle = :libstatut");
+			$SQLStmt->bindValue(':libstatut', $libelle);
+			$SQLStmt->execute();
+			$SQLRow = $SQLStmt->fetchObject();
+			$newStatut = new StatutRattrapage($SQLRow->statr_id, $SQLRow->statr_libelle);
+			$SQLStmt->closeCursor();
+			return $newStatut;
+		}
 
 		public static function getListe(){
 			$SQLStmt = DAO::getInstance()->prepare("SELECT * FROM statutrattrapage ORDER BY statr_libelle");
@@ -157,6 +157,14 @@
 			return $this->ficretour;
 		}
 
+		public function getMd5FicRetour(){
+			return $this->md5docretour;
+		}
+
+		public function getMd5FicSujet(){
+			return $this->md5sujet;
+		}
+
 		public function getDelai(){
 			return $this->delai;
 		}
@@ -181,6 +189,26 @@
 			$this->daterecup = $datetime;
 		}
 
+		public function setDateRendu($datetime){
+			$this->dateretour = $datetime;
+		}
+
+		public function setFicRetour($fichier){
+			$this->ficretour = $fichier;
+		}
+
+		public function setMd5Retour($md5){
+			$this->md5docretour = $md5;
+		}
+
+		public function setFicSujet($fichier){
+			$this->ficsujet = $fichier;
+		}
+
+		public function setMd5Sujet($md5){
+			$this->md5sujet = $md5;
+		}
+
 		public function downloaded(){
 			return !is_null($this->daterecup);
 		}
@@ -193,7 +221,7 @@
 			$DTNow = new DateTime('now');
 			$DTRecup = new DateTime($this->daterecup);
 			$DTRenduAttendue = $DTRecup->add(new DateInterval($this->delai->getInterval()))->add(new DateInterval('PT1M'));
-            return($DTNow > $DTRenduAttendue);
+			return($DTNow > $DTRenduAttendue);
 		}
 
 		public static function getListeForEtudiant($idEtudiant = 0){
@@ -229,13 +257,35 @@
 			$SQLStmt->bindValue(':idrattrapage', $id);
 			$SQLStmt->execute();
 
-			$SQLRow = $SQLStmt->fetchObject();
-			$newRattrapage = new Rattrapage($SQLRow->rat_id, $SQLRow->rat_daterecupsujet, $SQLRow->rat_dateretouretudiant, $SQLRow->rat_fichiersujet, $SQLRow->rat_md5ficsujet, $SQLRow->rat_fichierretouretudiant, $SQLRow->rat_md5retetudiant);
-			$newRattrapage->setEtudiant(Etudiant::getById($SQLRow->etu_id));
-			$newRattrapage->setModule(Module::getById($SQLRow->mod_id));
-			$newRattrapage->setDelai(new DelaiRattrapage($SQLRow->rat_valdelai, $SQLRow->rat_unitdelai));
+			if ($SQLStmt->rowCount() == 0){
+				$newRattrapage = null;
+			}else{
+				$SQLRow = $SQLStmt->fetchObject();
+				$newRattrapage = new Rattrapage($SQLRow->rat_id, $SQLRow->rat_daterecupsujet, $SQLRow->rat_dateretouretudiant, $SQLRow->rat_fichiersujet, $SQLRow->rat_md5ficsujet, $SQLRow->rat_fichierretouretudiant, $SQLRow->rat_md5retetudiant);
+				$newRattrapage->setEtudiant(Etudiant::getById($SQLRow->etu_id));
+				$newRattrapage->setModule(Module::getById($SQLRow->mod_id));
+				$newRattrapage->setDelai(new DelaiRattrapage($SQLRow->rat_valdelai, $SQLRow->rat_unitdelai));
+			}
 			$SQLStmt->closeCursor();
 			return $newRattrapage;
+		}
+
+		public static function existsForStudent($idRattrapage, $idEtudiant){
+			if ($idRattrapage == 0 OR $idEtudiant == 0){
+				return false;
+			}
+			$SQLQuery = 'SELECT COUNT(rat_id) FROM rattrapage ';
+			$SQLQuery .= 'WHERE rat_id = :idrattrapage ';
+			$SQLQuery .= 'AND etu_id = :idEtudiant';
+			$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
+			$SQLStmt->bindValue(':idrattrapage', $idRattrapage);
+			$SQLStmt->bindValue(':idEtudiant', $idEtudiant);
+			$SQLStmt->execute();
+
+			$SQLRow = $SQLStmt->fetch();
+			$retVal = $SQLRow[0];
+			$SQLStmt->closeCursor();
+			return $retVal > 0;
 		}
 
 		public static function update($rattrapage){
@@ -255,6 +305,12 @@
 			}
 			if ($ratToUpdate->getFicRetour() != $rattrapage->getFicRetour()){
 				$SQLQuery .= 'rat_fichierretouretudiant = :fichierretouretudiant, ';
+			}
+			if ($ratToUpdate->getMd5FicRetour() != $rattrapage->getMd5FicRetour()){
+				$SQLQuery .= 'rat_md5retetudiant = :md5ficretour, ';
+			}
+			if ($ratToUpdate->getMd5FicSujet() != $rattrapage->getMd5FicSujet()){
+				$SQLQuery .= 'rat_md5ficsujet = :md5ficsujet, ';
 			}
 			if ($ratToUpdate->getStatut()->getId() != $rattrapage->getStatut()->getId()){
 				$SQLQuery .= 'statr_id = :idstatut, ';
@@ -281,6 +337,12 @@
 			}
 			if ($ratToUpdate->getFicRetour() != $rattrapage->getFicRetour()){
 				$stmt->bindValue(':fichierretouretudiant', $rattrapage->getFicRetour());
+			}
+			if ($ratToUpdate->getMd5FicRetour() != $rattrapage->getMd5FicRetour()){
+				$stmt->bindValue(':md5ficretour', $rattrapage->getMd5FicRetour());
+			}
+			if ($ratToUpdate->getMd5FicSujet() != $rattrapage->getMd5FicSujet()){
+				$stmt->bindValue(':md5ficsujet', $rattrapage->getMd5FicSujet());
 			}
 			if ($ratToUpdate->getStatut()->getId() != $rattrapage->getStatut()->getId()){
 				$stmt->bindValue(':idstatut', $rattrapage->getStatut()->getId());

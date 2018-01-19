@@ -56,9 +56,10 @@ if ($action == 'listepersonnes'){
 
 				if ($personne->estEtudiant() AND !empty($_FILES)){
 					$photo = $_FILES['ttPhoto'];
-					$newNomPhoto = ROOTUPLOADS.'photo_'.$personne->getNom().'_'.$personne->getPrenom().'.'.pathinfo($photo['name'], PATHINFO_EXTENSION);
-					if (!move_uploaded_file($photo['tmp_name'], $newNomPhoto)){
-						$newNomPhoto = '';
+					$newNomPhoto = 'photo_'.$personne->getNom().'_'.$personne->getPrenom().'.'.pathinfo($photo['name'], PATHINFO_EXTENSION);
+					$pathFicPhoto = ROOTUPLOADS.$newNomPhoto;
+					if (!move_uploaded_file($photo['tmp_name'], $pathFicPhoto)){
+						$message = "Une erreur est survenue lors de l'enregistrement de votre photo.<br /> Veuillez réessayer plus tard.";
 					}
 					$personne->setPhoto($newNomPhoto);
 					Etudiant::update($personne);
