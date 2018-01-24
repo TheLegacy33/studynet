@@ -304,14 +304,10 @@ class Personne{
         $stmt->bindValue(':prenom', $personne->getPrenom());
         $stmt->bindValue(':email', $personne->getEmail());
         $stmt->bindValue(':userid', ($personne->getUserAuth()->getId() != 0)?$personne->getUserAuth()->getId():null);
-		if (get_class($personne) == Etudiant::class){
-			$stmt->bindValue(':idpers', $personne->getPersId());
-		}elseif (get_class($personne) == Intervenant::class){
-			$stmt->bindValue(':idpers', $personne->getPersId());
-		}elseif (get_class($personne) == ResponsablePedago::class){
-			$stmt->bindValue(':idpers', $personne->getPersId());
-		}elseif (get_class($personne) == Personne::class){
+		if (get_class($personne) == Personne::class){
 			$stmt->bindValue(':idpers', $personne->getId());
+		}else{
+			$stmt->bindValue(':idpers', $personne->getPersId());
 		}
         $stmt->execute();
     }

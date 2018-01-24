@@ -107,6 +107,12 @@
 					print("Opération impossible car la personne n'a pas de compte utilisateur !");
 				}
 			}
+		}elseif ($action == 'dropmodule'){
+			$idModule = isset($_GET['id'])?$_GET['id']:0;
+			if ($idModule != 0){
+				$module = Module::getById($idModule);
+
+			}
 		}
 	}
 ?>

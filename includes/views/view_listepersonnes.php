@@ -53,7 +53,7 @@
 						$script .= '</td>';
 
 						if (($personne->getNomComplet() != $user->getNomComplet()) AND $personne->getNom() != "VISITEUR" AND !$personne->isAdmin()){
-                        	$script .= '<td style="width: 30px;"><a href="index.php?p=personnes&a=delete&idpersonne='.$personne->getPersId().'" title="Supprimer"><span class="glyphicon glyphicon-remove"></span></a></td>';
+                        	$script .= '<td style="width: 30px;"><a data-name="dropuser" data-id="'.$personne->getPersId().'" href="index.php?p=personnes&a=delete&idpersonne='.$personne->getPersId().'" title="Supprimer"><span class="glyphicon glyphicon-remove"></span></a></td>';
 						}else{
                             $script .= '<td style="width: 30px;"></td>';
                         }

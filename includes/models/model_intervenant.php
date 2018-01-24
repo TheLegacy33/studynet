@@ -18,6 +18,24 @@
 			return parent::getId();
 		}
 
+		public static function getListe($critere = Intervenant::class){
+			$SQLQuery = 'SELECT * FROM personne ';
+			$SQLQuery .= 'INNER JOIN intervenant ON personne.pers_id = intervenant.pers_id ';
+			$SQLQuery .= 'ORDER BY pers_nom, pers_prenom';
+			$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
+			$SQLStmt->execute();
+
+			$retVal = array();
+			while ($SQLRow = $SQLStmt->fetchObject()){
+				$idInt = Intervenant::getIdByIdPers($SQLRow->pers_id);
+				$newPers = new Intervenant($idInt, $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->pers_email, $SQLRow->pers_id);
+				$newPers->fillAuth(User::getById($SQLRow->us_id));
+				$retVal[] = $newPers;
+			}
+			$SQLStmt->closeCursor();
+			return $retVal;
+		}
+
 		public static function getListeFromPf($idPf = 0){
 			if ($idPf == 0){
 				return null;
@@ -51,8 +69,12 @@
 			$SQLStmt = DAO::getInstance()->prepare("SELECT * FROM intervenant INNER JOIN personne ON intervenant.pers_id = personne.pers_id WHERE int_id = :idintervenant");
 			$SQLStmt->bindValue(':idintervenant', $id);
 			$SQLStmt->execute();
-			$SQLRow = $SQLStmt->fetchObject();
-			$newInterv = new Intervenant($SQLRow->int_id, $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->pers_email, $SQLRow->pers_id);
+			if ($SQLStmt->rowCount() == 0){
+				$newInterv = new Intervenant(0, 'N.C.');
+			}else{
+				$SQLRow = $SQLStmt->fetchObject();
+				$newInterv = new Intervenant($SQLRow->int_id, $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->pers_email, $SQLRow->pers_id);
+			}
 			$SQLStmt->closeCursor();
 			return $newInterv;
 		}

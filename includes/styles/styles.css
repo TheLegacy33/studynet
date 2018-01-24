@@ -195,13 +195,13 @@ span.intervenant:after{
 	text-align: center;
 }
 
-.formbtn{
+.formbtn, .btnactions{
     width: 100%;
     text-align: center;
     padding: 4px;
 }
 
-.formbtn button span{
+.formbtn button span, .btnactions button span, .btnactions a span{
 	margin-left: 10px;
 }
 
@@ -225,6 +225,12 @@ header.libelle{
     clear: both;
 }
 
+#frmSaisie{
+	width: 600px;
+	margin: 10px auto;
+	clear: both;
+}
+
 form header{
 	background-color: #271549;
 	height: 20px;
@@ -232,21 +238,27 @@ form header{
 	text-align: center;
 }
 
-#frmLogin section, #frmProfile section{
+#frmLogin section, #frmProfile section, #frmSaisie section{
     padding: 5px;
 }
 
-#frmLogin label, #frmProfile label{
+#frmLogin label, #frmProfile label, #frmSaisie label{
 	display: block;
 	width: 100%;
     padding-left: 5px;
 }
 
-#frmLogin input[type=text], #frmLogin input[type=password], #frmProfile input[type=text], #frmProfile input[type=password], #frmProfile input[type=email]{
+#frmLogin input[type=text], #frmLogin input[type=password], #frmProfile input[type=text], #frmProfile input[type=password],
+#frmProfile input[type=email], #frmSaisie input[type=text], #frmSaisie textarea{
 	width: 95%;
 	margin-left: 5px;
 	margin-right: 5px;
 }
+
+#frmSaisie textarea{
+	min-height: 100px;
+}
+
 
 .clearfix::after {
     content: "";

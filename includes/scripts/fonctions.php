@@ -8,14 +8,12 @@ $smtpParams['helo'] = 'mail.devatom.net';
 $smtpParams['auth'] = true;
 $smtpParams['user'] = 'webmaster';
 $smtpParams['pass'] = 'WeBm@steR';
-// server should keep session data for AT LEAST 1 hour
-ini_set('session.gc_maxlifetime', 3600);
 
-// each client should remember their session id for EXACTLY 1 hour
-session_set_cookie_params(3600);
 
 session_name(SESSIONNAME);
 session_start();
+if( !isset($_SESSION['LASTACTIONTIME']) || (time() - $_SESSION['LASTACTIONTIME']) > 60 )
+	$_SESSION['LASTACTIONTIME'] = time();
 
 function getMaximumFileUploadSize(){
 	return min(convertPHPSizeToBytes(ini_get('post_max_size')), convertPHPSizeToBytes(ini_get('upload_max_filesize')));
@@ -52,5 +50,11 @@ function convertPHPSizeToBytes($sSize){
 			break;
 	}
 	return (int)$iValue;
+}
+
+function randomPassword( $length = 8 ) {
+	$chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_-=+;:,.?";
+	$password = substr( str_shuffle( $chars ), 0, $length );
+	return $password;
 }
 ?>
