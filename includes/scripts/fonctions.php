@@ -1,4 +1,10 @@
 <?php
+session_name(SESSIONNAME);
+session_start();
+
+if( !isset($_SESSION['LASTACTIONTIME']) || (time() - $_SESSION['LASTACTIONTIME']) > 60 )
+	$_SESSION['LASTACTIONTIME'] = time();
+
 /**
  * Informations concernant le serveur SMTP
  */
@@ -8,12 +14,6 @@ $smtpParams['helo'] = 'mail.devatom.net';
 $smtpParams['auth'] = true;
 $smtpParams['user'] = 'webmaster';
 $smtpParams['pass'] = 'WeBm@steR';
-
-
-session_name(SESSIONNAME);
-session_start();
-if( !isset($_SESSION['LASTACTIONTIME']) || (time() - $_SESSION['LASTACTIONTIME']) > 60 )
-	$_SESSION['LASTACTIONTIME'] = time();
 
 function getMaximumFileUploadSize(){
 	return min(convertPHPSizeToBytes(ini_get('post_max_size')), convertPHPSizeToBytes(ini_get('upload_max_filesize')));
@@ -35,16 +35,12 @@ function convertPHPSizeToBytes($sSize){
 	switch ($sSuffix) {
 		case 'P':
 			$iValue *= 1024;
-		// Fallthrough intended
 		case 'T':
 			$iValue *= 1024;
-		// Fallthrough intended
 		case 'G':
 			$iValue *= 1024;
-		// Fallthrough intended
 		case 'M':
 			$iValue *= 1024;
-		// Fallthrough intended
 		case 'K':
 			$iValue *= 1024;
 			break;
@@ -52,9 +48,24 @@ function convertPHPSizeToBytes($sSize){
 	return (int)$iValue;
 }
 
-function randomPassword( $length = 8 ) {
+function randomPassword($length = 8) {
 	$chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_-=+;:,.?";
-	$password = substr( str_shuffle( $chars ), 0, $length );
+	$password = substr(str_shuffle($chars), 0, $length);
 	return $password;
+}
+
+function sessionStatus(){
+	$ret = session_status();
+	switch ($ret){
+		case PHP_SESSION_NONE:{
+			return 'Sessions actives mais aucune session existante';
+		}
+		case PHP_SESSION_ACTIVE:{
+			return 'Sessions actives avec une session existante';
+		}
+		case PHP_SESSION_DISABLED:{
+			return 'Sessions désactivées';
+		}
+	}
 }
 ?>

@@ -19,12 +19,12 @@
 
 	if (!file_exists(ROOTEXPORTS)){
 		mkdir(ROOTEXPORTS);
-		@chmod(ROOTEXPORTS, 0777);
+		@chmod(ROOTEXPORTS, 0775);
 	}
 
 	if (!file_exists(ROOTUPLOADS)){
 		mkdir(ROOTUPLOADS);
-		@chmod(ROOTUPLOADS, 0777);
+		@chmod(ROOTUPLOADS, 0775);
 	}
 
 	include_once ROOTSCRIPTS.'fonctions.php';
@@ -87,7 +87,7 @@
 			include_once ROOTCTRL.'controller_evaluation.php';
 		}elseif ($section == "etudiants"){
 			//Gestion des étudiants
-			include_once ROOTCTRL.'controller_etudiant.php';
+			include_once ROOTCTRL . 'controller_etudiants.php';
 		}elseif ($section == "intervenants"){
 			//Gestion des intervenants
 			include_once ROOTCTRL.'controller_intervenant.php';

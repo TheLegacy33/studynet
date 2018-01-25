@@ -2,10 +2,10 @@
 	<header class="text-center text-info">Vos rattrapages</header>
 	<table>
 		<tr>
-			<th>Module</th>
-			<th>Intervenant</th>
-			<th>Statut</th>
-			<th colspan="2">Actions</th>
+			<th style="width: 300px;">Module</th>
+			<th style="width: 250px;">Intervenant</th>
+			<th style="width: 100px;">Statut</th>
+			<th style="width: 100px;" colspan="2">Actions</th>
 		</tr>
 		<?php
 			$script = '';
@@ -15,8 +15,8 @@
 				foreach ($listeRattrapage as $rattrapage){
 					$script .= '<tr class="lignedata">';
 					$script .= '<td style="text-align: left">'.$rattrapage->getModule()->getLibelle().'</td>';
-					$script .= '<td style="width: 250px;">'.$rattrapage->getModule()->getIntervenant().'</td>';
-					$script .= '<td style="width: 100px;">'.$rattrapage->getStatut()->getLibelle().'</td>';
+					$script .= '<td>'.$rattrapage->getModule()->getIntervenant().'</td>';
+					$script .= '<td>'.$rattrapage->getStatut()->getLibelle().'</td>';
 
 					$widthColAction = '70px';
 					if ($rattrapage->getStatut() != StatutRattrapage::getByLibelle('En cours')){

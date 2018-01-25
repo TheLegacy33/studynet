@@ -3,7 +3,7 @@
 	<div class="row">
 		<span class="col-sm-offset-3 col-sm-3 text-center"><label style="margin-right: 5px">Ecole : </label>
 			<?php
-				if ($promo == null){
+				if (is_null($promo)){
 					print('Toutes');
 				}else{
 					print($promo->getEcole()->getNom());
@@ -12,7 +12,7 @@
 		</span>
 		<span class="col-sm-3 text-center"><label style="margin-right: 5px">Promotion : </label>
 			<?php
-				if ($promo == null){
+				if (is_null($promo)){
 					print('Toutes');
 				}else {
 					print($promo->getLibelle());
@@ -24,16 +24,16 @@
 		<table>
 			<tr>
 				<?php
-					if ($promo == null){
-						print('<th colspan="2">Formation</th>');
+					if (is_null($promo)){
+						print('<th style="width: 150px;" colspan="2">Formation</th>');
 					}
 				?>
-				<th>Date Début</th>
-				<th>Date Fin</th>
-				<th>Effectif</th>
-				<th>Nb Modules</th>
-				<th>Resp. Peda.</th>
-				<th colspan="2">Actions</th>
+				<th style="width: 120px;">Date Début</th>
+				<th style="width: 120px;">Date Fin</th>
+				<th style="width: 100px;">Effectif</th>
+				<th style="width: 100px;">Nb Modules</th>
+				<th style="width: 250px;">Resp. Peda.</th>
+				<th  style="width: 70px;" colspan="2">Actions</th>
 			</tr>
 			<?php
 				$script = '';

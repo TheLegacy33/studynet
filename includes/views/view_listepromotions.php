@@ -4,10 +4,10 @@
 	<header class="text-center text-info">Liste des promotions</header>
 	<table>
 		<tr>
-			<th>Ecole</th>
-			<th>Nom</th>
-			<th>Effectif Total</th>
-			<th colspan="5">Actions</th>
+			<th style="width: 200px;">Ecole</th>
+			<th style="width: 200px;">Nom</th>
+			<th style="width: 150px;">Effectif Total</th>
+			<th style="width: 100px;">Actions</th>
 		</tr>
 		<?php
 			$script = '';
@@ -16,8 +16,8 @@
 			}else{
 				foreach ($listePromos as $promo){
 					$script .= '<tr>';
-					$script .= '<td style="width: 200px;">'.$promo->getEcole()->getNom().'</td>';
-					$script .= '<td style="width: 200px;">'.$promo->getLibelle().'</td>';
+					$script .= '<td>'.$promo->getEcole()->getNom().'</td>';
+					$script .= '<td>'.$promo->getLibelle().'</td>';
 					$script .= '<td>'.$promo->getEffectif().'</td>';
 					$script .= '<td><a href="index.php?p=periodesformation&a=listepf&idpromo='.$promo->getId().'" title="Liste des sessions"><span class="glyphicon glyphicon-list"></td>';
 				}

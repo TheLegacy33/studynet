@@ -68,6 +68,7 @@ class Promotion {
 		$SQLStmt->execute();
 		$SQLRow = $SQLStmt->fetchObject();
 		$newPromo = new Promotion($SQLRow->promo_id, $SQLRow->promo_libelle, Ecole::getById($SQLRow->eco_id));
+		$newPromo->fillStudents(Etudiant::getListeFromPromo($SQLRow->promo_id));
 		$SQLStmt->closeCursor();
 		return $newPromo;
 	}
@@ -81,6 +82,7 @@ class Promotion {
 		$SQLStmt->execute();
 		$SQLRow = $SQLStmt->fetchObject();
 		$newPromo = new Promotion($SQLRow->promo_id, $SQLRow->promo_libelle, Ecole::getById($SQLRow->eco_id));
+		$newPromo->fillStudents(Etudiant::getListeFromPromo($SQLRow->promo_id));
 		$SQLStmt->closeCursor();
 		return $newPromo;
 	}

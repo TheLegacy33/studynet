@@ -65,7 +65,7 @@ nav.navinterne{
 }
 
 #content_body>header{
-	font-size: 30px;
+	font-size: 24px;
 }
 
 #footer{
@@ -83,7 +83,7 @@ nav.navinterne{
 table {
     border-collapse: collapse;
     border: solid 1px black;
-    width: 80%;
+    /*width: 80%;*/
     margin: 0 auto;
     cursor: default;
 }
@@ -249,8 +249,14 @@ form header{
 }
 
 #frmLogin input[type=text], #frmLogin input[type=password], #frmProfile input[type=text], #frmProfile input[type=password],
-#frmProfile input[type=email], #frmSaisie input[type=text], #frmSaisie textarea{
+#frmProfile input[type=email], #frmSaisie input[type=text], #frmSaisie textarea, #frmSaisie input[type=email]{
 	width: 95%;
+	margin-left: 5px;
+	margin-right: 5px;
+}
+
+#frmPostFile input[type=checkbox]{
+	vertical-align: top;
 	margin-left: 5px;
 	margin-right: 5px;
 }

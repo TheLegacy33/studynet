@@ -182,32 +182,32 @@ class Personne{
 	}
 
     public static function exists($id){
-	    $stmt = DAO::getInstance()->prepare("SELECT pers_id FROM personne WHERE us_id = :iduser");
-	    $stmt->bindValue(':iduser', $id);
-	    $stmt->execute();
-	    $retval = $stmt->rowCount();
-	    $stmt->closeCursor();
+		$SQLStmt = DAO::getInstance()->prepare("SELECT pers_id FROM personne WHERE us_id = :iduser");
+		$SQLStmt->bindValue(':iduser', $id);
+		$SQLStmt->execute();
+	    $retval = $SQLStmt->rowCount();
+		$SQLStmt->closeCursor();
 	    return $retval;
     }
 
     public static function getType($idPers){
-        $stmt = DAO::getInstance()->prepare("SELECT count(etu_id) FROM etudiant WHERE pers_id = :idpers");
-        $stmt->bindValue(':idpers', $idPers);
-        $stmt->execute();
-        $estetudiant = $stmt->fetchColumn(0);
-        $stmt->closeCursor();
+		$SQLStmt = DAO::getInstance()->prepare("SELECT count(etu_id) FROM etudiant WHERE pers_id = :idpers");
+		$SQLStmt->bindValue(':idpers', $idPers);
+		$SQLStmt->execute();
+        $estetudiant = $SQLStmt->fetchColumn(0);
+		$SQLStmt->closeCursor();
 
-        $stmt = DAO::getInstance()->prepare("SELECT count(int_id) FROM intervenant WHERE pers_id = :idpers");
-        $stmt->bindValue(':idpers', $idPers);
-        $stmt->execute();
-        $estintervenant = $stmt->fetchColumn(0);
-        $stmt->closeCursor();
+		$SQLStmt = DAO::getInstance()->prepare("SELECT count(int_id) FROM intervenant WHERE pers_id = :idpers");
+		$SQLStmt->bindValue(':idpers', $idPers);
+		$SQLStmt->execute();
+        $estintervenant = $SQLStmt->fetchColumn(0);
+		$SQLStmt->closeCursor();
 
-        $stmt = DAO::getInstance()->prepare("SELECT count(resp_id) FROM responsablePedago WHERE pers_id = :idpers");
-        $stmt->bindValue(':idpers', $idPers);
-        $stmt->execute();
-        $estresponsablepedago = $stmt->fetchColumn(0);
-        $stmt->closeCursor();
+		$SQLStmt = DAO::getInstance()->prepare("SELECT count(resp_id) FROM responsablePedago WHERE pers_id = :idpers");
+		$SQLStmt->bindValue(':idpers', $idPers);
+		$SQLStmt->execute();
+        $estresponsablepedago = $SQLStmt->fetchColumn(0);
+		$SQLStmt->closeCursor();
 
         if ($estetudiant){
             $retVal = Etudiant::class;
@@ -222,11 +222,11 @@ class Personne{
     }
 
     public static function getInfosByUSerId($id){
-        $stmt = DAO::getInstance()->prepare("SELECT * FROM personne WHERE us_id = :iduser");
-        $stmt->bindValue(':iduser', $id);
-        $stmt->execute();
-        $retVal = $stmt->fetchObject();
-        $stmt->closeCursor();
+		$SQLStmt = DAO::getInstance()->prepare("SELECT * FROM personne WHERE us_id = :iduser");
+		$SQLStmt->bindValue(':iduser', $id);
+		$SQLStmt->execute();
+        $retVal = $SQLStmt->fetchObject();
+		$SQLStmt->closeCursor();
         return $retVal;
     }
 
@@ -299,17 +299,17 @@ class Personne{
 
     public static function update($personne){
 	    $SQLQuery = "UPDATE personne SET pers_nom = :nom, pers_prenom = :prenom, pers_email = :email, us_id = :userid WHERE pers_id = :idpers";
-	    $stmt = DAO::getInstance()->prepare($SQLQuery);
-	    $stmt->bindValue(':nom', $personne->getNom());
-        $stmt->bindValue(':prenom', $personne->getPrenom());
-        $stmt->bindValue(':email', $personne->getEmail());
-        $stmt->bindValue(':userid', ($personne->getUserAuth()->getId() != 0)?$personne->getUserAuth()->getId():null);
+		$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
+		$SQLStmt->bindValue(':nom', $personne->getNom());
+		$SQLStmt->bindValue(':prenom', $personne->getPrenom());
+		$SQLStmt->bindValue(':email', $personne->getEmail());
+		$SQLStmt->bindValue(':userid', ($personne->getUserAuth()->getId() != 0)?$personne->getUserAuth()->getId():null);
 		if (get_class($personne) == Personne::class){
-			$stmt->bindValue(':idpers', $personne->getId());
+			$SQLStmt->bindValue(':idpers', $personne->getId());
 		}else{
-			$stmt->bindValue(':idpers', $personne->getPersId());
+			$SQLStmt->bindValue(':idpers', $personne->getPersId());
 		}
-        $stmt->execute();
+		$SQLStmt->execute();
     }
 }
 

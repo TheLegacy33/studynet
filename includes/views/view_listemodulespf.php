@@ -1,9 +1,6 @@
-<?php
-
-?>
 <section id="content_body" class="row">
-	<header class="text-center text-info" style="font-size: 20px">Liste des modules pour la période de formation
-		du <?php print($pf->getDateDebut()); ?> au <?php print($pf->getDateDebut()); ?>
+	<header class="text-center text-info header-section">
+		Liste des modules
 	</header>
 	<?php
 		if ($user->isAdmin() OR $pf->getResponsable() == $user){
@@ -17,8 +14,8 @@
 	<div class="row">
 		<table>
 			<tr>
-				<th>Libellé</th>
-				<th colspan="3">Actions</th>
+				<th style="width: 600px;">Libellé</th>
+				<th style="width: 70px;" colspan="2">Actions</th>
 			</tr>
 			<?php
 				$script = '';
@@ -27,9 +24,9 @@
 				}else{
 					foreach ($listeModules as $module){
 						$script .= '<tr>';
-						$script .= '<td style="width: 400px; font-weight: bold; font-style: italic">'.$module->getLibelle().'<span class="intervenant">'.$module->getIntervenant().'</span></td>';
-						$script .= '<td style="width: 30px;"><a href="index.php?p=periodesformation&a=editmodule&idpf='.$pf->getId().'&idmodule='.$module->getId().'" title="Editer le module"><span class="glyphicon glyphicon-edit"></span></a></td>';
-						$script .= '<td style="width: 30px;"><a style="cursor: pointer" data-name="dropmodule" data-id="'.$module->getId().'" title="Supprimer le module"><span class="glyphicon glyphicon-remove"></span></a></td>';
+						$script .= '<td style="font-weight: bold; font-style: italic">'.$module->getLibelle().'<span class="intervenant">'.$module->getIntervenant().'</span></td>';
+						$script .= '<td><a href="index.php?p=periodesformation&a=editmodule&idpf='.$pf->getId().'&idmodule='.$module->getId().'" title="Editer le module"><span class="glyphicon glyphicon-edit"></span></a></td>';
+						$script .= '<td><a style="cursor: pointer" data-name="dropmodule" data-id="'.$module->getId().'" title="Supprimer le module"><span class="glyphicon glyphicon-remove"></span></a></td>';
 						$script .= '</tr>';
 						if ($module->hasContenu()){
 							$script .= '<tr>';
