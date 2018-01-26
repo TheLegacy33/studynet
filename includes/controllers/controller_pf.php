@@ -29,12 +29,13 @@ if (isset($idPf) AND $idPf != 0){
 		$scriptname[] = 'js_listemodules.js';
 		$listeModules = Module::getListeFromPf($idPf);
 		include_once ROOTVIEWS.'view_listemodulespf.php';
-	}elseif ($action == 'ajoutmodule' OR $action == 'editmodule'){
+	}elseif ($action == 'ajoutmodule' OR $action == 'editmodule' OR $action == 'importmodules'){
 		include_once ROOTCTRL.'controller_modules.php';
-	}elseif ($action == 'importmodules'){
-		include_once ROOTVIEWS.'view_formimportmodules.php';
 	}elseif ($action == 'ajoutetudiant' OR $action == 'editetudiant' OR $action == 'importetudiants'){
 		include_once ROOTCTRL.'controller_etudiants.php';
+	}elseif ($action == 'listeevaluations'){
+		$idmodule = isset($_GET['idmodule'])?$_GET['idmodule']:0;
+		include_once ROOTCTRL.'controller_evaluationmodule.php';
 	}
 }
 ?>

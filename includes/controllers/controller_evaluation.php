@@ -76,6 +76,6 @@ if ($action == 'view'){
 }elseif ($action=='print') {
     include_once ROOTVIEWS.'view_printevaluation.php';
 }else{
-	include_once ROOTVIEWS.'view_nodata.php';
+	header('Location: '.$_SERVER['HTTP_REFERER']);
 }
 ?>

@@ -15,7 +15,7 @@
 		<table>
 			<tr>
 				<th style="width: 600px;">Libellé</th>
-				<th style="width: 70px;" colspan="2">Actions</th>
+				<th style="width: 100px;" colspan="3">Actions</th>
 			</tr>
 			<?php
 				$script = '';
@@ -26,6 +26,7 @@
 						$script .= '<tr>';
 						$script .= '<td style="font-weight: bold; font-style: italic">'.$module->getLibelle().'<span class="intervenant">'.$module->getIntervenant().'</span></td>';
 						$script .= '<td><a href="index.php?p=periodesformation&a=editmodule&idpf='.$pf->getId().'&idmodule='.$module->getId().'" title="Editer le module"><span class="glyphicon glyphicon-edit"></span></a></td>';
+						$script .= '<td><a href="index.php?p=periodesformation&a=listeevaluations&idpf='.$pf->getId().'&idmodule='.$module->getId().'" title="Voir les évaluations pour ce module"><span class="glyphicon glyphicon-tasks"></span></a></td>';
 						$script .= '<td><a style="cursor: pointer" data-name="dropmodule" data-id="'.$module->getId().'" title="Supprimer le module"><span class="glyphicon glyphicon-remove"></span></a></td>';
 						$script .= '</tr>';
 						if ($module->hasContenu()){

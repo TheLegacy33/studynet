@@ -48,8 +48,8 @@
 
 			$retVal = array();
 			while ($SQLRow = $SQLStmt->fetchObject()){
-				$newEtud = new Intervenant($SQLRow->int_id, $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->pers_email, $SQLRow->pers_id);
-				$retVal[] = $newEtud;
+				$newInterv = new Intervenant($SQLRow->int_id, $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->pers_email, $SQLRow->pers_id);
+				$retVal[] = $newInterv;
 			}
 			$SQLStmt->closeCursor();
 			return $retVal;

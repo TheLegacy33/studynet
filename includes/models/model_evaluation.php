@@ -6,9 +6,9 @@
 		private $idetudiant, $idintervenant, $idcontenumodule;
 
 		public function __construct($idetudiant = 0, $idintervenant = 0, $idcontenumodule = 0, $acquis = 0, $enacquisition = 0, $nonacquis = 0, $commentaire = ''){
-			$this->acquis = $acquis; //(intval($acquis) != 0);
-			$this->nonacquis = $nonacquis; //(intval($nonacquis) != 0);
-			$this->enacquisition = $enacquisition; //(intval($enacquisition) != 0);
+			$this->acquis = $acquis;
+			$this->nonacquis = $nonacquis;
+			$this->enacquisition = $enacquisition;
 			$this->idetudiant = $idetudiant;
 			$this->idintervenant = $idintervenant;
 			$this->idcontenumodule = $idcontenumodule;
@@ -82,9 +82,9 @@
 			$SQLStmt->bindValue(':idintervenant', $idIntervenant);
 			$SQLStmt->execute();
 			$SQLRow = $SQLStmt->fetchObject();
-			$newPromo = new Evaluation($idEtudiant, $idIntervenant, $idContenuModule, $SQLRow->eval_acquis, $SQLRow->eval_enacquisition, $SQLRow->eval_nonacquis, $SQLRow->eval_commentaire);
+			$newEval = new Evaluation($idEtudiant, $idIntervenant, $idContenuModule, $SQLRow->eval_acquis, $SQLRow->eval_enacquisition, $SQLRow->eval_nonacquis, $SQLRow->eval_commentaire);
 			$SQLStmt->closeCursor();
-			return $newPromo;
+			return $newEval;
 		}
 
         public static function updateAppreciationModule($commentaireModule, $idEtudiant, $idModule, $idIntervenant){
