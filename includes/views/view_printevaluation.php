@@ -12,7 +12,8 @@
         function Header(){
             GLOBAL $etudiant, $pf;
             $this->SetLineWidth(0.4);
-            $this->Image(ROOTUPLOADS.'logos_ecoles/udev.png', 5, 5, 60);
+            $this->Image(ROOTUPLOADS.$etudiant->getPromo()->getEcole()->getLogo(), 10, 2, 40, 30);
+
             // Police Arial gras 15
             $this->SetFont('Arial','',12);
             // Décalage à droite
@@ -59,7 +60,7 @@
             if ($this->GetY() >= 260){
                 $this->AddPage();
             }
-            $this->Cell(120, 6, $module->getLibelle(), 'LTB', 0, 'L');
+            $this->Cell(120, 6, utf8_decode($module->getLibelle()), 'LTB', 0, 'L');
             $this->SetFont('Arial','I',10);
             $this->Cell(40, 6, utf8_decode($module->getIntervenant()->getNom().' '.$module->getIntervenant()->getPrenom()), 'RTB', 0, 'R');
             $this->SetFont('Arial','',10);
@@ -113,7 +114,7 @@
     $pdf->AliasNbPages();
 
     foreach ($listeModules as $module){
-        $commentaireModule = Evaluation::getAppreciationModule($etudiant->getId(), $module->getIntervenant()->getId(), $module->getId());
+        $commentaireModule = (Evaluation::getAppreciationModule($etudiant->getId(), $module->getIntervenant()->getId(), $module->getId()));
         if ($commentaireModule == null){
             $commentaireModule = 'Pas de commentaire';
         }

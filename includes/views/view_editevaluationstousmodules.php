@@ -1,9 +1,5 @@
 <?php
 $appreciationG = Evaluation::getAppreciationGenerale($etudiant->getId(), $pf->getId());
-if ($appreciationG == null){
-    $appreciationG = 'Pas de commentaire';
-}
-
 ?>
 <nav class="navinterne">
     <?php print('<a href="index.php?p=evaluations&a=view&idetudiant='.$idetudiant.'&idpf='.$idpf.'" title="Retour à la liste des modules"><< Retour</a>'); ?>
@@ -15,7 +11,14 @@ if ($appreciationG == null){
     <form action="" method="post">
         <section class="row">
             <label>Commentaire du module :</label><br />
-            <textarea name="appreciation" style="width: 100%; height: 100px"><?php print($appreciationG); ?></textarea>
+			<?php
+				if (is_null($appreciationG)){
+					$script = '<textarea name="appreciation" style="width: 100%; height: 100px" placeholder="Pas de commentaire"></textarea>';
+				}else{
+					$script = '<textarea name="appreciation" style="width: 100%; height: 100px">'.$appreciationG.'</textarea>';
+				}
+				print ($script);
+			?>
         </section>
         <section class="formbtn">
             <input type="submit" value="Enregistrer les modifications" />
@@ -43,7 +46,7 @@ if ($appreciationG == null){
 
                 $script .= '<section class="col-xs-8 col-xs-offset-2 evalcontenumodule">';
                 $script .= '<header class="libelle">'.$contenuModule->getLibelle().'</header>';
-                $script .= '<label>Commentaire :</label><br /><p class="commentaire">'.($eval->getCommentaire()!=null?$eval->getCommentaire():'Pas de commentaire').'</p>';
+				$script .= '<label>Commentaire :</label><br /><p class="commentaire">'.($eval->getCommentaire()!=null?$eval->getCommentaire():'Pas de commentaire').'</p>';
                 $script .= '<section class="radio">';
 
                 $radioName = 'btradioeval_'.$contenuModule->getId();

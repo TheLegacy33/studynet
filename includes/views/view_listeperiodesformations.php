@@ -33,7 +33,7 @@
 				<th style="width: 100px;">Effectif</th>
 				<th style="width: 100px;">Nb Modules</th>
 				<th style="width: 250px;">Resp. Peda.</th>
-				<th  style="width: 70px;" colspan="2">Actions</th>
+				<th  style="width: 100px;" colspan="3">Actions</th>
 			</tr>
 			<?php
 				$script = '';
@@ -53,6 +53,7 @@
 						$script .= '<td>'.$pf->getResponsable().'</td>';
 						$script .= '<td><a href="index.php?p=periodesformation&a=listeetudiants&idpf='.$pf->getId().'" title="Liste des étudiants"><span class="glyphicon glyphicon-user"></span></a></td>';
 						$script .= '<td><a href="index.php?p=periodesformation&a=listemodules&idpf='.$pf->getId().'" title="Liste des modules"><span class="glyphicon glyphicon-list"></td>';
+						$script .= '<td><a href="index.php?p=periodesformation&a=participations&idpf='.$pf->getId().'" title="Gérer la participation des étudiants aux modules"><span class="glyphicon glyphicon-check"></td>';
 						$script .= '</tr>';
 					}
 				}

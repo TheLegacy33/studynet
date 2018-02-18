@@ -6,7 +6,7 @@
 
 	class Module{
 		private $id, $libelle, $details, $idpf, $duree, $chrono;
-		private $intervenant;
+		private $intervenant, $contenu;
 
 		public function __construct($id = 0, $libelle = '', $details = '', $intervenant = null, $idpf = null, $duree = 0, $chrono = 0){
 			$this->id = $id;
@@ -18,6 +18,10 @@
 			$this->chrono = $chrono;
 
 			$this->contenu = array();
+		}
+
+		public function getIdpf(){
+			return $this->idpf;
 		}
 
 		public function getLibelle(){
@@ -56,6 +60,18 @@
 			return (!empty($this->contenu));
 		}
 
+		public function setId($id){
+			$this->id = $id;
+		}
+
+		public function setIdpf($idpf){
+			$this->idpf = $idpf;
+		}
+
+		public function setContenu($contenu){
+			$this->contenu = $contenu;
+		}
+
 		public function setLibelle($libelle){
 			$this->libelle = $libelle;
 		}
@@ -80,25 +96,6 @@
 			$this->contenu = $contenu;
 		}
 
-		public static function getListeFromPf($idPf = 0){
-			if ($idPf == 0){
-				return null;
-			}
-			$SQLQuery = 'SELECT * FROM module WHERE pf_id = :idpf ORDER BY mod_chrono';
-			$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
-			$SQLStmt->bindValue(':idpf', $idPf);
-			$SQLStmt->execute();
-
-			$retVal = array();
-			while ($SQLRow = $SQLStmt->fetchObject()){
-				$newModule = new Module($SQLRow->mod_id, $SQLRow->mod_libelle, $SQLRow->mod_details, Intervenant::getById($SQLRow->int_id), $SQLRow->pf_id);
-				$newModule->fillContenu(ContenuModule::getListeFromModule($SQLRow->mod_id));
-				$retVal[] = $newModule;
-			}
-			$SQLStmt->closeCursor();
-			return $retVal;
-		}
-
 		public static function getById($id){
 			$SQLStmt = DAO::getInstance()->prepare('SELECT * FROM module WHERE mod_id = :idmodule');
 			$SQLStmt->bindValue(':idmodule', $id);
@@ -108,6 +105,36 @@
 			$newModule->fillContenu(ContenuModule::getListeFromModule($id));
 			$SQLStmt->closeCursor();
 			return $newModule;
+		}
+
+		public static function getListeFromPf($idPf = 0, $idEtudiant = 0){
+			if ($idPf == 0){
+				return null;
+			}else{
+				if ($idEtudiant == 0){
+					$SQLQuery = 'SELECT * FROM module WHERE pf_id = :idpf ORDER BY mod_chrono';
+				}else{
+					$SQLQuery = 'SELECT * FROM module INNER JOIN participer ON module.mod_id = participer.mod_id ';
+					$SQLQuery .= 'WHERE pf_id = :idpf ';
+					$SQLQuery .= 'AND etu_id = :idetudiant ';
+					$SQLQuery .= 'ORDER BY mod_chrono';
+				}
+				$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
+				$SQLStmt->bindValue(':idpf', $idPf);
+				if ($idEtudiant != 0){
+					$SQLStmt->bindValue(':idetudiant', $idEtudiant);
+				}
+				$SQLStmt->execute();
+
+				$retVal = array();
+				while ($SQLRow = $SQLStmt->fetchObject()){
+					$newModule = new Module($SQLRow->mod_id, $SQLRow->mod_libelle, $SQLRow->mod_details, Intervenant::getById($SQLRow->int_id), $SQLRow->pf_id);
+					$newModule->fillContenu(ContenuModule::getListeFromModule($SQLRow->mod_id));
+					$retVal[] = $newModule;
+				}
+				$SQLStmt->closeCursor();
+				return $retVal;
+			}
 		}
 
 		public static function getNextChrono($idpf){
@@ -127,16 +154,16 @@
 
 		public static function update($module){
 			$SQLQuery = "UPDATE module SET mod_libelle = :libelle, mod_details = :details, int_id = :idintervenant, mod_duree = :duree, mod_chrono = :chrono WHERE mod_id = :idmod";
-			$stmt = DAO::getInstance()->prepare($SQLQuery);
-			$stmt->bindValue(':libelle', $module->getLibelle());
-			$stmt->bindValue(':details', $module->getDetails());
-			$stmt->bindValue(':idintervenant', (!is_null($module->getIntervenant()) AND $module->getIntervenant()->getId() != 0)?$module->getIntervenant()->getId():null);
-			$stmt->bindValue(':duree', $module->getDuree());
-			$stmt->bindValue(':chrono', $module->getChrono());
-			$stmt->bindValue(':idmod', $module->getId());
+			$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
+			$SQLStmt->bindValue(':libelle', $module->getLibelle());
+			$SQLStmt->bindValue(':details', $module->getDetails());
+			$SQLStmt->bindValue(':idintervenant', (!is_null($module->getIntervenant()) AND $module->getIntervenant()->getId() != 0)?$module->getIntervenant()->getId():null);
+			$SQLStmt->bindValue(':duree', $module->getDuree());
+			$SQLStmt->bindValue(':chrono', $module->getChrono());
+			$SQLStmt->bindValue(':idmod', $module->getId());
 
-			if (!$stmt->execute()){
-				var_dump($stmt->errorInfo());
+			if (!$SQLStmt->execute()){
+				var_dump($SQLStmt->errorInfo());
 				return false;
 			}else{
 				return true;
@@ -146,16 +173,16 @@
 		public static function insert($module){
 			$SQLQuery = 'INSERT INTO module(mod_libelle, mod_details, int_id, pf_id, mod_duree, mod_chrono) ';
 			$SQLQuery .= 'VALUES (:libModule, :detailModule, :idIntervenant, :idPf, :dureeModule, :chronoModule)';
-			$stmt = DAO::getInstance()->prepare($SQLQuery);
-			$stmt->bindValue(':libModule', $module->getLibelle());
-			$stmt->bindValue(':detailModule', $module->getDetails());
+			$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
+			$SQLStmt->bindValue(':libModule', $module->getLibelle());
+			$SQLStmt->bindValue(':detailModule', $module->getDetails());
 
-			$stmt->bindValue(':idIntervenant',(!is_null($module->getIntervenant()) AND $module->getIntervenant()->getId() != 0)?$module->getIntervenant()->getId():null);
-			$stmt->bindValue(':idPf', $module->getIdPeriodeFormation());
-			$stmt->bindValue(':dureeModule', $module->getDuree());
-			$stmt->bindValue(':chronoModule', $module->getChrono());
-			if (!$stmt->execute()){
-				var_dump($stmt->errorInfo());
+			$SQLStmt->bindValue(':idIntervenant',(!is_null($module->getIntervenant()) AND $module->getIntervenant()->getId() != 0)?$module->getIntervenant()->getId():null);
+			$SQLStmt->bindValue(':idPf', $module->getIdPeriodeFormation());
+			$SQLStmt->bindValue(':dureeModule', $module->getDuree());
+			$SQLStmt->bindValue(':chronoModule', $module->getChrono());
+			if (!$SQLStmt->execute()){
+				var_dump($SQLStmt->errorInfo());
 				return false;
 			}else{
 				return true;

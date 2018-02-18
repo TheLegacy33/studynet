@@ -17,7 +17,7 @@
 				<th style="width: 200px;">Nom</th>
 				<th style="width: 200px;">Prénom</th>
 				<th style="width: 300px;">Email</th>
-				<th style="width: 150px;" colspan="4">Actions</th>
+				<th style="width: 100px;" colspan="3">Actions</th>
 			</tr>
 			<?php
 				$script = '';
@@ -29,9 +29,9 @@
 						$script .= '<td>'.$etudiant->getNom().'</td>';
 						$script .= '<td>'.$etudiant->getPrenom().'</td>';
 						$script .= '<td>'.$etudiant->getEmail().'</td>';
-						$script .= '<td><a href="index.php?p=etudiants&a=fiche&idetudiant='.$etudiant->getId().'" title="Informations"><span class="glyphicon glyphicon-info-sign"></span></a></td>';
-						$script .= '<td><a href="index.php?p=modules&a=listemodules&idetudiant='.$etudiant->getId().'&idpf='.$pf->getId().'" title="Voir les modules suivis par l\'étudiant"><span class="glyphicon glyphicon-list"></span></a></td>';
-						$script .= '<td><a href="index.php?p=evaluations&a=view&idetudiant='.$etudiant->getId().'&idpf='.$pf->getId().'" title="Voir le détails des évaluations de l\'étudiant"><span class="glyphicon glyphicon-tasks"></span></a></td>';
+						$script .= '<td><a href="index.php?p=periodesformation&a=editetudiant&idetudiant='.$etudiant->getId().'&idpf='.$pf->getId().'" title="Modifier les informations de l\'étudiant"><span class="glyphicon glyphicon-edit"></span></a></td>';
+						$script .= '<td><a href="index.php?p=periodesformation&a=listemodules&idetudiant='.$etudiant->getId().'&idpf='.$pf->getId().'" title="Voir les évaluations des modules suivis par l\'étudiant"><span class="glyphicon glyphicon-tasks"></span></a></td>';
+//						$script .= '<td><a href="index.php?p=evaluations&a=view&idetudiant='.$etudiant->getId().'&idpf='.$pf->getId().'" title="Voir le détails des évaluations de l\'étudiant"><span class="glyphicon glyphicon-tasks"></span></a></td>';
 						$script .= '<td><a target="_blank" href="index.php?p=evaluations&a=print&idetudiant='.$etudiant->getId().'&idpf='.$pf->getId().'" title="Générer le PDF"><span class="glyphicon glyphicon-print"></span></a></td>';
 						$script .= '</tr>';
 					}

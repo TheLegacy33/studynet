@@ -11,26 +11,31 @@ if ($action == 'listeetudiants') {
 	$scriptname[] = 'js_etudiant.js';
 	$pf = Periodeformation::getById($idPf);
 	$etudiant = new Etudiant();
+
 	if (!empty($_POST)){
 		$etudiant->setNom(trim($_POST['ttNom']));
 		$etudiant->setPrenom(trim($_POST['ttPrenom']));
 		$etudiant->setEmail(trim($_POST['ttEmail']));
 		$etudiant->setPromo(Promotion::getByIdPf($idPf));
-		if (!empty($_FILES)){
-			$photo = $_FILES['ttPhoto'];
-			$newNomPhoto = 'photo_'.$personne->getNom().'_'.$personne->getPrenom().'.'.pathinfo($photo['name'], PATHINFO_EXTENSION);
-			$pathFicPhoto = ROOTUPLOADS.$newNomPhoto;
-			if (!move_uploaded_file($photo['tmp_name'], $pathFicPhoto)){
-				$message = "Une erreur est survenue lors de l'enregistrement de la photo.<br /> Veuillez réessayer plus tard.";
+		if (Etudiant::exists($etudiant)){
+			var_dump('Etudiant déjà présent dans cette promo !');
+		}else{
+			if (!empty($_FILES)){
+				$photo = $_FILES['ttPhoto'];
+				$newNomPhoto = 'photo_'.$personne->getNom().'_'.$personne->getPrenom().'.'.pathinfo($photo['name'], PATHINFO_EXTENSION);
+				$pathFicPhoto = ROOTUPLOADS.$newNomPhoto;
+				if (!move_uploaded_file($photo['tmp_name'], $pathFicPhoto)){
+					$message = "Une erreur est survenue lors de l'enregistrement de la photo.<br /> Veuillez réessayer plus tard.";
+				}
+				$etudiant->setPhoto($newNomPhoto);
+			}else{
+				$etudiant->setPhoto(null);
 			}
-			$etudiant->setPhoto($newNomPhoto);
-		}else{
-			$etudiant->setPhoto(null);
-		}
-		if (Etudiant::insert($etudiant, $pf)){
-			header('Location: index.php?p=periodesformation&a=listeetudiants&idpf='.$idPf);
-		}else{
-			var_dump("Erreur d'enregistrement");
+			if (Etudiant::insert($etudiant, $pf)){
+				header('Location: index.php?p=periodesformation&a=listeetudiants&idpf='.$idPf);
+			}else{
+				var_dump("Erreur d'enregistrement");
+			}
 		}
 	}
 	include_once ROOTVIEWS.'view_ficheetudiant.php';

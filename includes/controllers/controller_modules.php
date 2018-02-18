@@ -6,11 +6,17 @@ include_once ROOTMODELS.'model_periodeformation.php';
 $idetudiant = isset($_GET['idetudiant'])?$_GET['idetudiant']:0;
 $idpf = isset($_GET['idpf'])?$_GET['idpf']:0;
 if ($action == 'listemodules'){
-	if ($idetudiant != 0 AND $idpf != 0){
+	if ($idetudiant == 0){
+		//Affichage de la liste des modules de la pf
+		$includeJs = true;
+		$scriptname[] = 'js_listemodules.js';
+		$listeModules = Module::getListeFromPf($idPf);
+		include_once ROOTVIEWS.'view_listemodulespf.php';
+	}elseif ($idetudiant != 0 AND $idpf != 0){
 		//Affichage de la liste des modules suivis par un étudiant
 		$etudiant = Etudiant::getById($idetudiant);
 		$pf = Periodeformation::getById($idpf);
-		$listeModules = Module::getListeFromPf($idpf);
+		$listeModules = Module::getListeFromPf($idpf, $idetudiant);
 		include_once ROOTVIEWS.'view_listemodules.php';
 	}
 }elseif ($action == 'ajoutmodule'){
@@ -84,7 +90,7 @@ if ($action == 'listemodules'){
 						$message .= "L'etudiant ".$etudiant." existe déjà !<br />";
 						$nbErreurs++;
 					}else{
-						if (!Etudiant::insert($etudiant, $pf)){
+						if (!Etudiant::insert(null, null)){
 							$message .= "Erreur d'enregistrement de l'etudiant ".$etudiant;
 							$nbErreurs++;
 						}else{

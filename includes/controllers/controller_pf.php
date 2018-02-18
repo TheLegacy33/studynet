@@ -21,21 +21,24 @@ include_once ROOTVIEWS.'view_listeperiodesformations.php';
 
 if (isset($idPf) AND $idPf != 0){
 	$pf = Periodeformation::getById($idPf);
-	if ($action == 'listeetudiants'){
-		include_once ROOTCTRL.'controller_etudiants.php';
-	}elseif ($action == 'listemodules'){
-		//Affichage de la liste des modules de la pf
-		$includeJs = true;
-		$scriptname[] = 'js_listemodules.js';
-		$listeModules = Module::getListeFromPf($idPf);
-		include_once ROOTVIEWS.'view_listemodulespf.php';
-	}elseif ($action == 'ajoutmodule' OR $action == 'editmodule' OR $action == 'importmodules'){
+	if ($action == 'listemodules' OR $action == 'ajoutmodule' OR $action == 'editmodule' OR $action == 'importmodules'){
 		include_once ROOTCTRL.'controller_modules.php';
-	}elseif ($action == 'ajoutetudiant' OR $action == 'editetudiant' OR $action == 'importetudiants'){
+	}elseif ($action == 'listeetudiants' OR $action == 'ajoutetudiant' OR $action == 'editetudiant' OR $action == 'importetudiants'){
 		include_once ROOTCTRL.'controller_etudiants.php';
 	}elseif ($action == 'listeevaluations'){
 		$idmodule = isset($_GET['idmodule'])?$_GET['idmodule']:0;
 		include_once ROOTCTRL.'controller_evaluationmodule.php';
+	}elseif ($action == 'editappgenerale' OR $action == 'viewdetailsevaluations' OR $action == 'editdetailsevaluations'){
+		include_once ROOTCTRL.'controller_evaluation.php';
+	}elseif ($action == 'participations'){
+		//Gestion de l'affectation des étudiants aux modules de la pf
+		$includeJs = true;
+		$scriptname[] = 'js_participations.js';
+		$listeEtudiants = Etudiant::getListeFromPf($idPf);
+		$listeModules = Module::getListeFromPf($idPf);
+		include_once ROOTVIEWS.'view_gestparticipation.php';
+	}else{
+		header('Location: '.ROOTHTML);
 	}
 }
 ?>

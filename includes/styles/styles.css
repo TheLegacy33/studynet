@@ -105,6 +105,10 @@ table img.logotableau{
     background-color: rgba(210, 210, 210, 1);
 }
 
+.active td{
+	background-color: rgba(150, 150, 150, 1);
+}
+
 th{
     text-transform: capitalize;
 }
