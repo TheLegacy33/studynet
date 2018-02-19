@@ -20,11 +20,11 @@
 
         public static function getIdByIdPers($idPers){
             $SQLQuery = 'SELECT resp_id FROM responsablePedago WHERE pers_id = :idpers';
-            $stmt = DAO::getInstance()->prepare($SQLQuery);
-            $stmt->bindValue(':idpers', $idPers);
-            $stmt->execute();
-            $retVal = $stmt->fetchColumn(0);
-            $stmt->closeCursor();
+            $SQLStmt = DAO::getInstance()->prepare($SQLQuery);
+            $SQLStmt->bindValue(':idpers', $idPers);
+            $SQLStmt->execute();
+            $retVal = $SQLStmt->fetchColumn(0);
+            $SQLStmt->closeCursor();
             return $retVal;
         }
 
@@ -32,22 +32,27 @@
 			$SQLStmt = DAO::getInstance()->prepare("SELECT * FROM responsablePedago INNER JOIN personne ON responsablePedago.pers_id = personne.pers_id WHERE resp_id = :idresponsable");
 			$SQLStmt->bindValue(':idresponsable', $id);
 			$SQLStmt->execute();
-			$SQLRow = $SQLStmt->fetchObject();
-			$newInterv = new ResponsablePedago($SQLRow->resp_id, $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->pers_email, $SQLRow->pers_id);
+			if ($SQLStmt->rowCount() == 0){
+                $newRespPeda = new ResponsablePedago();
+            }else{
+                $SQLRow = $SQLStmt->fetchObject();
+                $newRespPeda = new ResponsablePedago($SQLRow->resp_id, $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->pers_email, $SQLRow->pers_id);
+                $newRespPeda->fillAuth(User::getById($SQLRow->us_id));
+            }
 			$SQLStmt->closeCursor();
-			return $newInterv;
+			return $newRespPeda;
 		}
 
 		public static function update($resppeda){
 			$SQLQuery = "UPDATE personne SET pers_nom = :nom, pers_prenom = :prenom, pers_email = :email, us_id = :userid WHERE pers_id = :idpers";
-			$stmt = DAO::getInstance()->prepare($SQLQuery);
-			$stmt->bindValue(':nom', $resppeda->getNom());
-			$stmt->bindValue(':prenom', $resppeda->getPrenom());
-			$stmt->bindValue(':email', $resppeda->getEmail());
-			$stmt->bindValue(':idpers', $resppeda->getPersId());
-			$stmt->bindValue(':userid', (($resppeda->getUserAuth()->getId() != 0)?$resppeda->getUserAuth()->getId():null));
-			if (!$stmt->execute()){
-				var_dump($stmt->errorInfo());
+            $SQLStmt = DAO::getInstance()->prepare($SQLQuery);
+            $SQLStmt->bindValue(':nom', $resppeda->getNom());
+            $SQLStmt->bindValue(':prenom', $resppeda->getPrenom());
+            $SQLStmt->bindValue(':email', $resppeda->getEmail());
+            $SQLStmt->bindValue(':idpers', $resppeda->getPersId());
+            $SQLStmt->bindValue(':userid', (($resppeda->getUserAuth()->getId() != 0)?$resppeda->getUserAuth()->getId():null));
+			if (!$SQLStmt->execute()){
+				var_dump($SQLStmt->errorInfo());
 			}
 		}
 	}

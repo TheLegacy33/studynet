@@ -30,9 +30,13 @@
 						$script .= '<td>'.$etudiant->getPrenom().'</td>';
 						$script .= '<td>'.$etudiant->getEmail().'</td>';
 						$script .= '<td><a href="index.php?p=periodesformation&a=editetudiant&idetudiant='.$etudiant->getId().'&idpf='.$pf->getId().'" title="Modifier les informations de l\'étudiant"><span class="glyphicon glyphicon-edit"></span></a></td>';
-						$script .= '<td><a href="index.php?p=periodesformation&a=listemodules&idetudiant='.$etudiant->getId().'&idpf='.$pf->getId().'" title="Voir les évaluations des modules suivis par l\'étudiant"><span class="glyphicon glyphicon-tasks"></span></a></td>';
-//						$script .= '<td><a href="index.php?p=evaluations&a=view&idetudiant='.$etudiant->getId().'&idpf='.$pf->getId().'" title="Voir le détails des évaluations de l\'étudiant"><span class="glyphicon glyphicon-tasks"></span></a></td>';
-						$script .= '<td><a target="_blank" href="index.php?p=evaluations&a=print&idetudiant='.$etudiant->getId().'&idpf='.$pf->getId().'" title="Générer le PDF"><span class="glyphicon glyphicon-print"></span></a></td>';
+						if ($etudiant->getModulesCount($pf->getId()) > 0){
+                            $script .= '<td><a href="index.php?p=periodesformation&a=listemodules&idetudiant='.$etudiant->getId().'&idpf='.$pf->getId().'" title="Voir les évaluations des modules suivis par l\'étudiant"><span class="glyphicon glyphicon-tasks"></span></a></td>';
+                            $script .= '<td><a target="_blank" href="index.php?p=evaluations&a=print&idetudiant='.$etudiant->getId().'&idpf='.$pf->getId().'" title="Générer le PDF"><span class="glyphicon glyphicon-print"></span></a></td>';
+                        }else{
+                            $script .= '<td><span class="glyphicon glyphicon-tasks"></span></td>';
+                            $script .= '<td><span class="glyphicon glyphicon-print"></span></td>';
+                        }
 						$script .= '</tr>';
 					}
 				}

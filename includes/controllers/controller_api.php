@@ -123,6 +123,18 @@
 				$listeIdModules[] = $module->getId();
 			}
 			print(json_encode($listeIdModules));
-		}
+		}elseif ($action == 'setmodulesforstudent'){
+			include_once ROOTMODELS.'model_etudiant.php';
+			$idPf = isset($_GET['idpf'])?$_GET['idpf']:0;
+			$idModule = isset($_GET['idmodule'])?$_GET['idmodule']:0;
+			$idEtudiant = isset($_GET['idetudiant'])?$_GET['idetudiant']:0;
+			$participe = isset($_GET['participe'])?$_GET['participe']=='true':false;
+
+			$etudiant = Etudiant::getById($idEtudiant);
+			$retVal = $etudiant->setModuleParticipation($idPf, $idModule, $participe);
+			print($retVal);
+		}else{
+		    print('404');
+        }
 	}
 ?>

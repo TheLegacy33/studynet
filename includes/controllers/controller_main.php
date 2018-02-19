@@ -33,8 +33,8 @@
 	if ($page != 'index.php'){
 		header('Location: '.ROOTHTML);
 	}else{
-		$title = 'Intranet EPSI : Les évaluations';
-		$pageTitle = 'EPSINET Evaluations';
+		$title = 'Intranet : Les évaluations';
+		$pageTitle = 'LocalNet Evaluations';
 
 		$section = isset($_GET['p'])?$_GET['p']:'';
 		$action = isset($_GET['a'])?$_GET['a']:'';

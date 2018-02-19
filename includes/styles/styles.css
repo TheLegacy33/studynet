@@ -269,6 +269,11 @@ form header{
 	min-height: 100px;
 }
 
+input.fieldnote{
+    width: 60px;
+    text-align: center;
+}
+
 
 .clearfix::after {
     content: "";

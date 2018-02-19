@@ -12,16 +12,20 @@ $(document).ready(function(){
 	});
 
     $('span[name=chk_all]').click(function(){
-		console.log('Je coche tout !');
-		checkAllModules();
+    	if (selectedId != 0){
+			console.log('Je coche tout !');
+			checkAllModules();
+        }
 	});
 	$('span[name=chk_none]').click(function(){
-		console.log('Je décoche tout !');
-		unchekAllModules();
+        if (selectedId != 0) {
+            console.log('Je décoche tout !');
+            unchekAllModules();
+        }
 	});
 
 	$('input[data-name=chkmodule]').change(function(){
-		console.log($(this).attr('name') + ' : ' + $(this).prop('checked'));
+		updateAffectation(selectedId, $(this));
 	});
 });
 
@@ -33,7 +37,7 @@ function refreshModules(idEtudiant){
 		contentType: "application/x-www-form-urlencoded;charset=UTF-8",
 		dataType: 'text',
 		success: function (reponse, statut) {
-			unchekAllModules();
+            unchekAllModules(false);
 			var tabIdModules = JSON.parse(reponse);
 			for (var i = 0; i < tabIdModules.length; i++){
 				var selector = 'input[name=chk_'+tabIdModules[i]+']';
@@ -47,10 +51,39 @@ function refreshModules(idEtudiant){
 	});
 }
 
-function checkAllModules(){
-	$('input[data-name=chkmodule]').prop('checked', true);
+function updateAffectation(idetudiant, chkmodule){
+	if (idetudiant != 0){
+        var idmodule = $(chkmodule).attr('name').split('_')[1];
+        var checked = $(chkmodule).prop('checked');
+
+        $.ajax({
+            url: 'index.php',
+            type: 'get',
+            data: {p: 'api', action: 'setmodulesforstudent', idetudiant: idetudiant, idpf: idPf, idmodule: idmodule, participe: checked},
+            contentType: "application/x-www-form-urlencoded;charset=UTF-8",
+            dataType: 'text',
+            success: function (reponse, statut) {
+                console.log(reponse);
+            },
+            error: function (reponse, statut, erreur) {
+                console.error(reponse.status + ' : ' + reponse.statusText);
+            }
+        });
+
+	}else{
+		console.warn("Pas d'étudiant sélectionné !");
+	}
+
 }
 
-function unchekAllModules(){
-	$('input[data-name=chkmodule]').prop('checked', false);
+function checkAllModules(withTrigger = true){
+	$('input[data-name=chkmodule]').prop('checked', true).each(function(){
+        if (withTrigger) $(this).trigger('change');
+	});
+}
+
+function unchekAllModules(withTrigger = true){
+	$('input[data-name=chkmodule]').prop('checked', false).each(function(){
+        if (withTrigger) $(this).trigger('change');
+    });
 }

@@ -73,21 +73,8 @@
             $SQLStmt->bindValue(':idetudiant', $idEtudiant);
             $SQLStmt->execute();
 
-            /*if ($SQLStmt->rowCount() == 0){
-				$SQLQuery = 'INSERT INTO participer(etu_id, mod_id, part_appreciation) VALUES (:idetudiant, :idmod, :appcontenu)';
-				$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
-				$SQLStmt->bindValue(':idmod', $idModule);
-				$SQLStmt->bindValue(':idetudiant', $idEtudiant);
-				$SQLStmt->bindValue(':appcontenu', null);
-				if (!$SQLStmt->execute()){
-					var_dump($SQLStmt->errorInfo());
-					die();
-				}
-				$retVal = null;
-			}else{*/
-				$SQLRow = $SQLStmt->fetchObject();
-				$retVal = ($SQLRow->part_appreciation != ''?$SQLRow->part_appreciation:null);
-			//}
+			$SQLRow = $SQLStmt->fetchObject();
+			$retVal = ($SQLRow->part_appreciation != ''?$SQLRow->part_appreciation:null);
             $SQLStmt->closeCursor();
             return $retVal;
         }

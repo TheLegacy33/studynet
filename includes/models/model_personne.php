@@ -64,6 +64,14 @@ class Personne{
         }
 	}
 
+	public function equals($personne){
+	    if ($this->getPersId() == $personne->getPersId() AND $this->getNomComplet() == $personne->getNomComplet()){
+	        return true;
+        }else{
+	        return false;
+        }
+    }
+
     public function estEtudiant(){
         //return Personne::getType($this->id)=='etudiant';
         return get_class($this) == Etudiant::class;

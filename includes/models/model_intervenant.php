@@ -74,6 +74,7 @@
 			}else{
 				$SQLRow = $SQLStmt->fetchObject();
 				$newInterv = new Intervenant($SQLRow->int_id, $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->pers_email, $SQLRow->pers_id);
+				$newInterv->fillAuth(User::getById($SQLRow->us_id));
 			}
 			$SQLStmt->closeCursor();
 			return $newInterv;

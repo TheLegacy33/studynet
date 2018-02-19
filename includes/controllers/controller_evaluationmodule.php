@@ -21,15 +21,19 @@ define('ROOTUPLOADSDOCS', ROOTUPLOADS.'/documents/');
 $idetudiant = isset($_GET['idetudiant'])?$_GET['idetudiant']:0;
 $idpf = isset($_GET['idpf'])?$_GET['idpf']:0;
 $idModule = isset($_GET['idmodule'])?$_GET['idmodule']:0;
+$idEvaluation = isset($_GET['idevaluation'])?$_GET['idevaluation']:0;
 
 if ($idetudiant != 0){
 	$etudiant = Etudiant::getById($idetudiant);
 }
-if ($idModule != 0) {
+if ($idpf != 0) {
 	$pf = Periodeformation::getById($idpf);
 }
-if ($idPf != 0) {
+if ($idModule != 0) {
 	$module = Module::getById($idModule);
+}
+if ($idEvaluation != 0) {
+	$evaluation = EvaluationModule::getById($idEvaluation);
 }
 
 if ($action == 'ajoutevaluation'){
@@ -40,8 +44,13 @@ if ($action == 'ajoutevaluation'){
     include_once ROOTVIEWS.'view_printevaluationmodule.php';
 }elseif ($action == 'listeevaluations'){
 	$listeEvaluations = EvaluationModule::getListeFromModule($idModule);
-	var_dump($listeEvaluations);
+
 	include_once ROOTVIEWS.'view_listeevaluationsmodule.php';
+}elseif ($action == 'gestnotes' OR $action == 'editnotes'){
+    $listeEtudiants = Etudiant::getListeFromModule($idModule);
+    $evaluation->fillNotes($listeEtudiants);
+
+    include_once ROOTVIEWS.'view_notesevaluationmodule.php';
 }else{
 	header('Location: '.$_SERVER['HTTP_REFERER']);
 }

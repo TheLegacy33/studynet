@@ -25,7 +25,7 @@ if (isset($idPf) AND $idPf != 0){
 		include_once ROOTCTRL.'controller_modules.php';
 	}elseif ($action == 'listeetudiants' OR $action == 'ajoutetudiant' OR $action == 'editetudiant' OR $action == 'importetudiants'){
 		include_once ROOTCTRL.'controller_etudiants.php';
-	}elseif ($action == 'listeevaluations'){
+	}elseif ($action == 'listeevaluations' OR $action == 'gestnotes' OR $action == 'editnotes'){
 		$idmodule = isset($_GET['idmodule'])?$_GET['idmodule']:0;
 		include_once ROOTCTRL.'controller_evaluationmodule.php';
 	}elseif ($action == 'editappgenerale' OR $action == 'viewdetailsevaluations' OR $action == 'editdetailsevaluations'){
