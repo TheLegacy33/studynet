@@ -101,7 +101,7 @@
 			$SQLStmt->bindValue(':idmodule', $id);
 			$SQLStmt->execute();
 			$SQLRow = $SQLStmt->fetchObject();
-			$newModule = new Module($SQLRow->mod_id, $SQLRow->mod_libelle, $SQLRow->mod_details, Intervenant::getById($SQLRow->int_id), $SQLRow->pf_id);
+			$newModule = new Module($SQLRow->mod_id, $SQLRow->mod_libelle, $SQLRow->mod_details, Intervenant::getById($SQLRow->int_id), $SQLRow->pf_id, $SQLRow->mod_duree, $SQLRow->mod_chrono);
 			$newModule->fillContenu(ContenuModule::getListeFromModule($id));
 			$SQLStmt->closeCursor();
 			return $newModule;

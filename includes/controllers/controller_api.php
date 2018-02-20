@@ -133,6 +133,17 @@
 			$etudiant = Etudiant::getById($idEtudiant);
 			$retVal = $etudiant->setModuleParticipation($idPf, $idModule, $participe);
 			print($retVal);
+		}elseif ($action == 'setStudentNote'){
+			include_once ROOTMODELS.'model_etudiant.php';
+			$idEval = isset($_GET['idevaluation'])?$_GET['idevaluation']:0;
+			$idEtudiant = isset($_GET['idetudiant'])?$_GET['idetudiant']:0;
+			$note = isset($_GET['note'])?$_GET['note']:0;
+			$idStatut = isset($_GET['idstatut'])?$_GET['idstatut']:0;
+			if (EvaluationModule::setNote($idEval, $idEtudiant, $note, $idStatut)){
+				print('ok');
+			}else{
+				print('ko');
+			}
 		}else{
 		    print('404');
         }

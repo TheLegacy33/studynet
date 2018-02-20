@@ -50,6 +50,9 @@ if ($action == 'ajoutevaluation'){
     $listeEtudiants = Etudiant::getListeFromModule($idModule);
     $evaluation->fillNotes($listeEtudiants);
 
+	$includeJs = true;
+	$scriptname[] = 'js_evaluations.js';
+
     include_once ROOTVIEWS.'view_notesevaluationmodule.php';
 }else{
 	header('Location: '.$_SERVER['HTTP_REFERER']);

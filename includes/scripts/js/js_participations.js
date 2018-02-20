@@ -7,7 +7,7 @@ $(document).ready(function(){
     		$('.lignedata[data-id=' + selectedId + ']').attr('class', 'lignedata');
 		}
 		selectedId =  $(this).attr('data-id');
-		$(this).attr('class', 'lignedata active');
+		$(this).addClass('active');
 		refreshModules(selectedId);
 	});
 
@@ -76,13 +76,15 @@ function updateAffectation(idetudiant, chkmodule){
 
 }
 
-function checkAllModules(withTrigger = true){
+function checkAllModules(withTrigger){
+	if (withTrigger == undefined){withTrigger = true;}
 	$('input[data-name=chkmodule]').prop('checked', true).each(function(){
         if (withTrigger) $(this).trigger('change');
 	});
 }
 
-function unchekAllModules(withTrigger = true){
+function unchekAllModules(withTrigger){
+	if (withTrigger == undefined){withTrigger = true;}
 	$('input[data-name=chkmodule]').prop('checked', false).each(function(){
         if (withTrigger) $(this).trigger('change');
     });

@@ -3,7 +3,7 @@
 		Participation des étudiant aux modules de la période de formation
 	</header>
 	<div class="row">
-		<div class="col-xs-3 text-center">
+		<div class="col-xs-3 text-center" style="height: 500px; overflow-y: scroll">
 			Liste des étudiants
 			<table id="tbetudiants">
 				<tr>

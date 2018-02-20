@@ -1,48 +1,101 @@
 $(document).ready(function(){
-	var lastIndex = 0;
-	var newIndex = 0;
 	var selectedId = 0;
+
     $('#tbetudiants .lignedata').click(function(){
     	if (selectedId != 0){
     		$('.lignedata[data-id=' + selectedId + ']').attr('class', 'lignedata');
 		}
 		selectedId =  $(this).attr('data-id');
-		$(this).attr('class', 'lignedata active');
-		refreshModules(selectedId);
+		$(this).addClass('active');
 	});
 
-    $('span[name=chk_all]').click(function(){
-    	if (selectedId != 0){
-			console.log('Je coche tout !');
-			checkAllModules();
-        }
-	});
-	$('span[name=chk_none]').click(function(){
-        if (selectedId != 0) {
-            console.log('Je décoche tout !');
-            unchekAllModules();
-        }
+    $('select[name=cbstatut]').focus(function(){
+		var selector = '.lignedata[data-id=' + $(this).data('idstudent') + ']';
+		$(selector).trigger('click');
 	});
 
-	$('input[data-name=chkmodule]').change(function(){
-		updateAffectation(selectedId, $(this));
+	$('input[name=ttnotes]').focus(function(){
+		var selector = '.lignedata[data-id=' + $(this).data('idstudent') + ']';
+		$(selector).trigger('click');
+	});
+
+	$('select[name=cbstatut] option:selected').each(function(){
+		var idStudent = $(this).parent().data('idstudent');
+		if ($(this).text() == 'Présent'){
+			$('input[data-idstudent='+idStudent+']').prop('disabled', false);
+		}else{
+			$('input[data-idstudent='+idStudent+']').prop('disabled', true);
+		}
+	});
+
+	$('select[name=cbstatut]').change(function(){
+		//var idStudent = $(this).parent().data('idstudent');
+		var idStudent = $(this).data('idstudent');
+		var text = $('select[data-idstudent=' + idStudent + '] option:selected').text();
+		if (text == 'Présent'){
+			$('input[data-idstudent='+idStudent+']').prop('disabled', false);
+			$('input[data-idstudent='+idStudent+']').focus();
+			$('input[data-idstudent='+idStudent+']').select();
+		}else{
+			$('input[data-idstudent='+idStudent+']').prop('disabled', true);
+			$('input[data-idstudent='+idStudent+']').val('0.00');
+		}
+		updateStudentNote(idStudent, $('input[data-idstudent='+idStudent+']').data('ideval'), $(this).val(), $('input[data-idstudent='+idStudent+']').val());
+	});
+
+	$('input[name=ttnotes]').blur(function(){
+		$(this).css('border-color', '');
+		if (verifFormat($(this))){
+			updateStudentNote($(this).data('idstudent'), $(this).data('ideval'), $('select[data-idstudent=' + $(this).data('idstudent') + ']').val(), $(this).val());
+		}else{
+			$(this).css('border-color', 'red');
+		}
+	});
+
+	$('#helpstatut').mouseover(function(event){
+		var contenuInfo = '<u>Status disponibles :</u><br />';
+		contenuInfo += '<i>Présent</i> : Etudiant présent et noté<br />';
+		contenuInfo += '<i>Absent justifié</i> : Etudiant absent avec justificatif, la note ne compte pas dans la moyenne<br />';
+		contenuInfo += '<i>Absent non justifié</i> : Etudiant absent sans justificatif, la note compte dans la moyenne<br />';
+		contenuInfo += '<i>Non rendu</i> : Travail non rendu<br />';
+		contenuInfo += '<i>Non évalué</i> : Etudiant non évalué<br />';
+		createToolTip(event, contenuInfo);
+	}).mouseout(function(){
+		$('div.infobulle').fadeOut('slow');
+	})
+
+	$('#btAct button').click(function(){
+		var newStatut = $(this).data('id');
 	});
 });
 
-function refreshModules(idEtudiant){
+function verifFormat(champ){
+	var valeur = $(champ).val().replace(',', '.').trim();
+	var ok = true;
+	if (isNaN(valeur)){
+		valeur = 0.00;
+		ok = false;
+	}else{
+		var valeur = Math.abs(parseFloat(valeur));
+		if (valeur < 0 || valeur > 20){
+			valeur = 0.00;
+			ok = false;
+		}
+	}
+	$(champ).val(valeur.toFixed(2));
+	return ok;
+}
+
+function updateStudentNote(idEtudiant, idEval, statut, note){
+	/*console.log(idEtudiant, idEval, statut, note);*/
 	$.ajax({
 		url: 'index.php',
 		type: 'get',
-		data: {p: 'api', action: 'getmodulesforstudent', idetudiant: idEtudiant, idpf: idPf},
+		data: {p: 'api', action: 'setStudentNote', idetudiant: idEtudiant, idevaluation: idEval, idstatut: statut, note: note},
 		contentType: "application/x-www-form-urlencoded;charset=UTF-8",
 		dataType: 'text',
 		success: function (reponse, statut) {
-            unchekAllModules(false);
-			var tabIdModules = JSON.parse(reponse);
-			for (var i = 0; i < tabIdModules.length; i++){
-				var selector = 'input[name=chk_'+tabIdModules[i]+']';
-				$(selector).prop('checked', true);
-			}
+			console.log(reponse);
 		},
 		error: function (reponse, statut, erreur) {
 			console.error(reponse.status + ' : ' + reponse.statusText);
@@ -51,41 +104,15 @@ function refreshModules(idEtudiant){
 	});
 }
 
-function updateAffectation(idetudiant, chkmodule){
-	if (idetudiant != 0){
-        var idmodule = $(chkmodule).attr('name').split('_')[1];
-        var checked = $(chkmodule).prop('checked');
-
-        $.ajax({
-            url: 'index.php',
-            type: 'get',
-            data: {p: 'api', action: 'setmodulesforstudent', idetudiant: idetudiant, idpf: idPf, idmodule: idmodule, participe: checked},
-            contentType: "application/x-www-form-urlencoded;charset=UTF-8",
-            dataType: 'text',
-            success: function (reponse, statut) {
-                console.log(reponse);
-            },
-            error: function (reponse, statut, erreur) {
-                console.error(reponse.status + ' : ' + reponse.statusText);
-            }
-        });
-
-	}else{
-		console.warn("Pas d'étudiant sélectionné !");
-	}
-
+function createToolTip(event, contenu){
+	var tooltip = $('<div class="infobulle">' + contenu + '</div>');
+	$(tooltip).fadeIn("slow");
+	$('body').append(tooltip);
+	positionToolTip(event);
 }
 
-function checkAllModules(withTrigger){
-	if (withTrigger == undefined){withTrigger = true;}
-	$('input[data-name=chkmodule]').prop('checked', true).each(function(){
-        if (withTrigger) $(this).trigger('change');
-	});
-}
-
-function unchekAllModules(withTrigger){
-	if (withTrigger == undefined){withTrigger = true;}
-	$('input[data-name=chkmodule]').prop('checked', false).each(function(){
-        if (withTrigger) $(this).trigger('change');
-    });
+function positionToolTip(event){
+	var tPosX = event.pageX - 300;
+	var tPosY = event.pageY + 10;
+	$('div.infobulle').css({'font-size': '11px', 'position': 'absolute', 'top': tPosY, 'left': tPosX, 'width': '600px', 'text-align': 'left', 'padding-left': '10px'});
 }

@@ -33,8 +33,8 @@
 	if ($page != 'index.php'){
 		header('Location: '.ROOTHTML);
 	}else{
-		$title = 'Intranet : Les évaluations';
-		$pageTitle = 'LocalNet Evaluations';
+		$title = 'Intranet : Le service ENT';
+		$pageTitle = 'LocalNet Services';
 
 		$section = isset($_GET['p'])?$_GET['p']:'';
 		$action = isset($_GET['a'])?$_GET['a']:'';

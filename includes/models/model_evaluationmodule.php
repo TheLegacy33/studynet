@@ -110,9 +110,63 @@
 		}
 	}
 
+	class StatutEvaluation{
+		private $statev_id, $statev_libelle, $statev_impactmoyenne;
+
+		public function __construct($id = 0, $libelle = '', $impactmoyenne = false){
+			$this->statev_id = $id;
+			$this->statev_libelle = $libelle;
+			$this->statev_impactmoyenne = $impactmoyenne;
+		}
+
+		public function getId(){
+			return $this->statev_id;
+		}
+
+		public function getLibelle(){
+			return $this->statev_libelle;
+		}
+
+		public function impactMoyenne(){
+			return $this->statev_impactmoyenne;
+		}
+
+		public static function getById($id){
+			$SQLStmt = DAO::getInstance()->prepare("SELECT * FROM statuteval WHERE statev_id = :idstatut");
+			$SQLStmt->bindValue(':idstatut', $id);
+			$SQLStmt->execute();
+			$SQLRow = $SQLStmt->fetchObject();
+			$newStatut = new StatutEvaluation($SQLRow->statev_id, $SQLRow->statev_libelle, $SQLRow->statev_impactmoyenne);
+			$SQLStmt->closeCursor();
+			return $newStatut;
+		}
+
+		public static function getByLibelle($libelle){
+			$SQLStmt = DAO::getInstance()->prepare("SELECT * FROM statuteval WHERE statev_libelle = :libstatut");
+			$SQLStmt->bindValue(':libstatut', $libelle);
+			$SQLStmt->execute();
+			$SQLRow = $SQLStmt->fetchObject();
+			$newStatut = new StatutEvaluation($SQLRow->statev_id, $SQLRow->statev_libelle, $SQLRow->statev_impactmoyenne);
+			$SQLStmt->closeCursor();
+			return $newStatut;
+		}
+
+		public static function getListe(){
+			$SQLStmt = DAO::getInstance()->prepare("SELECT * FROM statuteval ORDER BY statev_libelle");
+			$SQLStmt->execute();
+			$retVal = array();
+			while ($SQLRow = $SQLStmt->fetchObject()){
+				$newStatut = new StatutEvaluation($SQLRow->statev_id, $SQLRow->statev_libelle, $SQLRow->statev_impactmoyenne);
+				$retVal[] = $newStatut;
+			}
+			$SQLStmt->closeCursor();
+			return $retVal;
+		}
+	}
+
 	class EvaluationModule {
 		private $id, $date, $duree, $sujet, $coefficient, $type, $documents, $module;
-		private $notes;
+		private $notes, $statuts;
 
 		public function __construct($id = 0, $date = '', $duree = 0, $sujet = '', $coeff = 1){
 			$this->id = $id;
@@ -124,6 +178,7 @@
 			$this->documents = array();
 			$this->module = new Module();
 			$this->notes = array();
+			$this->statuts = array();
 		}
 
 		public function setId($id){
@@ -157,6 +212,7 @@
 		public function fillNotes($listeEtudiants){
 		    foreach ($listeEtudiants as $etudiant){
 		        $this->notes[$etudiant->getId()] = EvaluationModule::getNote($this->id, $etudiant->getId());
+		        $this->statuts[$etudiant->getId()] = EvaluationModule::getStatut($this->id, $etudiant->getId());
             }
 		}
 
@@ -199,6 +255,10 @@
 		public function getStudentNote($idEtudiant){
 		    return $this->notes[$idEtudiant];
         }
+
+        public function getStudentStatut($idEtudiant){
+			return $this->statuts[$idEtudiant];
+		}
 
 		public static function getById($id){
 			$SQLStmt = DAO::getInstance()->prepare('SELECT * FROM evaluation WHERE eval_id = :idevaluation');
@@ -252,6 +312,16 @@
 			return $retVal;
 		}
 
+		public static function hasNote($idevaluation, $idetudiant){
+			$SQLStmt = DAO::getInstance()->prepare('SELECT * FROM evaluermodule WHERE eval_id = :idevaluation AND etu_id = :idetudiant');
+			$SQLStmt->bindValue(':idevaluation', $idevaluation);
+			$SQLStmt->bindValue(':idetudiant', $idetudiant);
+			$SQLStmt->execute();
+			$retVal = ($SQLStmt->rowCount() > 0);
+			$SQLStmt->closeCursor();
+			return $retVal;
+		}
+
 		public static function getNote($idevaluation, $idetudiant){
             $SQLStmt = DAO::getInstance()->prepare('SELECT * FROM evaluermodule WHERE eval_id = :idevaluation AND etu_id = :idetudiant');
             $SQLStmt->bindValue(':idevaluation', $idevaluation);
@@ -263,6 +333,43 @@
             }else{
                 $SQLRow = $SQLStmt->fetchObject();
                 $retVal = $SQLRow->eval_note;
+                $SQLStmt->closeCursor();
+            }
+            return $retVal;
+        }
+
+        public static function setNote($idevaluation, $idetudiant, $note, $statut){
+			if (EvaluationModule::hasNote($idevaluation, $idetudiant)){
+				$SQLQuery = 'UPDATE evaluermodule SET eval_note = :note, statev_id = :idstatut ';
+				$SQLQuery .= 'WHERE eval_id = :idevaluation AND etu_id = :idetudiant';
+			}else{
+				$SQLQuery = 'INSERT INTO evaluermodule(eval_id, etu_id, statev_id, eval_note) ';
+				$SQLQuery .= 'VALUES (:idevaluation, :idetudiant, :idstatut, :note)';
+			}
+			$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
+			$SQLStmt->bindValue(':idevaluation', $idevaluation);
+			$SQLStmt->bindValue(':idetudiant', $idetudiant);
+			$SQLStmt->bindValue(':idstatut', $statut);
+			$SQLStmt->bindValue(':note', $note);
+			if ($SQLStmt->execute()){
+				return true;
+			}else{
+				var_dump($SQLStmt->errorInfo());
+				return false;
+			}
+		}
+
+        public static function getStatut($idevaluation, $idetudiant){
+            $SQLStmt = DAO::getInstance()->prepare('SELECT * FROM evaluermodule WHERE eval_id = :idevaluation AND etu_id = :idetudiant');
+            $SQLStmt->bindValue(':idevaluation', $idevaluation);
+            $SQLStmt->bindValue(':idetudiant', $idetudiant);
+            $SQLStmt->execute();
+
+            if ($SQLStmt->rowCount() == 0){
+                $retVal = StatutEvaluation::getByLibelle('Non Evalué');
+            }else{
+                $SQLRow = $SQLStmt->fetchObject();
+                $retVal = StatutEvaluation::getById($SQLRow->statev_id);
                 $SQLStmt->closeCursor();
             }
             return $retVal;

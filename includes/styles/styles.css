@@ -274,9 +274,23 @@ input.fieldnote{
     text-align: center;
 }
 
+select.fieldstatut{
+	width: 180px;
+}
+
 
 .clearfix::after {
     content: "";
     clear: both;
     display: table;
+}
+
+div.infobulle{
+	height: 120px;
+	width: 300px;
+	text-align: center;
+	position: absolute;
+	background-color: rgba(100, 100, 100, 0.95);
+	color: #fff;
+	border-radius: 5px;
 }
