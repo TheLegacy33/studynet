@@ -5,10 +5,10 @@ if ($appreciationG == null){
 }
 
 ?>
-<nav class="navinterne">
-    <?php print('<a href="index.php?p=periodesformation&a=listeetudiants&idpf='.$idpf.'" title="Retour à la liste des modules"><< Retour</a>'); ?>
-</nav>
 <section id="content_body" class="row formaffiche">
+	<nav class="navinterne">
+		<?php print('<a href="index.php?p=periodesformation&a=listeetudiants&idpf='.$idpf.'" title="Retour à la liste des modules"><< Retour</a>'); ?>
+	</nav>
 	<header class="text-center text-info" style="font-size: 20px">
 		Evaluations de <?php print($etudiant->getNom().' '.$etudiant->getPrenom()); ?>
 	</header>

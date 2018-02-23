@@ -1,7 +1,7 @@
-<nav class="navinterne">
-    <a href="index.php?p=periodesformation&a=listeevaluations&idpf=<?php print($pf->getId()); ?>&idmodule=<?php print($evaluation->getModule()->getId()); ?>" title="Retour à la liste des étudiants"><< Retour</a>
-</nav>
 <section id="content_body" class="row">
+	<nav class="navinterne">
+		<a href="index.php?p=periodesformation&a=listeevaluations&idpf=<?php print($pf->getId()); ?>&idmodule=<?php print($evaluation->getModule()->getId()); ?>" title="Retour à la liste des étudiants"><< Retour</a>
+	</nav>
 	<header class="text-center text-info header-section">
 		Notes des étudiants pour l'évaluation du <?php print($evaluation->getDate()); ?>
 	</header>
@@ -79,7 +79,11 @@
 								}
 							}
 							if ($action == 'gestnotes'){
-								$moyenne /= $nbNotes;
+								if ($nbNotes > 0){
+									$moyenne /= $nbNotes;
+								}else{
+									$moyenne = $nbNotes;
+								}
 								$script .= '<tr class="lignetotal">';
 								$script .= '<td colspan="2" class="text-right">Moyenne de l\'évaluation</td>';
 								$script .= '<td>'.number_format($moyenne, 2, ',', ' ').'</td>';

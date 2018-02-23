@@ -4,10 +4,10 @@
         $commentaireModule = 'Pas de commentaire';
     }
 ?>
-<nav class="navinterne">
-    <?php print('<a href="index.php?p=periodesformation&a=listemodules&idetudiant='.$idetudiant.'&idpf='.$idpf.'" title="Retour à la liste des modules"><< Retour</a>'); ?>
-</nav>
 <section id="content_body" class="row formaffiche">
+	<nav class="navinterne">
+		<?php print('<a href="index.php?p=periodesformation&a=listemodules&idetudiant='.$idetudiant.'&idpf='.$idpf.'" title="Retour à la liste des modules"><< Retour</a>'); ?>
+	</nav>
 	<header class="text-center text-info" style="font-size: 20px">
 		Evaluations du module <?php print($module->getLibelle()); ?> pour
 		<?php print($etudiant->getNom().' '.$etudiant->getPrenom()); ?>

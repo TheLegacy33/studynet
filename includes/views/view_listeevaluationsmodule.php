@@ -1,4 +1,7 @@
 <section id="content_body" class="row">
+	<nav class="navinterne">
+		<?php print('<a href="index.php?p=periodesformation&a=listemodules&idpf='.$idpf.'" title="Retour à la liste des modules"><< Retour</a>'); ?>
+	</nav>
 	<header class="text-center text-info header-section">
 		Liste des évaluations pour le module <?php print($module->getLibelle()); ?>.
 	</header>
@@ -7,6 +10,7 @@
 			?>
 			<div class="row btnactions">
 				<a href="index.php?p=periodesformation&a=ajoutevaluation&idpf=<?php print($pf->getId()); ?>&idmodule=<?php print($module->getId()); ?>" class="btn btn-default" title="Ajout d'une évaluation">Nouvelle évaluation<span class="glyphicon glyphicon-plus"></span></a>
+				<a href="index.php?p=periodesformation&a=viewnotes&idpf=<?php print($pf->getId()); ?>&idmodule=<?php print($module->getId()); ?>" class="btn btn-default" title="Voir les notes">Voir les notes<span class="glyphicon glyphicon-plus"></span></a>
 			</div>
 			<?php
 		}
