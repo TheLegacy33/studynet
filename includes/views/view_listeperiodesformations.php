@@ -1,7 +1,7 @@
 <section id="content_body" class="row">
 	<header class="text-center text-info">Liste des périodes de formations</header>
 	<div class="row">
-		<span class="col-sm-offset-3 col-sm-3 text-center"><label style="margin-right: 5px">Ecole : </label>
+		<span class="col-sm-4 text-center"><label style="margin-right: 5px">Ecole : </label>
 			<?php
 				if (is_null($promo)){
 					print('Toutes');
@@ -10,7 +10,7 @@
 				}
 			?>
 		</span>
-		<span class="col-sm-3 text-center"><label style="margin-right: 5px">Promotion : </label>
+		<span class="col-sm-4 text-center"><label style="margin-right: 5px">Promotion : </label>
 			<?php
 				if (is_null($promo)){
 					print('Toutes');
@@ -19,6 +19,27 @@
 				}
 			?>
 		</span>
+		<?php
+			if ($action == 'listepf'){
+				?>
+				<span class="col-sm-4 text-center"><label style="margin-right: 5px">Statut : </label>
+					<select name="cbactive">
+					<?php
+						$script = '';
+						foreach ($listeStatutPf as $statutPf){
+							$selected = '';
+							if ($active == $statutPf->getId()){
+								$selected = ' selected';
+							}
+							$script .= '<option value="'.$statutPf->getId().'"'.$selected.'>'.$statutPf.'</option>';
+						}
+						print($script);
+					?>
+					</select>
+				</span>
+				<?php
+			}
+		?>
 	</div>
 	<div class="row">
 		<table>

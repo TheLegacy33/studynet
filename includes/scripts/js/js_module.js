@@ -14,6 +14,10 @@ $("#cbIntervenant").change(function (){
 	$("button[type=submit]").attr("disabled", false);
 });
 
+$("#cbUniteEnseignement").change(function (){
+	$("button[type=submit]").attr("disabled", false);
+});
+
 $("button[type=reset]").click(function(){
 	$("button[type=submit]").attr("disabled", true);
 });

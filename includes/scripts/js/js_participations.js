@@ -4,24 +4,26 @@ $(document).ready(function(){
 	var selectedId = 0;
     $('#tbetudiants .lignedata').click(function(){
     	if (selectedId != 0){
-    		$('.lignedata[data-id=' + selectedId + ']').attr('class', 'lignedata');
+    		if (selectedId == parseInt($(this).data('id'))){
+				$(this).removeClass('active');
+				selectedId = 0;
+			}else{
+				$('.lignedata[data-id=' + selectedId + ']').removeClass('active');
+				$(this).addClass('active');
+				selectedId =  $(this).attr('data-id');
+			}
+		}else{
+			$(this).addClass('active');
+			selectedId =  $(this).attr('data-id');
 		}
-		selectedId =  $(this).attr('data-id');
-		$(this).addClass('active');
 		refreshModules(selectedId);
 	});
 
     $('span[name=chk_all]').click(function(){
-    	if (selectedId != 0){
-			console.log('Je coche tout !');
-			checkAllModules();
-        }
+		checkAllModules();
 	});
 	$('span[name=chk_none]').click(function(){
-        if (selectedId != 0) {
-            console.log('Je décoche tout !');
-            unchekAllModules();
-        }
+		unchekAllModules();
 	});
 
 	$('input[data-name=chkmodule]').change(function(){
@@ -30,25 +32,29 @@ $(document).ready(function(){
 });
 
 function refreshModules(idEtudiant){
-	$.ajax({
-		url: 'index.php',
-		type: 'get',
-		data: {p: 'api', action: 'getmodulesforstudent', idetudiant: idEtudiant, idpf: idPf},
-		contentType: "application/x-www-form-urlencoded;charset=UTF-8",
-		dataType: 'text',
-		success: function (reponse, statut) {
-            unchekAllModules(false);
-			var tabIdModules = JSON.parse(reponse);
-			for (var i = 0; i < tabIdModules.length; i++){
-				var selector = 'input[name=chk_'+tabIdModules[i]+']';
-				$(selector).prop('checked', true);
-			}
-		},
-		error: function (reponse, statut, erreur) {
-			console.error(reponse.status + ' : ' + reponse.statusText);
+	if (idEtudiant != 0){
+		$.ajax({
+			url: 'index.php',
+			type: 'get',
+			data: {p: 'api', action: 'getmodulesforstudent', idetudiant: idEtudiant, idpf: idPf},
+			contentType: "application/x-www-form-urlencoded;charset=UTF-8",
+			dataType: 'text',
+			success: function (reponse, statut) {
+				unchekAllModules(false);
+				var tabIdModules = JSON.parse(reponse);
+				for (var i = 0; i < tabIdModules.length; i++){
+					var selector = 'input[name=chk_'+tabIdModules[i]+']';
+					$(selector).prop('checked', true);
+				}
+			},
+			error: function (reponse, statut, erreur) {
+				console.error(reponse.status + ' : ' + reponse.statusText);
 
-		}
-	});
+			}
+		});
+	}else{
+		unchekAllModules(false);
+	}
 }
 
 function updateAffectation(idetudiant, chkmodule){
@@ -69,11 +75,7 @@ function updateAffectation(idetudiant, chkmodule){
                 console.error(reponse.status + ' : ' + reponse.statusText);
             }
         });
-
-	}else{
-		console.warn("Pas d'étudiant sélectionné !");
 	}
-
 }
 
 function checkAllModules(withTrigger){

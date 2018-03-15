@@ -9,7 +9,7 @@
 			<div><label for="cbIntervenant">Intervenant : </label>
 				<select id="cbIntervenant" name="cbIntervenant">
 					<?php
-						$script = '<option value="0"> -- </option>';
+						$script = '<option value="0"> --- </option>';
 						foreach ($listeIntervenants as $intervenant){
 							$selected = '';
 							if (!is_null($module->getIntervenant())){
@@ -18,6 +18,23 @@
 								}
 							}
 							$script .= '<option value="'.$intervenant->getId().'"'.$selected.'>'.$intervenant.'</option>';
+						}
+						print($script);
+					?>
+				</select>
+			</div>
+			<div><label for="cbUniteEnseignement">Unite d'enseignement : </label>
+				<select id="cbUniteEnseignement" name="cbUniteEnseignement">
+					<?php
+						$script = '<option value="0"> --- </option>';
+						foreach ($listeUnitesEnseignement as $uniteenseignement){
+							$selected = '';
+							if (!is_null($module->getIdUniteEnseignement())){
+								if ($uniteenseignement->getId() == $module->getIdUniteEnseignement()){
+									$selected = ' selected';
+								}
+							}
+							$script .= '<option value="'.$uniteenseignement->getId().'"'.$selected.'>'.$uniteenseignement.'</option>';
 						}
 						print($script);
 					?>

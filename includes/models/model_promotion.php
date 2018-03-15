@@ -2,10 +2,11 @@
 include_once ROOTMODELS.'DAO.php';
 include_once ROOTMODELS.'model_etudiant.php';
 include_once ROOTMODELS.'model_ecole.php';
+include_once ROOTMODELS.'model_uniteenseignement.php';
 
 class Promotion {
 	private $id, $libelle, $ecole;
-	private $etudiants;
+	private $etudiants, $unitesenseignement;
 
 	public function __construct($id = 0, $libelle, $ecole){
 		$this->id = $id;
@@ -13,6 +14,7 @@ class Promotion {
 		$this->ecole = $ecole;
 
 		$this->etudiants = array();
+		$this->unitesenseignement = array();
 	}
 
 	public function getLibelle(){
@@ -35,6 +37,14 @@ class Promotion {
 		$this->etudiants = $listeEtudiants;
 	}
 
+	public function getUnitesEnseignement(){
+		return $this->unitesenseignement;
+	}
+
+	public function fillUnitesEnseignement($listeUnitesEnseignement){
+		$this->unitesenseignement = $listeUnitesEnseignement;
+	}
+
 	public static function getListe(){
 		$SQLStmt = DAO::getInstance()->prepare("SELECT * FROM promotion");
 		$SQLStmt->execute();
@@ -42,6 +52,7 @@ class Promotion {
 		while ($SQLRow = $SQLStmt->fetchObject()){
 			$newPromo = new Promotion($SQLRow->promo_libelle, Ecole::getById($SQLRow->eco_id));
 			$newPromo->fillStudents(Etudiant::getListeFromPromo($SQLRow->promo_id));
+			$newPromo->fillUnitesEnseignement(UniteEnseignement::getListeFromPromo($SQLRow->promo_id));
 			$retVal[] = $newPromo;
 		}
 		$SQLStmt->closeCursor();
@@ -56,6 +67,7 @@ class Promotion {
 		while ($SQLRow = $SQLStmt->fetchObject()){
 			$newPromo = new Promotion($SQLRow->promo_id, $SQLRow->promo_libelle, Ecole::getById($SQLRow->eco_id));
 			$newPromo->fillStudents(Etudiant::getListeFromPromo($SQLRow->promo_id));
+			$newPromo->fillUnitesEnseignement(UniteEnseignement::getListeFromPromo($SQLRow->promo_id));
 			$retVal[] = $newPromo;
 		}
 		$SQLStmt->closeCursor();
@@ -69,6 +81,7 @@ class Promotion {
 		$SQLRow = $SQLStmt->fetchObject();
 		$newPromo = new Promotion($SQLRow->promo_id, $SQLRow->promo_libelle, Ecole::getById($SQLRow->eco_id));
 		$newPromo->fillStudents(Etudiant::getListeFromPromo($SQLRow->promo_id));
+		$newPromo->fillUnitesEnseignement(UniteEnseignement::getListeFromPromo($SQLRow->promo_id));
 		$SQLStmt->closeCursor();
 		return $newPromo;
 	}
@@ -83,6 +96,7 @@ class Promotion {
 		$SQLRow = $SQLStmt->fetchObject();
 		$newPromo = new Promotion($SQLRow->promo_id, $SQLRow->promo_libelle, Ecole::getById($SQLRow->eco_id));
 		$newPromo->fillStudents(Etudiant::getListeFromPromo($SQLRow->promo_id));
+		$newPromo->fillUnitesEnseignement(UniteEnseignement::getListeFromPromo($SQLRow->promo_id));
 		$SQLStmt->closeCursor();
 		return $newPromo;
 	}

@@ -3,10 +3,11 @@ $action = isset($_GET['a'])?$_GET['a']:'listepf';
 include_once ROOTMODELS.'model_periodeformation.php';
 
 $promo = null;
+$active = isset($_GET['active'])?$_GET['active']:'1';
 if ($action == 'listepf' && isset($_GET['idpromo'])) {
 	$idPromo = $_GET['idpromo'];
 	$promo = Promotion::getById($idPromo);
-	$listePf = Periodeformation::getListeFromPromo($idPromo);
+	$listePf = Periodeformation::getListeFromPromo($idPromo, $active);
 }else{
 	$idPf = isset($_GET['idpf'])?$_GET['idpf']:0;
 	if ($idPf == 0){
@@ -14,7 +15,15 @@ if ($action == 'listepf' && isset($_GET['idpromo'])) {
 	}else{
 		$promo = Promotion::getByIdPf($idPf);
 	}
-	$listePf = Periodeformation::getListe($idPf);
+	$listePf = Periodeformation::getListe($idPf, $active);
+}
+
+if ($action == 'listepf'){
+	//Gestion de l'affectation des étudiants aux modules de la pf
+	$includeJs = true;
+	$scriptname[] = 'js_listepf.js';
+
+	$listeStatutPf = StatutPeriodeFormation::getListe();
 }
 
 include_once ROOTVIEWS.'view_listeperiodesformations.php';
