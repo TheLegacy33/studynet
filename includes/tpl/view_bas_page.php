@@ -30,5 +30,11 @@
 		}
     }
 ?>
+<?php
+	if (DEBUGMODE) {
+		echo $debugbarRenderer->render();
+	}
+?>
+
 </html>
 

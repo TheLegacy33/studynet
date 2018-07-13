@@ -8,6 +8,7 @@ include_once ROOTSCRIPTS.'NavBar.php';
 <!DOCTYPE html>
 <html lang="fr">
 	<head>
+		<base href="/epsinet/">
 		<meta charset="UTF-8">
 		<title><?php print($title); ?></title>
 
@@ -33,6 +34,12 @@ include_once ROOTSCRIPTS.'NavBar.php';
 
 		<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
 		<link href="includes/styles/styles.css" rel="stylesheet" />
+
+		<?php
+			if (DEBUGMODE) {
+				echo $debugbarRenderer->renderHead();
+			}
+		?>
 	</head>
 	<body>
 		<section id="wrapper" class="container">

@@ -117,7 +117,7 @@
 			include_once ROOTMODELS.'model_module.php';
 			$idPf = isset($_GET['idpf'])?$_GET['idpf']:0;
 			$idEtudiant = isset($_GET['idetudiant'])?$_GET['idetudiant']:0;
-			$listeModules = Module::getListeFromPf($idPf, $idEtudiant);
+			$listeModules = Module::getListeFromEtudiant($idEtudiant);
 			$listeIdModules = Array();
 			foreach ($listeModules as $module){
 				$listeIdModules[] = $module->getId();
@@ -129,7 +129,6 @@
 			$idModule = isset($_GET['idmodule'])?$_GET['idmodule']:0;
 			$idEtudiant = isset($_GET['idetudiant'])?$_GET['idetudiant']:0;
 			$participe = isset($_GET['participe'])?$_GET['participe']=='true':false;
-
 			$etudiant = Etudiant::getById($idEtudiant);
 			$retVal = $etudiant->setModuleParticipation($idPf, $idModule, $participe);
 			print($retVal);

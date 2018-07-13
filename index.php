@@ -1,7 +1,5 @@
 <?php
-
-	//define('ROOT', $_SERVER['DOCUMENT_ROOT'].dirname($_SERVER['SCRIPT_NAME']));
-	define('ROOT', dirname(__FILE__));
+	define('ROOT', __DIR__);
     define('SERVERNAME', $_SERVER['SERVER_NAME']);
 	if (substr($_SERVER['SERVER_PROTOCOL'], 0, 5) == 'HTTP/'){
 		$rootHtml = 'http://';
@@ -17,7 +15,7 @@
         $rootHtml .= dirname($_SERVER['SCRIPT_NAME']);
     }
     define('ROOTHTML', $rootHtml);
-	include_once ROOT.'/includes/controllers/controller_main.php';
 
+	include_once ROOT.'/includes/controllers/controller_main.php';
 ?>
 

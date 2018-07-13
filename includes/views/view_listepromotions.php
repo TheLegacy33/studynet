@@ -15,7 +15,7 @@
 				$script .= '<tr><td colspan="8">Aucune donnée disponible !</td></tr>';
 			}else{
 				foreach ($listePromos as $promo){
-					$script .= '<tr>';
+					$script .= '<tr class="lignedata">';
 					$script .= '<td>'.$promo->getEcole()->getNom().'</td>';
 					$script .= '<td>'.$promo->getLibelle().'</td>';
 					$script .= '<td>'.$promo->getEffectif().'</td>';

@@ -1,5 +1,6 @@
 <?php
 	include_once ROOTMODELS.'DAO.php';
+	include_once ROOTMODELS.'model_module.php';
 
 	class UniteEnseignement{
 		private $id, $libelle, $chrono;
