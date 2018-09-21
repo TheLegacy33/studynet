@@ -3,7 +3,7 @@
 	 * Controller principal qui va charger l'ensemble des controllers
 	 */
 
-	define('DEBUGMODE', true);
+	define('DEBUGMODE', false);
 	define('SESSIONNAME', 'EPSINETSESS');
 
 	define('ROOTCTRL', ROOT.'/includes/controllers/');
@@ -29,10 +29,7 @@
 		@chmod(ROOTUPLOADS, 0775);
 	}
 
-	include_once ROOTSCRIPTS.'debugBar.inc.php';
 	include_once ROOTSCRIPTS.'fonctions.php';
-
-	$debugbar["messages"]->addMessage("Chargement du controller principal");
 
 	$page = basename($_SERVER['SCRIPT_NAME']);
 	if ($page != 'index.php'){
