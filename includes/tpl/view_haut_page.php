@@ -8,7 +8,7 @@ include_once ROOTSCRIPTS.'NavBar.php';
 <!DOCTYPE html>
 <html lang="fr">
 	<head>
-		<base href="/epsinet/">
+		<base href="/<?php print(MAINDIR); ?>/">
 		<meta charset="UTF-8">
 		<title><?php print($title); ?></title>
 
