@@ -23,7 +23,8 @@
 					$script .= '<tr><td colspan="8">Aucune donnée disponible !</td></tr>';
 				}else{
 					foreach ($listeUnitesEnseignement as $uniteenseignement){
-						$script .= '<tr><td style="font-style: italic; color: blue; text-align: left; padding-left: 2px">'.$uniteenseignement->getLibelle().'</td></tr>';
+						$script .= '<tr><td style="font-style: italic; color: blue; text-align: left; padding-left: 2px">'.$uniteenseignement->getLibelle().'</td>';
+						$script .= '<td style="background-color: gray" colspan="3"></td></tr>';
 
 						foreach ($uniteenseignement->getModules() as $module){
 							$script .= '<tr>';
@@ -50,7 +51,8 @@
 
 
 					if (count($listeModulesHorsUE) != 0){
-						$script .= '<tr><td style="font-style: italic; color: blue; text-align: left; padding-left: 2px">Sans Unité d\'enseignement</td></tr>';
+						$script .= '<tr><td style="font-style: italic; color: blue; text-align: left; padding-left: 2px">Sans Unité d\'enseignement</td>';
+                        $script .= '<td style="background-color: gray" colspan="3"></td></tr>';
 
 						foreach ($listeModulesHorsUE as $module){
 							$script .= '<tr>';

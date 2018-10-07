@@ -4,7 +4,7 @@
 	 */
 
 	define('DEBUGMODE', false);
-	define('SESSIONNAME', 'EPSINETSESS');
+	define('SESSIONNAME', 'STUDYNETSESS');
 
 	define('ROOTCTRL', ROOT.'/includes/controllers/');
 	define('ROOTVIEWS', ROOT.'/includes/views/');
@@ -36,7 +36,7 @@
 		header('Location: '.ROOTHTML);
 	}else{
 		$title = 'Intranet : Le service ENT';
-		$pageTitle = 'LocalNet Services';
+		$pageTitle = 'StudyNet Services';
 
 		$section = isset($_GET['p'])?$_GET['p']:'';
 		$action = isset($_GET['a'])?$_GET['a']:'';

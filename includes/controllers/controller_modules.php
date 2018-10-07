@@ -29,6 +29,7 @@ if ($action == 'listemodules'){
 	$pf = Periodeformation::getById($idPf);
 	$module = new Module();
 	$listeIntervenants = Intervenant::getListe(Intervenant::class);
+    $listeUnitesEnseignement = $promo->getUnitesEnseignement();
 	if (!empty($_POST)){
 		$libModule = $_POST['ttLibelle'];
 		$detailsModule = $_POST['ttResume'];

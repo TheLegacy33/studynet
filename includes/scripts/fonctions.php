@@ -68,4 +68,14 @@ function sessionStatus(){
 		}
 	}
 }
+
+function Debug($message = "", $variable = null){
+    global $debugbar;
+    if (!is_null($message)){
+        $debugbar["messages"]->addMessage($message);
+    }
+    if (!is_null($variable)){
+        $debugbar["messages"]->addMessage("Variable : ".$variable);
+    }
+}
 ?>

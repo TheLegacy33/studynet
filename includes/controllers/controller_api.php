@@ -41,7 +41,7 @@
 					}
 
 					//Recipients
-					$mail->setFrom('epsinet@devatom.net', 'Epsinet');
+					$mail->setFrom('studynet@devatom.net', 'Epsinet');
 					$mail->addAddress($personne->getEmail(), $personne->getNomComplet());     // Add a recipient
 
 					//Content
