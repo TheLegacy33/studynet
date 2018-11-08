@@ -1,7 +1,6 @@
 <?php
 	include_once ROOTMODELS.'model_auth.php';
 
-
 	if (isset($_SESSION['user'])){
 		Authentification::loadSession();
 		$user = Authentification::getUser();
