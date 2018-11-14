@@ -41,14 +41,14 @@
 					}
 
 					//Recipients
-					$mail->setFrom('studynet@devatom.net', 'Epsinet');
+					$mail->setFrom('studynet@devatom.net', APPNAME);
 					$mail->addAddress($personne->getEmail(), $personne->getNomComplet());     // Add a recipient
 
 					//Content
 					$mail->isHTML(true);                                  // Set email format to HTML
-					$mail->Subject = "Vos informations d'accès à la plateforme EPSINET";
-					$messageHtml = "<html><body>Bonjour,<br /> vous recevez ce message de la part de la plateforme EPSINET.<br />";
-					$messageHtml .= 'Pour vous connecter : <a href="'.ROOTHTML.'" title="EPSINET">EPSINET</a><br />';
+					$mail->Subject = "Vos informations d'accès à la plateforme ".APPNAME;
+					$messageHtml = "<html><body>Bonjour,<br /> vous recevez ce message de la part de la plateforme ".APPNAME.".<br />";
+					$messageHtml .= 'Pour vous connecter : <a href="'.ROOTHTML.'" title="'.APPNAME.'">'.APPNAME.'</a><br />';
 					if (!$personne->getUserAuth()->getId() == 0){
 						$messageHtml .= 'Votre identifiant : '.$personne->getUserAuth()->getLogin().'<br />';
 						$messageHtml .= 'Votre mot de passe : '.$personne->getUserAuth()->getPassword().'<br />';
@@ -59,7 +59,7 @@
 					$messageHtml .= 'Votre profil est '.$personne->getNomComplet().' => '.$personne->get_class().'<br /><br />';
 					$messageHtml .= "Cordialement</body></html>";
 
-					$messageText = "Bonjour,\r\n vous recevez ce message de la part de la plateforme EPSINET.\r\n";
+					$messageText = "Bonjour,\r\n vous recevez ce message de la part de la plateforme ".APPNAME.".\r\n";
 					$messageText .= 'Pour vous connecter : '.ROOTHTML."\r\n";
 					if (!$personne->getUserAuth()->exists()){
 						$messageText .= 'Votre identifiant : '.$personne->getUserAuth()->getLogin()."\r\n";

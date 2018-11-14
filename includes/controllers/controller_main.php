@@ -5,6 +5,7 @@
 
 	define('DEBUGMODE', false);
 	define('SESSIONNAME', 'STUDYNETSESS');
+	define('APPNAME', 'StudyNet');
 	define('MAINDIR', basename(ROOT));
 
 	define('ROOTCTRL', ROOT.'/includes/controllers/');
