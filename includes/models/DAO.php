@@ -1,10 +1,8 @@
 <?php
 	class DAO{
 		private static $dsnserveur = 'mysql:host=%MYSQL_HOST%;port=%MYSQL_PORT%;charset=utf8;dbname=%MYSQL_BDD%';
-//		private static $dsnlocalhost = 'mysql:host=localhost;port=3306;charset=utf8;dbname=studynet';
-		private static $user = 'root';
-		private static $pass = '@dmDev@tom';
-//		private static $passAvalone = '@dmAvR0o';
+		private static $user = '';
+		private static $pass = '';
 
 		private static $_instance;
 
