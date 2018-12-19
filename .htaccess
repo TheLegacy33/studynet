@@ -9,7 +9,12 @@
 #   RewriteRule ^index.php/(.*) $1 [QSA,R,L]
 </IfModule>
 
+SetEnv MYSQL_HOST localhost
+SetEnv MYSQL_PORT 3306
+SetEnv MYSQL_BDD studynet
+SetEnv MYSQL_USER root
+SetEnv MYSQL_PASS @dmDev@tom
+
 php_value upload_max_filesize 10M
 php_value post_max_size 10M
-#php_value session.cookie_lifetime 3600
 php_value session.gc_maxlifetime 3600
