@@ -1,1 +1,1 @@
-# epsinet
+# Studynet
