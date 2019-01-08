@@ -16,10 +16,11 @@
 
 	define('ROOTEXPORTS', ROOT.'/exports/');
 	define('ROOTUPLOADS', ROOT.'/uploads/');
+
 	define('ROOTHTMLEXPORTS', ROOTHTML.'/exports/');
 	define('ROOTHTMLUPLOADS', ROOTHTML.'/uploads/');
 	define('ROOTHTMLSCRIPTS', ROOTHTML.'/includes/scripts/');
-	define('ROOTHTMLSCRIPTSJS', ROOTHTMLSCRIPTS.'js/');
+	define('ROOTHTMLSCRIPTSJS', ROOTHTML.'/includes/scripts/js/');
 
 	if (!file_exists(ROOTEXPORTS)){
 		mkdir(ROOTEXPORTS);
