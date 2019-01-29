@@ -20,7 +20,7 @@
 								$script .= '<img src="'.ROOTHTMLUPLOADS.$ecole->getLogo().'" class="logoecole" />';
 							$script .= '</div>';
 							$script .= '<div class="card-footer">';
-								$script .= '<a href="index.php?p=promotions&a=listepromotions&idecole='.$ecole->getId().'" title="Liste des promotions"><span class="glyphicon glyphicon-list"></span></a><span class="badge">'.$ecole->getNbPromos().'</span>';
+								$script .= '<a href="index.php?p=promotions&a=listepromotions&idecole='.$ecole->getId().'" title="Liste des promotions"><span class="fas fa-list align-middle"></span></a><span class="badge badge-info align-middle">'.$ecole->getNbPromos().'</span>';
 								$script .= '<a href="index.php?p=ecoles&a=edit&id='.$ecole->getId().'" title="Modifier"><span class="glyphicon glyphicon-edit"></span></a>';
 								$script .= '<a href="index.php?p=ecoles&a=del&id='.$ecole->getId().'" title="Supprimer"><span class="glyphicon glyphicon-remove"></span></a>';
 							$script .= '</div>';
