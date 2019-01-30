@@ -37,9 +37,9 @@ include_once ROOTSCRIPTS.'NavBar.php';
 	</head>
 	<body>
 		<section id="wrapper" class="container">
-			<header id="logo" class="row">
-				<div class="col-3 float-left"><img src="includes/images/logo.png" alt="logo"/></div>
-				<div class="col-9 text-center"><p><?php print($pageTitle); ?></p></div>
+			<header id="logo" class="row d-flex align-items-center">
+				<div class=""><img src="includes/images/logo.png" alt="logo"/></div>
+				<div class="flex-grow-1 text-center"><p><?php print($pageTitle); ?></p></div>
 			</header>
 			<nav id="navgenerale" class="row">
 				<?php
