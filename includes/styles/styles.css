@@ -33,23 +33,25 @@ a, a:link, a:visited, a:hover{
 nav#navgenerale{
     height: 30px;
     background-color: #271549;
-    text-align: center;
     border-radius: 5px;
 }
 
 nav#navgenerale ul{
     list-style-type: none;
 	width: 100%;
-	text-align: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	align-content: center;
+	height: 100%;
+	margin: 0;
 }
 
 nav#navgenerale li{
     color: white;
     text-transform: uppercase;
-    display: inline-block;
-    width: 150px;
+	flex-grow: 1;
     text-align: center;
-    line-height: 30px;
     font-weight: bolder;
 }
 
@@ -60,7 +62,6 @@ nav#navgenerale a, nav#navgenerale a:link, nav#navgenerale a:hover, nav#navgener
 nav.navinterne{
     height: 30px;
     line-height: 30px;
-
 }
 
 #content_body{
@@ -128,6 +129,35 @@ th, td {
 td>a>img {
     height: 24px;
     margin: 2px;
+}
+
+.card-footer{
+	display: flex;
+	justify-content: center;
+	align-items: stretch;
+	padding: 0;
+}
+
+.card-header.bg-secondary{
+	background-color: lightgray;
+	opacity: 0.3;
+}
+
+.card-footer>span{
+	padding-left: 5px;
+	padding-right: 5px;
+	height: 100%;
+	text-align: center;
+	border-right: solid 1px lightgray;
+	flex-grow: 1;
+}
+
+.card-footer>span>a{
+	margin: 10px 0;
+}
+
+.card-footer>span:last-child{
+	border-right: none;
 }
 
 span.badge{
