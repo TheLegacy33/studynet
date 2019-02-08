@@ -5,11 +5,11 @@ $appreciationG = Evaluation::getAppreciationGenerale($etudiant->getId(), $pf->ge
 	<nav class="navinterne">
 		<?php print('<a href="'.$_SERVER['HTTP_REFERER'].'" title="Retour"><< Retour</a>'); ?>
 	</nav>
-	<header class="text-center text-info" style="font-size: 20px">
+	<header class="col-12 text-center text-info" style="font-size: 20px">
 		Appréciation générale sur <?php print($etudiant->getNom().' '.$etudiant->getPrenom()); ?>
 	</header>
-    <form action="" method="post">
-        <section class="row">
+    <form action="" method="post" class="col-12">
+        <section class="">
             <label>Appréciation :</label><br />
 			<?php
 				if (is_null($appreciationG)){

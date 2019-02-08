@@ -10,7 +10,7 @@ class Menu{
 	}
 
 	public function __toString(){
-		return '<a href="'.$this->link.'" title="'.$this->title.'">'.$this->libelle.'</a>';
+		return '<a class="nav-link" href="'.$this->link.'" title="'.$this->title.'">'.$this->libelle.'</a>';
 	}
 }
 ?>

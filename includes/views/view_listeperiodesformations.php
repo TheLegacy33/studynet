@@ -1,7 +1,7 @@
 <section id="content_body" class="row">
-	<header class="text-center text-info">Liste des périodes de formations</header>
-	<div class="row">
-		<span class="col-sm-4 text-center"><label style="margin-right: 5px">Ecole : </label>
+	<header class="col-12 text-center text-info">Liste des périodes de formations</header>
+	<div class="col-12">
+		<span class="col-4 text-center"><label style="margin-right: 5px">Ecole : </label>
 			<?php
 				if (is_null($promo)){
 					print('Toutes');
@@ -10,7 +10,7 @@
 				}
 			?>
 		</span>
-		<span class="col-sm-4 text-center"><label style="margin-right: 5px">Promotion : </label>
+		<span class="col-4 text-center"><label style="margin-right: 5px">Promotion : </label>
 			<?php
 				if (is_null($promo)){
 					print('Toutes');
@@ -22,7 +22,7 @@
 		<?php
 			if ($action == 'listepf'){
 				?>
-				<span class="col-sm-4 text-center"><label style="margin-right: 5px">Statut : </label>
+				<span class="col-4 text-center"><label style="margin-right: 5px">Statut : </label>
 					<select name="cbactive">
 					<?php
 						$script = '';
@@ -41,7 +41,7 @@
 			}
 		?>
 	</div>
-	<div class="row">
+	<div class="col-12 mt-2">
 		<table>
 			<tr>
 				<?php
@@ -63,7 +63,7 @@
 				}else{
 					foreach ($listePf as $pf){
 						$script .= '<tr class="lignedata">';
-						if ($promo == null){
+						if (is_null($promo)){
 							$script .= '<td>'.$pf->getPromo()->getEcole()->getNom().'</td>';
 							$script .= '<td>'.$pf->getPromo()->getLibelle().'</td>';
 						}
@@ -72,9 +72,9 @@
 						$script .= '<td>'.$pf->getEffectif().'</td>';
 						$script .= '<td>'.$pf->getNbModules().'</td>';
 						$script .= '<td>'.$pf->getResponsable().'</td>';
-						$script .= '<td><a href="index.php?p=periodesformation&a=listeetudiants&idpf='.$pf->getId().'" title="Liste des étudiants"><span class="glyphicon glyphicon-user"></span></a></td>';
-						$script .= '<td><a href="index.php?p=periodesformation&a=listemodules&idpf='.$pf->getId().'" title="Liste des modules"><span class="glyphicon glyphicon-list"></td>';
-						$script .= '<td><a href="index.php?p=periodesformation&a=participations&idpf='.$pf->getId().'" title="Gérer la participation des étudiants aux modules"><span class="glyphicon glyphicon-check"></td>';
+						$script .= '<td><a href="index.php?p=periodesformation&a=listeetudiants&idpf='.$pf->getId().'" title="Liste des étudiants"><span class="fas fa-users align-middle"></span></a></td>';
+						$script .= '<td><a href="index.php?p=periodesformation&a=listemodules&idpf='.$pf->getId().'" title="Liste des modules"><span class="fas fa-list align-middle"></td>';
+						$script .= '<td><a href="index.php?p=periodesformation&a=participations&idpf='.$pf->getId().'" title="Gérer la participation des étudiants aux modules"><span class="fas fa-check-square align-middle"></td>';
 						$script .= '</tr>';
 					}
 				}

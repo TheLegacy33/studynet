@@ -1,5 +1,5 @@
 <section id="content_body" class="row">
-	<header class="text-center text-info">Liste des personnes</header>
+	<header class="col-12 text-center text-info">Liste des personnes</header>
 	<section id="divfiltre" class="text-center">
 		<select id="cbFiltreType">
 			<?php

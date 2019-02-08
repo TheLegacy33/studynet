@@ -8,13 +8,13 @@
 	<nav class="navinterne">
 		<?php print('<a href="index.php?p=periodesformation&a=listemodules&idetudiant='.$idetudiant.'&idpf='.$idpf.'" title="Retour à la liste des modules"><< Retour</a>'); ?>
 	</nav>
-	<header class="text-center text-info" style="font-size: 20px">
+	<header class="col-12 text-center text-info" style="font-size: 20px">
 		Evaluations du module <?php print($module->getLibelle()); ?> pour
 		<?php print($etudiant->getNom().' '.$etudiant->getPrenom()); ?>
 	</header>
 
 
-	<section class="row">
+	<section class="col-12">
 		<label>Commentaire du module :</label><br />
 		<p class="commentaire"><?php print($commentaireModule); ?></p>
 	</section>
@@ -26,7 +26,7 @@
             $enacquisition = $eval->estEnCoursAcquisition()?' checked':'';
             $nonacquis = $eval->estNonAcquis()?' checked':'';
 
-			$script .= '<section class="col-xs-8 col-xs-offset-2 evalcontenumodule">';
+			$script .= '<section class="col-8 offset-2 evalcontenumodule">';
 			$script .= '<header class="libelle">'.$contenuModule->getLibelle().'</header>';
 			$script .= '<label>Commentaire :</label><br /><p class="commentaire">'.($eval->getCommentaire()!=null?$eval->getCommentaire():'Pas de commentaire').'</p>';
 			$script .= '<section class="radio">';

@@ -15,7 +15,7 @@ if ($action == 'listepf' && isset($_GET['idpromo'])) {
 	}else{
 		$promo = Promotion::getByIdPf($idPf);
 	}
-	$listePf = Periodeformation::getListe($idPf, $active);
+	$listePf = Periodeformation::getListe($idPf, '*');
 }
 
 if ($action == 'listepf'){

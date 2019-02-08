@@ -176,6 +176,10 @@
 			return $retVal;
 		}
 
+		public static function getListe($critere = Etudiant::class){
+			return parent::getListe($critere);
+		}
+
 		public static function getListeFromModule($idModule){
             $SQLQuery = "SELECT * FROM participer ";
             $SQLQuery .= "WHERE mod_id = :idmodule";

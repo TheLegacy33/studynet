@@ -5,19 +5,19 @@
 	<nav class="navinterne">
 		<?php print('<a href="index.php?p=periodesformation&a=listemodules&idetudiant='.$idetudiant.'&idpf='.$idpf.'" title="Retour à la liste des modules"><< Retour</a>'); ?>
 	</nav>
-	<header class="text-center text-info" style="font-size: 20px">
+	<header class="col-12 text-center text-info" style="font-size: 20px">
 		Evaluations du module <?php print($module->getLibelle()); ?> pour
 		<?php print($etudiant->getNom().' '.$etudiant->getPrenom()); ?>
 	</header>
 
-    <form action="" method="post">
-        <section class="row">
+    <form action="" method="post" class="offset-2 col-8">
+        <section class="col-12">
             <label>Commentaire du module :</label><br />
 			<?php
 				if (is_null($commentaireModule)){
-					$script = '<textarea name="comm_module" style="width: 100%; height: 100px" placeholder="Pas de commentaire"></textarea>';
+					$script = '<textarea name="comm_module" style="width: 98%; height: 100px" placeholder="Pas de commentaire"></textarea>';
 				}else{
-					$script = '<textarea name="comm_module" style="width: 100%; height: 100px">'.$commentaireModule.'</textarea>';
+					$script = '<textarea name="comm_module" style="width: 98%; height: 100px">'.$commentaireModule.'</textarea>';
 				}
 				print ($script);
 			?>
@@ -31,13 +31,16 @@
                 $enacquisition = $eval->estEnCoursAcquisition()?' checked="checked"':'';
                 $nonacquis = $eval->estNonAcquis()?' checked="checked"':'';
 
-                $script .= '<section class="col-xs-8 col-xs-offset-2 evalcontenumodule">';
-                $script .= '<header class="libelle">'.$contenuModule->getLibelle().'</header>';
+                $script .= '<section class="evalcontenumodule">';
+                $script .= '<header class="libelle pb-4">'.$contenuModule->getLibelle().'</header>';
+				$script .= '<label class="ml-2">Commentaire :</label>';
+                $script .= '<section class="text-center">';
 				if ($eval->getCommentaire() != null){
-					$script .= '<label>Commentaire :</label><br /><textarea name="comm_'.$contenuModule->getId().'" style="width: 100%; height: 100px">'.$eval->getCommentaire().'</textarea>';
+					$script .= '<textarea name="comm_'.$contenuModule->getId().'" class="" style="width: 98%; height: 100px;">'.$eval->getCommentaire().'</textarea>';
 				}else{
-					$script .= '<label>Commentaire :</label><br /><textarea name="comm_'.$contenuModule->getId().'" style="width: 100%; height: 100px" placeholder="Pas de commentaire"></textarea>';
+					$script .= '<textarea name="comm_'.$contenuModule->getId().'" class="" style="width: 98%; height: 100px;" placeholder="Pas de commentaire"></textarea>';
 				}
+				$script .= '</section>';
                 $script .= '<section class="radio">';
 
                 $radioName = 'btradioeval_'.$contenuModule->getId();

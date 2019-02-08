@@ -14,15 +14,15 @@ a, a:link, a:visited, a:hover{
 }
 
 #logo{
-    height: 100px;
+	flex-wrap: nowrap;
 }
 
 #logo img{
-	height: 100px;
-    width: 120px;
+	max-height: 100px;
+    max-width: 120px;
 }
 
-#logo p{
+#logo h2{
     font-size: 2.2em;
     font-style: italic;
     font-weight: bold;
@@ -32,27 +32,29 @@ a, a:link, a:visited, a:hover{
 }
 
 nav#navgenerale{
-    height: 30px;
     background-color: #271549;
     border-radius: 5px;
 }
 
-nav#navgenerale ul{
+#navgenerale li:hover{
+	background-color: #266bcb;
+	border-radius: 2px;
+}
+
+/*nav#navgenerale ul{
     list-style-type: none;
 	width: 100%;
 	display: flex;
-	justify-content: center;
-	align-items: center;
-	align-content: center;
+	justify-content: stretch;
+	align-items: stretch;
+	align-content: stretch;
 	height: 100%;
 	margin: 0;
-}
+}*/
 
 nav#navgenerale li{
     color: white;
     text-transform: uppercase;
-	flex-grow: 1;
-    text-align: center;
     font-weight: bolder;
 }
 
@@ -216,11 +218,16 @@ span.intervenant:after{
 
 }
 
+.radio{
+	width: 100%;
+	text-align: center;
+}
+
 .radio input[type="radio"]{
     margin-left: 0;
     display: inline-block;
     position: relative;
-    vertical-align: bottom;
+    vertical-align: middle;
 }
 
 .radio label{

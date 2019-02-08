@@ -1,9 +1,9 @@
 <section id="content_body" class="row">
-	<header class="text-center text-info header-section">
+	<header class="col-12 text-center text-info header-section">
 		Participation des étudiant aux modules de la période de formation
 	</header>
 	<div class="row">
-		<div class="col-xs-3 text-center" style="height: 500px; overflow-y: scroll">
+		<div class="col-3 text-center" style="height: 500px; overflow-y: scroll">
 			Liste des étudiants
 			<table id="tbetudiants">
 				<tr>
@@ -22,7 +22,7 @@
 				?>
 			</table>
 		</div>
-		<div class="col-xs-9 text-center">
+		<div class="col-9 text-center">
 			Liste des modules
 			<table id="tbmodules">
 				<tr>
@@ -42,8 +42,8 @@
 						}
 					}
 					$script .= '<tr class="lignedata"><td></td><td class="text-center">';
-					$script .= '<span name="chk_all" title="Tout cocher" class="glyphicon glyphicon-ok-sign" style="margin-right: 5px; cursor: pointer"></span>';
-					$script .= '<span name="chk_none" title="Tout décocher" class="glyphicon glyphicon-remove-sign" style="margin-left: 5px; cursor: pointer"></span>';
+					$script .= '<span name="chk_all" title="Tout cocher" class="fa fa-check" style="margin-right: 5px; cursor: pointer"></span>';
+					$script .= '<span name="chk_none" title="Tout décocher" class="fa fa-ban" style="margin-left: 5px; cursor: pointer"></span>';
 					$script .= '</td></tr>';
 					print($script);
 				?>

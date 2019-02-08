@@ -10,9 +10,9 @@ class NavBar{
 	}
 
 	public function render(){
-		$script = '<ul>';
+		$script = '<ul class="navbar-nav mr-auto mt-2 mt-lg-0">';
 		foreach ($this->menus as $menu){
-			$script .= "<li>$menu</li>";
+			$script .= "<li class=\"nav-item\">$menu</li>";
 		}
 		$script .= '</ul>';
 		return $script;

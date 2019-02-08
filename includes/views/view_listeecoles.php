@@ -33,6 +33,6 @@
 					$script .= '</div>';
 				}
 				print($script);
-				?>
+			?>
 	</div>
 </section>

@@ -1,7 +1,7 @@
 <?php
 ?>
 <section id="content_body" class="row">
-	<header class="text-center text-info">Liste des promotions</header>
+	<header class="col-12 text-center text-info">Liste des promotions</header>
 	<table>
 		<tr>
 			<th style="width: 200px;">Ecole</th>
@@ -19,7 +19,7 @@
 					$script .= '<td>'.$promo->getEcole()->getNom().'</td>';
 					$script .= '<td>'.$promo->getLibelle().'</td>';
 					$script .= '<td>'.$promo->getEffectif().'</td>';
-					$script .= '<td><a href="index.php?p=periodesformation&a=listepf&idpromo='.$promo->getId().'" title="Liste des sessions"><span class="glyphicon glyphicon-list"></td>';
+					$script .= '<td><a href="index.php?p=periodesformation&a=listepf&idpromo='.$promo->getId().'" title="Liste des sessions"><span class="fas fa-list align-middle"></td>';
 				}
 			}
 			print($script);

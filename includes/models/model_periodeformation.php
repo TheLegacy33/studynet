@@ -128,14 +128,19 @@ class Periodeformation {
 		if ($idPf != 0){
 			$SQLQuery .= 'AND periodeformation.pf_id = :idpf ';
 		}
-		$SQLQuery .= 'AND statpf_id = :idstatut ';
+		if ($statut != '*'){
+			$SQLQuery .= 'AND statpf_id = :idstatut ';
+		}
 		$SQLQuery .= 'ORDER BY promotion.promo_libelle, pf_datedebut DESC, pf_datefin DESC';
 		$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
 		if ($idPf != 0){
 			$SQLStmt->bindValue(':idpf', $idPf);
 		}
 
-		$SQLStmt->bindValue(':idstatut', $statut);
+		if ($statut != '*'){
+			$SQLStmt->bindValue(':idstatut', $statut);
+		}
+
 		$SQLStmt->execute();
 		$retVal = array();
 		while ($SQLRow = $SQLStmt->fetchObject()){

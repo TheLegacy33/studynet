@@ -1,5 +1,5 @@
 <section id="content_body" class="row">
-	<header class="text-center text-info">Vos rattrapages</header>
+	<header class="col-12 text-center text-info">Vos rattrapages</header>
 	<table>
 		<tr>
 			<th style="width: 300px;">Module</th>

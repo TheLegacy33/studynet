@@ -2,7 +2,7 @@
 	<nav class="navinterne">
 		<?php print('<a href="index.php?p=periodesformation&a=listemodules&idpf='.$idpf.'" title="Retour à la liste des modules"><< Retour</a>'); ?>
 	</nav>
-	<header class="text-center text-info header-section">
+	<header class="col-12 text-center text-info header-section">
 		Liste des évaluations pour le module <?php print($module->getLibelle()); ?>.
 	</header>
 	<?php

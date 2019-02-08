@@ -18,6 +18,10 @@
 			return parent::getId();
 		}
 
+		public static function getListe($critere = ResponsablePedago::class){
+			return parent::getListe($critere);
+		}
+
         public static function getIdByIdPers($idPers){
             $SQLQuery = 'SELECT resp_id FROM responsablePedago WHERE pers_id = :idpers';
             $SQLStmt = DAO::getInstance()->prepare($SQLQuery);
