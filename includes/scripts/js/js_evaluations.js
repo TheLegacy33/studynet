@@ -91,7 +91,7 @@ function updateStudentNote(idEtudiant, idEval, statut, note){
 	$.ajax({
 		url: 'index.php',
 		type: 'get',
-		data: {p: 'api', action: 'setStudentNote', idetudiant: idEtudiant, idevaluation: idEval, idstatut: statut, note: note},
+		data: {p: 'ajax', a: 'setStudentNote', idetudiant: idEtudiant, idevaluation: idEval, idstatut: statut, note: note},
 		contentType: "application/x-www-form-urlencoded;charset=UTF-8",
 		dataType: 'text',
 		success: function (reponse, statut) {

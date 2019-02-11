@@ -74,6 +74,15 @@ class Promotion {
 		return $retVal;
 	}
 
+	public static function getListeFromEcoleForAPI($idEcole){
+		$SQLStmt = DAO::getInstance()->prepare("SELECT * FROM promotion WHERE eco_id = :idecole");
+		$SQLStmt->bindValue(':idecole', $idEcole);
+		$SQLStmt->execute();
+		$retVal = $SQLStmt->fetchAll(PDO::FETCH_OBJ);
+		$SQLStmt->closeCursor();
+		return $retVal;
+	}
+
 	public static function getById($id){
 		$SQLStmt = DAO::getInstance()->prepare("SELECT * FROM promotion WHERE promo_id = :idpromo");
 		$SQLStmt->bindValue(':idpromo', $id);

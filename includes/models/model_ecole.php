@@ -47,6 +47,14 @@
 			return $retVal;
 		}
 
+		public static function getListeForAPI(){
+			$SQLStmt = DAO::getInstance()->prepare("SELECT * FROM ecole ORDER BY eco_nom");
+			$SQLStmt->execute();
+			$retVal = $SQLStmt->fetchAll(PDO::FETCH_OBJ);
+			$SQLStmt->closeCursor();
+			return $retVal;
+		}
+
 		public static function getById($id){
 			$SQLStmt = DAO::getInstance()->prepare("SELECT * FROM ecole WHERE eco_id = :idecole");
 			$SQLStmt->bindValue(':idecole', $id);

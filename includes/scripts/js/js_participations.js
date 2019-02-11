@@ -36,7 +36,7 @@ function refreshModules(idEtudiant){
 		$.ajax({
 			url: 'index.php',
 			type: 'get',
-			data: {p: 'api', action: 'getmodulesforstudent', idetudiant: idEtudiant, idpf: idPf},
+			data: {p: 'ajax', a: 'getmodulesforstudent', idetudiant: idEtudiant, idpf: idPf},
 			contentType: "application/x-www-form-urlencoded;charset=UTF-8",
 			dataType: 'text',
 			success: function (reponse, statut) {
@@ -65,7 +65,7 @@ function updateAffectation(idetudiant, chkmodule){
         $.ajax({
             url: 'index.php',
             type: 'get',
-            data: {p: 'api', action: 'setmodulesforstudent', idetudiant: idetudiant, idpf: idPf, idmodule: idmodule, participe: checked},
+            data: {p: 'ajax', a: 'setmodulesforstudent', idetudiant: idetudiant, idpf: idPf, idmodule: idmodule, participe: checked},
             contentType: "application/x-www-form-urlencoded;charset=UTF-8",
             dataType: 'text',
             success: function (reponse, statut) {

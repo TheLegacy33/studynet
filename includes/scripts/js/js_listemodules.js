@@ -6,7 +6,7 @@ $(document).ready(function(){
 				$.ajax({
 					url: 'index.php',
 					type: 'get',
-					data: {p: 'api', action: 'dropmodule', id: $(this).attr("data-id")},
+					data: {p: 'ajax', a: 'dropmodule', id: $(this).attr("data-id")},
 					contentType: "application/x-www-form-urlencoded;charset=UTF-8",
 					dataType: 'text',
 					success: function (reponse, statut) {

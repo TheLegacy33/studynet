@@ -5,7 +5,7 @@ $(document).ready(function(){
 				$.ajax({
 					url: 'index.php',
 					type: 'get',
-					data: {p: 'api', action: 'sendprofile', id: $(this).attr("data-id")},
+					data: {p: 'ajax', a: 'sendprofile', id: $(this).attr("data-id")},
 					contentType: "application/x-www-form-urlencoded;charset=UTF-8",
 					dataType: 'text',
 					success: function (reponse, statut) {
@@ -31,7 +31,7 @@ $(document).ready(function(){
 				$.ajax({
 					url: 'index.php',
 					type: 'get',
-					data: {p: 'api', action: 'renewpassword', id: idPers},
+					data: {p: 'ajax', a: 'renewpassword', id: idPers},
 					contentType: "application/x-www-form-urlencoded;charset=UTF-8",
 					dataType: 'text',
 					success: function (reponse, statut) {
@@ -41,7 +41,7 @@ $(document).ready(function(){
 								$.ajax({
 									url: 'index.php',
 									type: 'get',
-									data: {p: 'api', action: 'sendprofile', id: idPers},
+									data: {p: 'ajax', a: 'sendprofile', id: idPers},
 									contentType: "application/x-www-form-urlencoded;charset=UTF-8",
 									dataType: 'text',
 									success: function (reponse, statut) {
@@ -70,7 +70,7 @@ $(document).ready(function(){
 				$.ajax({
 					url: 'index.php',
 					type: 'get',
-					data: {p: 'api', action: 'dropuserauth', id: $(this).attr("data-id")},
+					data: {p: 'ajax', a: 'dropuserauth', id: $(this).attr("data-id")},
 					contentType: "application/x-www-form-urlencoded;charset=UTF-8",
 					dataType: 'text',
 					success: function (reponse, statut) {
