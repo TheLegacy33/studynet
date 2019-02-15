@@ -225,7 +225,8 @@
 		}
 
 		public function getDate(){
-			return $this->date;
+			$ret = new DateTime($this->date);
+			return $ret->format('d/m/Y');;
 		}
 
 		public function getDuree(){

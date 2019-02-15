@@ -75,11 +75,13 @@ class Periodeformation {
 	}
 
 	public function getDateDebut(){
-		return $this->datedebut;
+		$ret = new DateTime($this->datedebut);
+		return $ret->format('d/m/Y');
 	}
 
 	public function getDateFin(){
-		return $this->datefin;
+		$ret = new DateTime($this->datefin);
+		return $ret->format('d/m/Y');
 	}
 
 	public function getPromo(){
@@ -127,17 +129,14 @@ class Periodeformation {
 		$SQLQuery .= 'FROM periodeformation INNER JOIN promotion ON periodeformation.promo_id = promotion.promo_id WHERE 1=1 ';
 		if ($idPf != 0){
 			$SQLQuery .= 'AND periodeformation.pf_id = :idpf ';
-		}
-		if ($statut != '*'){
+		}else{
 			$SQLQuery .= 'AND statpf_id = :idstatut ';
 		}
 		$SQLQuery .= 'ORDER BY promotion.promo_libelle, pf_datedebut DESC, pf_datefin DESC';
 		$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
 		if ($idPf != 0){
 			$SQLStmt->bindValue(':idpf', $idPf);
-		}
-
-		if ($statut != '*'){
+		}else{
 			$SQLStmt->bindValue(':idstatut', $statut);
 		}
 

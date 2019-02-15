@@ -15,7 +15,8 @@ if ($action == 'listepf' && isset($_GET['idpromo'])) {
 	}else{
 		$promo = Promotion::getByIdPf($idPf);
 	}
-	$listePf = Periodeformation::getListe($idPf, '*');
+	$listePf = Periodeformation::getListe($idPf, $active);
+
 }
 
 if ($action == 'listepf'){
@@ -25,6 +26,7 @@ if ($action == 'listepf'){
 
 	$listeStatutPf = StatutPeriodeFormation::getListe();
 }
+
 
 include_once ROOTVIEWS.'view_listeperiodesformations.php';
 

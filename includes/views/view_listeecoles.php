@@ -1,7 +1,15 @@
 <section id="content_body" class="row">
 	<header class="col-12 text-center text-info">Liste des écoles</header>
-
-	<div class="container">
+	<div class="col-12 btnactions">
+		<?php
+			if ($user->isAdmin()){
+				?>
+				<a href="index.php?p=ecoles&a=ajout" class="btn btn-secondary" title="Ajout d'une école">Nouvelle école<span class="fa fa-plus"></span></a>
+				<?php
+			}
+		?>
+	</div>
+	<div class="container mt-2">
 			<?php
 				$script = '';
 				if (count($listeEcoles) == 0){

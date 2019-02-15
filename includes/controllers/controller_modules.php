@@ -52,6 +52,7 @@ if ($action == 'listemodules'){
 	$module = Module::getById($idModule);
 	$listeIntervenants = Intervenant::getListe(Intervenant::class);
 	$listeUnitesEnseignement = $promo->getUnitesEnseignement();
+
 	if (!empty($_POST)){
 		$module->setLibelle(trim($_POST['ttLibelle']));
 		$module->setDetails(trim($_POST['ttResume']));

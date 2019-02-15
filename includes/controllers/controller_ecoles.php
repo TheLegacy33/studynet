@@ -1,4 +1,5 @@
 <?php
+	$action = isset($_GET['a'])?$_GET['a']:'liste';
 	include_once ROOTMODELS.'model_ecole.php';
 
 	$listeEcoles = Ecole::getListe();

@@ -142,11 +142,13 @@
 		}
 
 		public function getDateRecup(){
-			return $this->daterecup;
+			$ret = new DataTime($this->daterecup);
+			return $ret->format('d/m/Y');;
 		}
 
 		public function getDateRetour(){
-			return $this->dateretour;
+			$ret = new DateTime($this->dateretour);
+			return $ret->format('d/m/Y');
 		}
 
 		public function getFicSujet(){

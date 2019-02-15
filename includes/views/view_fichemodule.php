@@ -13,7 +13,7 @@
 						foreach ($listeIntervenants as $intervenant){
 							$selected = '';
 							if (!is_null($module->getIntervenant())){
-								if ($intervenant->getId() == $module->getIntervenant()->getId()){
+								if ($intervenant->equals($module->getIntervenant())){
 									$selected = ' selected';
 								}
 							}
