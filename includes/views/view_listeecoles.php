@@ -4,7 +4,7 @@
 		<?php
 			if ($user->isAdmin()){
 				?>
-				<a href="index.php?p=ecoles&a=ajout" class="btn btn-secondary" title="Ajout d'une école">Nouvelle école<span class="fa fa-plus"></span></a>
+				<a href="index.php?p=ecoles&a=ajoutecole" class="btn btn-secondary" title="Ajout d'une école">Nouvelle école<span class="fa fa-plus"></span></a>
 				<?php
 			}
 		?>

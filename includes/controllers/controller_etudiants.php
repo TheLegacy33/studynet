@@ -1,5 +1,5 @@
 <?php
-$action = isset($_GET['a'])?$_GET['a']:'listemodules';
+$action = isset($_GET['a'])?$_GET['a']:'listeetudiants';
 include_once ROOTMODELS.'model_periodeformation.php';
 
 $idPf = isset($_GET['idpf'])?$_GET['idpf']:0;
