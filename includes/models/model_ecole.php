@@ -18,12 +18,20 @@
 			return $this->nom;
 		}
 
+		public function setNom($nom){
+			$this->nom = $nom;
+		}
+
 		public function getId(){
 			return $this->id;
 		}
 
 		public function getLogo(){
 			return $this->logo;
+		}
+
+		public function setLogo($logo){
+			$this->logo = $logo;
 		}
 
 		public function fillPromotions($listePromos){

@@ -2,9 +2,9 @@
 	<a href="index.php?p=periodesformation&a=listemodules&idpf=<?php print($pf->getId()); ?>" title="Retour à la liste des modules"><< Retour</a>
 </nav>
 <form action="" method="post" id="frmSaisie">
-	<div class="panel panel-default text-justify">
-		<div class="panel-heading">Informations du module</div>
-		<div class="panel-body">
+	<div class="card card-default text-justify">
+		<div class="card-header text-uppercase">Informations du module</div>
+		<div class="card-body">
 			<div><label for="ttLibelle">Libelle : </label><input type="text" name="ttLibelle" id="ttLibelle" value="<?php print($module->getLibelle()); ?>" /></div>
 			<div><label for="cbIntervenant">Intervenant : </label>
 				<select id="cbIntervenant" name="cbIntervenant">
@@ -47,8 +47,8 @@
 			}
 			?>
 		</div>
-		<div class="panel-footer formbtn">
-			<button type="submit" class="btn btn-success">Enregistrer<span class="fa fa-save"></span></button>
+		<div class="card-footer formbtn">
+			<button type="submit" class="btn btn-success mr-3">Enregistrer<span class="fa fa-save"></span></button>
 			<button type="reset" class="btn btn-secondary">Annuler<span class="fa fa-ban"></span></button>
 		</div>
 	</div>

@@ -28,8 +28,8 @@
 							$script .= '</div>';
 							$script .= '<div class="card-footer">';
 								$script .= '<span><a href="index.php?p=promotions&a=listepromotions&idecole='.$ecole->getId().'" title="Liste des promotions" class="fas fa-list align-middle"><span class="badge badge-info align-middle">'.$ecole->getNbPromos().'</span></a></span>';
-								$script .= '<span><a href="index.php?p=ecoles&a=edit&id='.$ecole->getId().'" title="Modifier"class="fas fa-edit align-middle"></a></span>';
-								$script .= '<span><a href="index.php?p=ecoles&a=del&id='.$ecole->getId().'" title="Supprimer" class="fas fa-trash-alt alt-middle"></a></span>';
+								$script .= '<span><a href="index.php?p=ecoles&a=editecole&idecole='.$ecole->getId().'" title="Modifier"class="fas fa-edit align-middle"></a></span>';
+								$script .= '<span><a href="index.php?p=ecoles&a=delecole&idecole='.$ecole->getId().'" title="Supprimer" class="fas fa-trash-alt alt-middle"></a></span>';
 							$script .= '</div>';
 						$script .= '</div>';
 

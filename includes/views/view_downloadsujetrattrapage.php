@@ -1,7 +1,7 @@
 <section id="content_body" class="row">
-	<div class="panel panel-warning text-justify">
-		<div class="panel-heading">Téléchargement du sujet de rattrapage</div>
-		<div class="panel-body">
+	<div class="card card-warning text-justify">
+		<div class="card-header text-uppercase">Téléchargement du sujet de rattrapage</div>
+		<div class="card-body">
 			<p class="text-danger">
                 L'accès à cette page a déclenché le compteur de temps pour la limite donnée pour ce sujet qui est de <mark><?php print($rattrapage->getDelai()) ?></mark>.<br />
                 Vous devrez transmettre votre réponse avant le temps imparti faute de quoi votre rattrapage ne sera pas validé.
