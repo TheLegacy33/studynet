@@ -15,8 +15,8 @@
 			?>
 		</div>
 		<div class="card-footer formbtn">
-			<button type="submit" class="btn btn-success mr-3">Enregistrer<span class="glyphicon glyphicon-floppy-save"></span></button>
-			<button type="reset" class="btn btn-default">Annuler<span class="glyphicon glyphicon-floppy-remove"></span></button>
+			<button type="submit" class="btn btn-success mr-3">Enregistrer<span class="fa fa-save"></span></button>
+			<button type="reset" class="btn btn-secondary">Annuler<span class="fa fa-ban"></span></button>
 		</div>
 	</div>
 </form>

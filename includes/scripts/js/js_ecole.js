@@ -3,7 +3,17 @@ $(document).ready(function(){
 });
 
 $("input").change(function(){
-	$("button[type=submit]").attr("disabled", false);
+	if ($("#ttNom").val().trim() != ''){
+		$("button[type=submit]").attr("disabled", false);
+	}else{
+		$("button[type=submit]").attr("disabled", true);
+	}
+}).blur(function(){
+	if ($("#ttNom").val().trim() != ''){
+		$("button[type=submit]").attr("disabled", false);
+	}else{
+		$("button[type=submit]").attr("disabled", true);
+	}
 });
 
 $("button[type=reset]").click(function(){

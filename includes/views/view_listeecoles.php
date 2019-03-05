@@ -16,7 +16,7 @@
 					$script .= '<tr><td colspan="8">Aucune donnée disponible !</td></tr>';
 				}else{
 					$num = 0;
-					$script .= '<div class="card-deck text-center">';
+					$script .= '<div class="row card-deck text-center">';
 					foreach ($listeEcoles as $ecole){
 						$num++;
 						$script .= '<div class="card mb-4 shadow-lg">';
@@ -27,9 +27,9 @@
 								$script .= '<img src="'.ROOTHTMLUPLOADS.$ecole->getLogo().'" class="logoecole" />';
 							$script .= '</div>';
 							$script .= '<div class="card-footer">';
-								$script .= '<span><a href="index.php?p=promotions&a=listepromotions&idecole='.$ecole->getId().'" title="Liste des promotions" class="fas fa-list align-middle"><span class="badge badge-info align-middle">'.$ecole->getNbPromos().'</span></a></span>';
-								$script .= '<span><a href="index.php?p=ecoles&a=editecole&idecole='.$ecole->getId().'" title="Modifier"class="fas fa-edit align-middle"></a></span>';
-								$script .= '<span><a href="index.php?p=ecoles&a=delecole&idecole='.$ecole->getId().'" title="Supprimer" class="fas fa-trash-alt alt-middle"></a></span>';
+								$script .= '<span><a href="index.php?p=promotions&a=listepromotions&idecole='.$ecole->getId().'" title="Liste des promotions" class="fa fa-list align-middle"><span class="badge badge-info align-middle">'.$ecole->getNbPromos().'</span></a></span>';
+								$script .= '<span><a href="index.php?p=ecoles&a=editecole&idecole='.$ecole->getId().'" title="Modifier"class="fa fa-edit align-middle"></a></span>';
+								$script .= '<span><a href="index.php?p=ecoles&a=delecole&idecole='.$ecole->getId().'" title="Supprimer" class="fa fa-trash-alt alt-middle"></a></span>';
 							$script .= '</div>';
 						$script .= '</div>';
 

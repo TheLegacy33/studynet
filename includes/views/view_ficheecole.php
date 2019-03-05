@@ -1,5 +1,5 @@
 <nav class="navinterne">
-	<a href="index.php?p=ecole&a=listeecoles" title="Retour à la liste des écoles"><< Retour</a>
+	<a href="index.php?p=ecoles&a=listeecoles" title="Retour à la liste des écoles"><< Retour</a>
 </nav>
 <form action="" method="post" id="frmSaisie" enctype="multipart/form-data">
 	<div class="card text-justify">

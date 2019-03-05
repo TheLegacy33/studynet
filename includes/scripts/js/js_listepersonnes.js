@@ -16,6 +16,8 @@ $(document).ready(function(){
 
 					}
 				});
+			}else{
+				return false;
 			}
 		});
 	});
@@ -60,6 +62,8 @@ $(document).ready(function(){
 
 					}
 				});
+			}else{
+				return false;
 			}
 		});
 	});
@@ -84,6 +88,8 @@ $(document).ready(function(){
 
 					}
 				});
+			}else{
+				return false;
 			}
 		});
 	});

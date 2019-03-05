@@ -32,6 +32,6 @@
 		</div>
 	</div>
 	<footer class="card-footer formbtn">
-		<button type="submit" class="btn btn-success">Envoyer<span class="glyphicon glyphicon-floppy-open"></span></button>
+		<button type="submit" class="btn btn-success">Envoyer<span class="fa fa-save"></span></button>
 	</footer>
 </form>

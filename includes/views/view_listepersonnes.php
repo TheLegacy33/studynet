@@ -1,20 +1,21 @@
 <section id="content_body" class="row">
 	<header class="col-12 text-center text-info">Liste des personnes</header>
-	<section id="divfiltre" class="text-center">
+	<section id="divfiltre" class="col-12 text-center">
 		<select id="cbFiltreType">
 			<?php
-			print('<option value="*"'.(($type=='*')?' selected':'').'>Tous</option>');
-			if ($user->isAdmin()){
-				print('<option value="administrateur"'.(($type=='administrateur')?' selected':'').'>Administrateurs</option>');
-			}
-			print('<option value="'.Etudiant::class.'"'.(($type==Etudiant::class)?' selected':'').'>Etudiant</option>');
-			print('<option value="'.Intervenant::class.'"'.(($type==Intervenant::class)?' selected':'').'>Intervenant</option>');
-			print('<option value="'.ResponsablePedago::class.'"'.(($type==ResponsablePedago::class)?' selected':'').'>Responsables Pédagogiques</option>');
-			print('<option value="visiteur"'.(($type=='visiteur')?' selected':'').'>Visiteurs</option>');
+				$script = '<option value="*"'.(($type=='*')?' selected':'').'>Tous</option>';
+				if ($user->isAdmin()){
+					$script .= '<option value="administrateur"'.(($type=='administrateur')?' selected':'').'>Administrateurs</option>';
+				}
+				$script .= '<option value="'.Etudiant::class.'"'.(($type==Etudiant::class)?' selected':'').'>Etudiant</option>';
+				$script .= '<option value="'.Intervenant::class.'"'.(($type==Intervenant::class)?' selected':'').'>Intervenant</option>';
+				$script .= '<option value="'.ResponsablePedago::class.'"'.(($type==ResponsablePedago::class)?' selected':'').'>Responsables Pédagogiques</option>';
+				$script .= '<option value="visiteur"'.(($type=='visiteur')?' selected':'').'>Visiteurs</option>';
+				print ($script);
 			?>
 		</select>
 	</section>
-	<section class="row">
+	<section class="col-12 mt-2">
 		<table>
 			<tr>
 				<th style="width: 200px;">Nom</th>
@@ -35,26 +36,26 @@
 						$script .= '<td>'.$personne->get_class().'</td>';
 
 						if ($personne->getUserAuth()->exists()){
-							$hasAuth = 'Oui ('.$personne->getUserAuth()->getLogin().')&nbsp;<a style="cursor: pointer;" data-name="renewpassword" data-id="'.$personne->getPersId().'" class="glyphicon glyphicon-refresh" title="Renouveler le mot de passe"></a>';
-							$hasAuth .= '&nbsp;<a style="cursor: pointer;" data-name="dropuserauth" data-id="'.$personne->getPersId().'" class="glyphicon glyphicon-remove" title="Supprimer les informations d\'authentification"></a>';
+							$hasAuth = 'Oui ('.$personne->getUserAuth()->getLogin().')&nbsp;<a href="#" style="cursor: pointer;" data-name="renewpassword" data-id="'.$personne->getPersId().'" title="Renouveler le mot de passe"><span class="fas fa-sync-alt"></span></a>';
+							$hasAuth .= '&nbsp;<a href="#" style="cursor: pointer;" data-name="dropuserauth" data-id="'.$personne->getPersId().'" title="Supprimer les informations d\'authentification"><span class="fa fa-trash-alt"></span></a>';
 						}else{
 							$hasAuth = 'Non';
 						}
 
 						$script .= '<td>'.$hasAuth.'</td>';
 
-						$script .= '<td style="width: 30px;"><a href="index.php?p=personnes&a=editprofile&idpersonne='.$personne->getPersId().'" title="Editer le profil"><span class="glyphicon glyphicon-edit"></span></a></td>';
+						$script .= '<td style="width: 30px;"><a href="index.php?p=personnes&a=editprofile&idpersonne='.$personne->getPersId().'" title="Editer le profil"><span class="fa fa-edit"></span></a></td>';
 						if ($user->isAdmin()) {
 							$script .= '<td style="width: 30px;">';
 							if (trim($personne->getEmail()) != ''){
-								$script .= '<a style="cursor: pointer;" data-name="sendmail" data-id="'.$personne->getPersId().'" title="Envoyer les informations du profil"><span class="glyphicon glyphicon-envelope"></span></a></td>';
+								$script .= '<a href="#" style="cursor: pointer;" data-name="sendmail" data-id="'.$personne->getPersId().'" title="Envoyer les informations du profil"><span class="fas fa-at"></span></a></td>';
 							}else{
-								$script .= '<span class="glyphicon glyphicon-envelope"></span>';
+								$script .= '<span class="fa fa-at"></span>';
 							}
 							$script .= '</td>';
 
 							if (($personne->getNomComplet() != $user->getNomComplet()) AND $personne->getNom() != "VISITEUR" AND !$personne->isAdmin()){
-								$script .= '<td style="width: 30px;"><a data-name="dropuser" data-id="'.$personne->getPersId().'" href="index.php?p=personnes&a=delete&idpersonne='.$personne->getPersId().'" title="Supprimer"><span class="glyphicon glyphicon-remove"></span></a></td>';
+								$script .= '<td style="width: 30px;"><a data-name="dropuser" data-id="'.$personne->getPersId().'" href="index.php?p=personnes&a=delete&idpersonne='.$personne->getPersId().'" title="Supprimer"><span class="fa fa-trash-alt"></span></a></td>';
 							}else{
 								$script .= '<td style="width: 30px;"></td>';
 							}

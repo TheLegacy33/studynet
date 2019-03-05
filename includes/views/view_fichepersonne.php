@@ -18,9 +18,9 @@
         ?>
 	</section>
 	<footer class="formbtn">
-		<button type="submit" class="btn btn-success">Enregistrer<span class="glyphicon glyphicon-floppy-save"></span></button>
-		<button type="reset" class="btn btn-default">Annuler<span class="glyphicon glyphicon-floppy-remove"></span></button>
-		<button type="button" class="btn btn-default" title="Informations de connexion">Authentification<span class="glyphicon glyphicon-lock"></span></button>
+		<button type="submit" class="btn btn-success">Enregistrer<span class="fa fa-save"></span></button>
+		<button type="reset" class="btn btn-secondary">Annuler<span class="fa fa-ban"></span></button>
+		<button type="button" class="btn btn-secondary" title="Informations de connexion">Authentification<span class="fa fa-user-lock"></span></button>
 	</footer>
 	<section id="infosconn">
 		<header>Informations de connexion</header>
