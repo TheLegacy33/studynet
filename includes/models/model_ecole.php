@@ -34,8 +34,12 @@
 			$this->logo = $logo;
 		}
 
-		public function fillPromotions($listePromos){
-			$this->promotions = $listePromos;
+		public function fillPromotions(){
+			$this->promotions = Promotion::getListeFromEcole($this->id);
+		}
+
+		public function getPromos(){
+			return $this->promotions;
 		}
 
 		public function getNbPromos(){
@@ -48,7 +52,7 @@
 			$retVal = array();
 			while ($SQLRow = $SQLStmt->fetchObject()){
 				$newEcole = new Ecole($SQLRow->eco_id, $SQLRow->eco_nom, $SQLRow->eco_logo);
-				$newEcole->fillPromotions(Promotion::getListeFromEcole($SQLRow->eco_id));
+				$newEcole->fillPromotions();
 				$retVal[] = $newEcole;
 			}
 			$SQLStmt->closeCursor();

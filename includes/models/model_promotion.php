@@ -1,6 +1,6 @@
 <?php
 include_once ROOTMODELS.'DAO.php';
-include_once ROOTMODELS.'model_etudiant.php';
+//include_once ROOTMODELS.'model_etudiant.php';
 include_once ROOTMODELS.'model_ecole.php';
 include_once ROOTMODELS.'model_uniteenseignement.php';
 
@@ -8,17 +8,25 @@ class Promotion {
 	private $id, $libelle, $ecole;
 	private $etudiants, $unitesenseignement;
 
-	public function __construct($id = 0, $libelle, $ecole){
+	public function __construct($id = 0, $libelle = '', $ecole = null){
 		$this->id = $id;
 		$this->libelle = $libelle;
 		$this->ecole = $ecole;
 
-		$this->etudiants = array();
+//		$this->etudiants = array();
 		$this->unitesenseignement = array();
+	}
+
+	public function setLibelle($libelle){
+		$this->libelle = $libelle;
 	}
 
 	public function getLibelle(){
 		return $this->libelle;
+	}
+
+	public function setEcole($ecole){
+		$this->ecole = $ecole;
 	}
 
 	public function getEcole(){
@@ -29,13 +37,9 @@ class Promotion {
 		return $this->id;
 	}
 
-	public function getEffectif(){
-		return count($this->etudiants);
-	}
-
-	public function fillStudents($listeEtudiants){
-		$this->etudiants = $listeEtudiants;
-	}
+//	public function fillStudents($listeEtudiants){
+//		$this->etudiants = $listeEtudiants;
+//	}
 
 	public function getUnitesEnseignement(){
 		return $this->unitesenseignement;
@@ -51,7 +55,7 @@ class Promotion {
 		$retVal = array();
 		while ($SQLRow = $SQLStmt->fetchObject()){
 			$newPromo = new Promotion($SQLRow->promo_libelle, Ecole::getById($SQLRow->eco_id));
-			$newPromo->fillStudents(Etudiant::getListeFromPromo($SQLRow->promo_id));
+//			$newPromo->fillStudents(Etudiant::getListeFromPromo($SQLRow->promo_id));
 			$newPromo->fillUnitesEnseignement(UniteEnseignement::getListeFromPromo($SQLRow->promo_id));
 			$retVal[] = $newPromo;
 		}
@@ -66,7 +70,7 @@ class Promotion {
 		$retVal = array();
 		while ($SQLRow = $SQLStmt->fetchObject()){
 			$newPromo = new Promotion($SQLRow->promo_id, $SQLRow->promo_libelle, Ecole::getById($SQLRow->eco_id));
-			$newPromo->fillStudents(Etudiant::getListeFromPromo($SQLRow->promo_id));
+//			$newPromo->fillStudents(Etudiant::getListeFromPromo($SQLRow->promo_id));
 			$newPromo->fillUnitesEnseignement(UniteEnseignement::getListeFromPromo($SQLRow->promo_id));
 			$retVal[] = $newPromo;
 		}
@@ -89,7 +93,7 @@ class Promotion {
 		$SQLStmt->execute();
 		$SQLRow = $SQLStmt->fetchObject();
 		$newPromo = new Promotion($SQLRow->promo_id, $SQLRow->promo_libelle, Ecole::getById($SQLRow->eco_id));
-		$newPromo->fillStudents(Etudiant::getListeFromPromo($SQLRow->promo_id));
+//		$newPromo->fillStudents(Etudiant::getListeFromPromo($SQLRow->promo_id));
 		$newPromo->fillUnitesEnseignement(UniteEnseignement::getListeFromPromo($SQLRow->promo_id));
 		$SQLStmt->closeCursor();
 		return $newPromo;
@@ -104,9 +108,36 @@ class Promotion {
 		$SQLStmt->execute();
 		$SQLRow = $SQLStmt->fetchObject();
 		$newPromo = new Promotion($SQLRow->promo_id, $SQLRow->promo_libelle, Ecole::getById($SQLRow->eco_id));
-		$newPromo->fillStudents(Etudiant::getListeFromPromo($SQLRow->promo_id));
+//		$newPromo->fillStudents(Etudiant::getListeFromPromo($SQLRow->promo_id));
 		$newPromo->fillUnitesEnseignement(UniteEnseignement::getListeFromPromo($SQLRow->promo_id));
 		$SQLStmt->closeCursor();
 		return $newPromo;
+	}
+
+	public static function update($promo){
+		$SQLQuery = "UPDATE promotion SET promo_libelle = :nom WHERE promo_id = :idpromo";
+		$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
+		$SQLStmt->bindValue(':nom', $promo->getLibelle());
+		$SQLStmt->bindValue(':idpromo', $promo->getId());
+
+		if (!$SQLStmt->execute()){
+			var_dump($SQLStmt->errorInfo());
+			return false;
+		}else{
+			return true;
+		}
+	}
+
+	public static function insert($promo){
+		$SQLQuery = 'INSERT INTO promotion(promo_libelle, eco_id) VALUES (:nom, :idecole)';
+		$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
+		$SQLStmt->bindValue(':nom', $promo->getLibelle());
+		$SQLStmt->bindValue(':idecole', $promo->getEcole()->getId());
+		if (!$SQLStmt->execute()){
+			var_dump($SQLStmt->errorInfo());
+			return false;
+		}else{
+			return true;
+		}
 	}
 }
