@@ -4,8 +4,13 @@
 
 	if ($action == 'listepromotions'){
 		$idEcole = isset($_GET['idecole'])?$_GET['idecole']:0;
-		$ecole = Ecole::getById($idEcole);
-		$ecole->fillPromotions();
+		if ($idEcole == 0){
+			$listePromos = Promotion::getListe();
+		}else{
+			$ecole = Ecole::getById($idEcole);
+			$ecole->fillPromotions();
+			$listePromos = $ecole->getPromos();
+		}
 		include_once ROOTVIEWS.'view_listepromotions.php';
 	}elseif ($action == 'ajoutpromo'){
 		$includeJs = true;

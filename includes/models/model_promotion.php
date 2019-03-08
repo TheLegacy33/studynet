@@ -50,11 +50,11 @@ class Promotion {
 	}
 
 	public static function getListe(){
-		$SQLStmt = DAO::getInstance()->prepare("SELECT * FROM promotion");
+		$SQLStmt = DAO::getInstance()->prepare("SELECT * FROM promotion INNER JOIN ecole ON promotion.eco_id = ecole.eco_id ORDER BY eco_nom");
 		$SQLStmt->execute();
 		$retVal = array();
 		while ($SQLRow = $SQLStmt->fetchObject()){
-			$newPromo = new Promotion($SQLRow->promo_libelle, Ecole::getById($SQLRow->eco_id));
+			$newPromo = new Promotion($SQLRow->promo_id, $SQLRow->promo_libelle, Ecole::getById($SQLRow->eco_id));
 //			$newPromo->fillStudents(Etudiant::getListeFromPromo($SQLRow->promo_id));
 			$newPromo->fillUnitesEnseignement(UniteEnseignement::getListeFromPromo($SQLRow->promo_id));
 			$retVal[] = $newPromo;

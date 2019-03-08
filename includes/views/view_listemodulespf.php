@@ -1,4 +1,4 @@
-<section id="content_body" class="row">
+<section id="content_body" class="container">
 	<header class="col-12 text-center text-info header-section">
 		Liste des modules
 	</header>
@@ -6,7 +6,7 @@
 		if ($user->isAdmin() OR $pf->getResponsable() == $user){
 			?>
 			<div class="col-12 btnactions">
-				<a href="index.php?p=periodesformation&a=ajoutmodule&idpf=<?php print($pf->getId()); ?>" class="btn btn-secondary" title="Ajout d'un module">Nouveau module<span class="glyphicon glyphicon-plus"></span></a>
+				<a href="index.php?p=periodesformation&a=ajoutmodule&idpf=<?php print($pf->getId()); ?>" class="btn btn-secondary" title="Ajout d'un module">Nouveau module<span class="fa fa-plus"></span></a>
 			</div>
 			<?php
 		}

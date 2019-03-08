@@ -3,6 +3,7 @@ $action = isset($_GET['a'])?$_GET['a']:'listepf';
 include_once ROOTMODELS.'model_periodeformation.php';
 
 $promo = null;
+$pf = null;
 $active = isset($_GET['active'])?$_GET['active']:'1';
 if ($action == 'listepf' && isset($_GET['idpromo'])) {
 	$idPromo = $_GET['idpromo'];
@@ -14,9 +15,9 @@ if ($action == 'listepf' && isset($_GET['idpromo'])) {
 		$promo = null;
 	}else{
 		$promo = Promotion::getByIdPf($idPf);
+		$pf = Periodeformation::getById($idPf);
 	}
 	$listePf = Periodeformation::getListe($idPf, $active);
-
 }
 
 if ($action == 'listepf'){
