@@ -19,7 +19,7 @@ if (!is_null($promo)){
 ?>
 <section id="content_body" class="container">
 	<section class="row card-deck justify-content-center">
-		<div class="card bg-light mb-4 shadow-lg text-center" style="max-width: 200px">
+		<div class="card bg-light mb-4 shadow-lg text-center" style="max-width: 300px">
 			<div class="card-header">Ecole</div>
 			<div class="card-body">
 				<?php
@@ -31,7 +31,7 @@ if (!is_null($promo)){
 				?>
 			</div>
 		</div>
-		<div class="card bg-light mb-4 shadow-lg text-center" style="max-width: 200px">
+		<div class="card bg-light mb-4 shadow-lg text-center" style="max-width: 300px">
 			<div class="card-header">Promotion</div>
 			<div class="card-body">
 				<?php
@@ -50,7 +50,7 @@ if (!is_null($promo)){
 		<?php
 			if ($action == 'listepf'){
 				?>
-				<div class="card bg-light mb-4 shadow-lg text-center" style="max-width: 200px">
+				<div class="card bg-light mb-4 shadow-lg text-center" style="max-width: 300px">
 					<div class="card-header">Statut</div>
 					<div class="card-body">
 						<select name="cbactive">
@@ -72,7 +72,7 @@ if (!is_null($promo)){
 			}else{
 				if (!is_null($pf)){
 				?>
-				<div class="card bg-light mb-4 shadow-lg text-center" style="max-width: 200px">
+				<div class="card bg-light mb-4 shadow-lg text-center" style="max-width: 300px">
 					<div class="card-header">Session</div>
 					<div class="card-body">
 						<p class="card-text">Du <?php print($pf->getDateDebut()); ?><br />Au <?php print($pf->getDateFin()); ?></p>
@@ -92,6 +92,13 @@ if (!is_null($promo)){
 	if ($action == 'listepf'){
 		?>
 			<header class="col-12 text-center text-info">Liste des périodes de formations</header>
+			<div class="col-12 btnactions">
+				<?php
+					if ($user->isAdmin() AND isset($promo)){
+						print('<a href="index.php?p=periodesformation&a=ajoutpf&idpromo='.$promo->getId().'" class="btn btn-secondary" title="Ajout d\'une période de formation">Nouvelle période de formation<span class="fa fa-plus"></span></a>');
+					}
+				?>
+			</div>
 			<div class="col-12 mt-2">
 				<table>
 					<tr>

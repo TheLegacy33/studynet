@@ -20,7 +20,7 @@
 				$script .= '<div class="row card-deck justify-content-center">';
 				foreach ($listePromos as $promo){
 					$num++;
-					$script .= '<div class="card mb-4 bg-light shadow-lg text-center" style="max-width: 180px">';
+					$script .= '<div class="card mb-4 bg-light shadow-lg text-center" style="max-width: 300px">';
 					$script .= '<div class="card-header text-light bg-secondary">';
 					$script .= '<h4 class="my-0 font-weight-normal">'.$promo->getEcole()->getNom().'</h4>';
 					$script .= '</div>';
