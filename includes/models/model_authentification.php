@@ -2,11 +2,10 @@
 	include_once ROOTMODELS.'DAO.php';
 	include_once ROOTMODELS.'model_user.php';
 
-
 	class Authentification {
 		private static $user;
 
-		public static function setUser($user){
+		public static function setUser(Personne $user){
 			self::$user = $user;
 		}
 

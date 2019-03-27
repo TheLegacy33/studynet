@@ -262,13 +262,14 @@ class Personne{
 
         $retVal = array();
         while ($SQLRow = $SQLStmt->fetchObject()){
-            if (Personne::getType($SQLRow->pers_id) == Intervenant::class){
+			$userType = Personne::getType($SQLRow->pers_id);
+            if ($userType == Intervenant::class){
             	$idInt = Intervenant::getIdByIdPers($SQLRow->pers_id);
                 $newPers = new Intervenant($idInt, $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->pers_email, $SQLRow->pers_id);
-            }elseif (Personne::getType($SQLRow->pers_id) == ResponsablePedago::class){
+            }elseif ($userType == ResponsablePedago::class){
             	$idResp = ResponsablePedago::getIdByIdPers($SQLRow->pers_id);
                 $newPers = new ResponsablePedago($idResp, $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->pers_email, $SQLRow->pers_id);
-            }elseif (Personne::getType($SQLRow->pers_id) == Etudiant::class){
+            }elseif ($userType == Etudiant::class){
             	$idEtud = Etudiant::getIdByIdPers($SQLRow->pers_id);
                 $newPers = new Etudiant($idEtud, $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->pers_email, Etudiant::getPhotoById($idEtud), $SQLRow->pers_id);
             }else{
@@ -286,13 +287,14 @@ class Personne{
 		$SQLStmt->bindValue(':idpers', $id);
 		$SQLStmt->execute();
 		$SQLRow = $SQLStmt->fetchObject();
-		if (self::getType($SQLRow->pers_id) == Intervenant::class){
+		$userType = self::getType($SQLRow->pers_id);
+		if ($userType == Intervenant::class){
 			$idInt = Intervenant::getIdByIdPers($SQLRow->pers_id);
 			$newPers = new Intervenant($idInt, $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->pers_email, $SQLRow->pers_id);
-		}elseif (self::getType($SQLRow->pers_id) == ResponsablePedago::class){
+		}elseif ($userType == ResponsablePedago::class){
 			$idResp = ResponsablePedago::getIdByIdPers($SQLRow->pers_id);
 			$newPers = new ResponsablePedago($idResp, $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->pers_email, $SQLRow->pers_id);
-		}elseif (self::getType($SQLRow->pers_id) == Etudiant::class){
+		}elseif ($userType == Etudiant::class){
 			$idEtud = Etudiant::getIdByIdPers($SQLRow->pers_id);
 			$newPers = new Etudiant($idEtud, $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->pers_email, Etudiant::getPhotoById($idEtud), $SQLRow->pers_id);
 		}else{

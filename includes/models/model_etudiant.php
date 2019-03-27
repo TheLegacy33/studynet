@@ -6,7 +6,7 @@
 	include_once ROOTMODELS.'model_evaluationmodule.php';
 
 	class Etudiant extends Personne {
-		private $etu_id, $promo, $photo;
+		private $etu_id, , $photo; //TODO : remplacer promo par pf
 
 		public function __construct($id = 0, $nom = '', $prenom = '', $email = '', $photo = '', $idPers = 0){
 			parent::__construct($idPers, $nom, $prenom, $email);

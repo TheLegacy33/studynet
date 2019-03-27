@@ -77,7 +77,7 @@
 			return $newPromo;
 		}
 
-		public static function update($ecole){
+		public static function update(Ecole $ecole){
 			$SQLQuery = "UPDATE ecole SET eco_nom = :nom, eco_logo = :logo WHERE eco_id = :idecole";
 			$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
 			$SQLStmt->bindValue(':nom', $ecole->getNom());
@@ -92,7 +92,7 @@
 			}
 		}
 
-		public static function insert($ecole){
+		public static function insert(Ecole $ecole){
 			$SQLQuery = 'INSERT INTO ecole(eco_nom, eco_logo) ';
 			$SQLQuery .= 'VALUES (:nom, :logo)';
 			$SQLStmt = DAO::getInstance()->prepare($SQLQuery);

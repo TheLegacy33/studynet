@@ -96,7 +96,7 @@
 		    return $newUser;
         }
 
-        public static function update($userAuth){
+        public static function update(User $userAuth){
             $SQLQuery = 'UPDATE userAuth SET us_login = :loginuser, us_password = :passworduser WHERE us_id = :iduser';
             $stmt = DAO::getInstance()->prepare($SQLQuery);
             $stmt->bindValue(':loginuser', $userAuth->getLogin());
@@ -106,7 +106,7 @@
 			$userAuth->exists(true);
         }
 
-        public static function insert($userAuth){
+        public static function insert(User $userAuth){
 			$SQLQuery = 'INSERT INTO userAuth(us_login, us_password) VALUES (:loginuser, :passworduser)';
 			$stmt = DAO::getInstance()->prepare($SQLQuery);
 			$stmt->bindValue(':loginuser', $userAuth->getLogin());
@@ -116,7 +116,7 @@
 			$userAuth->setId(DAO::getInstance()->lastInsertId());
 		}
 
-		public static function delete($idUSer){
+		public static function delete(User $idUSer){
 			$SQLQuery = 'DELETE FROM userAuth WHERE us_id = :idUser';
 			$stmt = DAO::getInstance()->prepare($SQLQuery);
 			$stmt->bindValue(':idUser', $idUSer);

@@ -19,17 +19,16 @@
 				    $userType = Personne::getType($user->getId());
 				    if ($userType == Etudiant::class){
 				        $userTyped = new Etudiant(Etudiant::getIdByIdPers($user->getPersId()));
-				        $userTyped->clonepers($user);
-				        $user = $userTyped;
                     }elseif ($userType == ResponsablePedago::class){
                         $userTyped = new ResponsablePedago(ResponsablePedago::getIdByIdPers($user->getPersId()));
-                        $userTyped->clonepers($user);
-                        $user = $userTyped;
                     }elseif ($userType == Intervenant::class){
                         $userTyped = new Intervenant(Intervenant::getIdByIdPers($user->getPersId()));
-                        $userTyped->clonepers($user);
-                        $user = $userTyped;
                     }
+					$userTyped->clonepers($user);
+				    $user = $userTyped;
+
+				    var_dump($user->getUserAuth());
+
 					Authentification::setUser($user);
 					Authentification::saveSession();
 					header('Location: '.ROOTHTML);
