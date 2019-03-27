@@ -1,5 +1,5 @@
 <?php
-include_once ROOTMODELS.'model_auth.php';
+include_once ROOTMODELS . 'model_authentification.php';
 
 if ($action == 'profile'){
 	//Visu profil

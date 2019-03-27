@@ -3,59 +3,7 @@ include_once ROOTMODELS.'DAO.php';
 include_once ROOTMODELS.'model_etudiant.php';
 include_once ROOTMODELS.'model_module.php';
 include_once ROOTMODELS.'model_responsablepedago.php';
-
-class StatutPeriodeFormation{
-	private $statpf_id, $statpf_libelle;
-
-	public function __construct($id = 0, $libelle = ''){
-		$this->statpf_id = $id;
-		$this->statpf_libelle = $libelle;
-	}
-
-	public function getId(){
-		return $this->statpf_id;
-	}
-
-	public function getLibelle(){
-		return $this->statpf_libelle;
-	}
-
-	public static function getById($id){
-		$SQLStmt = DAO::getInstance()->prepare("SELECT * FROM statutpf WHERE statpf_id = :idstatut");
-		$SQLStmt->bindValue(':idstatut', $id);
-		$SQLStmt->execute();
-		$SQLRow = $SQLStmt->fetchObject();
-		$newStatut = new StatutPeriodeFormation($SQLRow->statpf_id, $SQLRow->statpf_libelle);
-		$SQLStmt->closeCursor();
-		return $newStatut;
-	}
-
-	public static function getByLibelle($libelle){
-		$SQLStmt = DAO::getInstance()->prepare("SELECT * FROM statutpf WHERE statpf_libelle = :libstatut");
-		$SQLStmt->bindValue(':libstatut', $libelle);
-		$SQLStmt->execute();
-		$SQLRow = $SQLStmt->fetchObject();
-		$newStatut = new StatutPeriodeFormation($SQLRow->statpf_id, $SQLRow->statpf_libelle);
-		$SQLStmt->closeCursor();
-		return $newStatut;
-	}
-
-	public static function getListe(){
-		$SQLStmt = DAO::getInstance()->prepare("SELECT * FROM statutpf ORDER BY statpf_libelle");
-		$SQLStmt->execute();
-		$retVal = array();
-		while ($SQLRow = $SQLStmt->fetchObject()){
-			$newStatut = new StatutPeriodeFormation($SQLRow->statpf_id, $SQLRow->statpf_libelle);
-			$retVal[] = $newStatut;
-		}
-		$SQLStmt->closeCursor();
-		return $retVal;
-	}
-
-	public function __toString(){
-		return $this->statpf_libelle;
-	}
-}
+include_once ROOTMODELS.'model_statutperiodeformation.php';
 
 class Periodeformation {
 	private $id, $datedebut, $datefin, $promo, $responsable;
@@ -186,5 +134,32 @@ class Periodeformation {
 		$newPf->setResponsable(ResponsablePedago::getById($SQLRow->resp_id));
 		$SQLStmt->closeCursor();
 		return $newPf;
+	}
+
+	public static function update($pf){
+		$SQLQuery = "UPDATE promotion SET promo_libelle = :nom WHERE promo_id = :idpromo";
+		$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
+		$SQLStmt->bindValue(':nom', $promo->getLibelle());
+		$SQLStmt->bindValue(':idpromo', $promo->getId());
+
+		/*if (!$SQLStmt->execute()){
+			var_dump($SQLStmt->errorInfo());
+			return false;
+		}else{
+			return true;
+		}*/
+	}
+
+	public static function insert($pf){
+		$SQLQuery = 'INSERT INTO promotion(promo_libelle, eco_id) VALUES (:nom, :idecole)';
+		$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
+		$SQLStmt->bindValue(':nom', $promo->getLibelle());
+		$SQLStmt->bindValue(':idecole', $promo->getEcole()->getId());
+		/*if (!$SQLStmt->execute()){
+			var_dump($SQLStmt->errorInfo());
+			return false;
+		}else{
+			return true;
+		}*/
 	}
 }
