@@ -30,3 +30,4 @@
 			return self::$_instance;
 		}
 	}
+?>

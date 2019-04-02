@@ -44,8 +44,8 @@
 			$statut = (isset($_POST['cbStatut']) AND $_POST['cbStatut'] != '0')?StatutPeriodeFormation::getById($_POST['cbStatut']):new StatutPeriodeFormation();
 
 			$newPf = new Periodeformation(0, $dateDebut, $dateFin, $promo, $statut->getId(), $duree);
-			var_dump($newPf->getDateDebut());
-			die();
+
+
 			if (Periodeformation::insert($newPf)){
 				header('Location: index.php?p=periodesformation&a=listepf&idpromo='.$idPromo);
 			}else{

@@ -167,19 +167,19 @@ class Periodeformation {
 
 	public static function insert(Periodeformation $pf){
 		$SQLQuery = 'INSERT INTO periodeformation(pf_datedebut, pf_datefin, pf_duree, promo_id, resp_id, statpf_id) ';
-		$SQLQuery .= 'VALUES (:datedebut, :datefin, :duree, :idpromo, :idresp, ;idstatut)';
+		$SQLQuery .= 'VALUES (:datedebut, :datefin, :duree, :idpromo, :idresp, :idstatut)';
 		$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
-		$SQLStmt->bindValue(':datedebut', $pf->getDateDebut());
-		$SQLStmt->bindValue(':datefin', $pf->getDateFin());
+		$SQLStmt->bindValue(':datedebut', date_fr_to_mysql($pf->getDateDebut()));
+		$SQLStmt->bindValue(':datefin', date_fr_to_mysql($pf->getDateFin()));
 		$SQLStmt->bindValue(':duree', $pf->getDuree());
 		$SQLStmt->bindValue(':idpromo', $pf->getPromo()->getId());
-		$SQLStmt->bindValue(':idresp', $pf->getResponsable()->getId());
+		$SQLStmt->bindValue(':idresp', (is_null($pf->getResponsable())?null:$pf->getResponsable()->getId()));
 		$SQLStmt->bindValue(':idstatut', $pf->getStatut()->getId());
-		/*if (!$SQLStmt->execute()){
+		if (!$SQLStmt->execute()){
 			var_dump($SQLStmt->errorInfo());
 			return false;
 		}else{
 			return true;
-		}*/
+		}
 	}
 }

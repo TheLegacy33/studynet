@@ -78,4 +78,8 @@ function Debug($message = "", $variable = null){
         $debugbar["messages"]->addMessage("Variable : ".$variable);
     }
 }
+
+function date_fr_to_mysql($datefr){
+	return date_create_from_format('d/m/Y', $datefr)->format('Y-m-d');
+}
 ?>

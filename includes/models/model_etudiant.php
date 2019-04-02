@@ -12,7 +12,7 @@
 			parent::__construct($idPers, $nom, $prenom, $email);
 			$this->etu_id = $id;
 			$this->photo = $photo;
-			$this->promo = null;
+			$this->pf = null;
 		}
 
 		public function getId(){
@@ -236,7 +236,7 @@
 		public static function getById($id){
 			$SQLQuery = 'SELECT * FROM etudiant INNER JOIN personne ON etudiant.pers_id = personne.pers_id ';
 			$SQLQuery .= 'INNER JOIN integrer ON etudiant.etu_id = integrer.etu_id ';
-			$SQLQuery .= "WHERE etu_id = :idetudiant";
+			$SQLQuery .= "WHERE etudiant.etu_id = :idetudiant";
 			$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
 			$SQLStmt->bindValue(':idetudiant', $id);
 			$SQLStmt->execute();
@@ -306,7 +306,7 @@
 				return false;
 			}else{
 				$etudiant->setPersId(DAO::getInstance()->lastInsertId());
-				$SQLQuery2 = "INSERT INTO etudiant(etu_photo, pers_id) VALUES (:photo, :idpromo, :idpers)";
+				$SQLQuery2 = "INSERT INTO etudiant(etu_photo, pers_id) VALUES (:photo, :idpers)";
 				$SQLStmt2 = DAO::getInstance()->prepare($SQLQuery2);
                 $SQLStmt2->bindValue(':photo', (!is_null($etudiant->getPhoto())?$etudiant->getPhoto():null));
                 $SQLStmt2->bindValue(':idpers', $etudiant->getPersId());

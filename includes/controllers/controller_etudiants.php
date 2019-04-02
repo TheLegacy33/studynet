@@ -16,13 +16,14 @@ if ($action == 'listeetudiants') {
 		$etudiant->setNom(trim($_POST['ttNom']));
 		$etudiant->setPrenom(trim($_POST['ttPrenom']));
 		$etudiant->setEmail(trim($_POST['ttEmail']));
-		$etudiant->setPromo(Promotion::getByIdPf($idPf));
+		$etudiant->setPf($pf);
+//TODO : Vérifier l'existence de l'étudiant au niveau de la période de formation
 		if (Etudiant::exists($etudiant)){
-			var_dump('Etudiant déjà présent dans cette promo !');
+			var_dump('Etudiant déjà présent !');
 		}else{
 			if (!empty($_FILES)){
 				$photo = $_FILES['ttPhoto'];
-				$newNomPhoto = 'photo_'.$personne->getNom().'_'.$personne->getPrenom().'.'.pathinfo($photo['name'], PATHINFO_EXTENSION);
+				$newNomPhoto = 'photo_'.$etudiant->getNom().'_'.$etudiant->getPrenom().'.'.pathinfo($photo['name'], PATHINFO_EXTENSION);
 				$pathFicPhoto = ROOTUPLOADS.$newNomPhoto;
 				if (!move_uploaded_file($photo['tmp_name'], $pathFicPhoto)){
 					$message = "Une erreur est survenue lors de l'enregistrement de la photo.<br /> Veuillez réessayer plus tard.";
@@ -44,6 +45,7 @@ if ($action == 'listeetudiants') {
 	$scriptname[] = 'js_etudiant.js';
 	$idEtudiant = isset($_GET['idetudiant'])?$_GET['idetudiant']:0;
 	$etudiant = Etudiant::getById($idEtudiant);
+
 	$listeIntervenants = Intervenant::getListe(Intervenant::class);
 	if (!empty($_POST)){
 		$etudiant->setNom(trim($_POST['ttNom']));
@@ -76,7 +78,6 @@ if ($action == 'listeetudiants') {
 		$fichier = $_FILES['ttFichier'];
 		if (is_uploaded_file($fichier['tmp_name'])){
 			$pf = Periodeformation::getById($idPf);
-			$promo = Promotion::getByIdPf($idPf);
 
 			$contenuFichier = file($fichier['tmp_name'], FILE_IGNORE_NEW_LINES);
 			$message = '';
@@ -91,8 +92,11 @@ if ($action == 'listeetudiants') {
 					$message .= 'Erreur sur la ligne '.($numligne + 1).' : '.$ligne.'<br />';
 					$nbErreurs++;
 				}else{
-					$etudiant = new Etudiant(0, $infosLigne[0], $infosLigne[1], (isset($infosLigne[2])?$infosLigne[2]:''));
-					$etudiant->setPromo($promo);
+					$etudiant = new Etudiant();
+					$etudiant->setNom(trim($infosLigne[0]));
+					$etudiant->setPrenom(trim($infosLigne[1]));
+					$etudiant->setEmail(trim((isset($infosLigne[2])?$infosLigne[2]:'')));
+					$etudiant->setPf($pf);
 					if (Etudiant::exists($etudiant)){
 						$message .= "L'etudiant ".$etudiant." existe déjà !<br />";
 						$nbErreurs++;
