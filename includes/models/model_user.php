@@ -116,7 +116,7 @@
 			$userAuth->setId(DAO::getInstance()->lastInsertId());
 		}
 
-		public static function delete(User $idUSer){
+		public static function delete($idUSer){
 			$SQLQuery = 'DELETE FROM userAuth WHERE us_id = :idUser';
 			$stmt = DAO::getInstance()->prepare($SQLQuery);
 			$stmt->bindValue(':idUser', $idUSer);

@@ -30,6 +30,10 @@
 			return $this->modules;
 		}
 
+		public function getNbModules(){
+			return count($this->modules);
+		}
+
 		public function setId($id){
 			$this->id = $id;
 		}
@@ -59,6 +63,43 @@
 			}
 			$SQLStmt->closeCursor();
 			return $newUnit;
+		}
+
+		public static function getListeFromPF($idPf){
+			if ($idPf == 0){
+				return null;
+			}else{
+				//Récuépration de la liste des ue de la promo associée à la pf
+				$SQLQuery = 'SELECT * ';
+				$SQLQuery .= 'FROM uniteenseignement INNER JOIN composer ON uniteenseignement.unit_id = composer.unit_id ';
+				$SQLQuery .= 'INNER JOIN promotion ON composer.promo_id = promotion.promo_id ';
+				$SQLQuery .= 'INNER JOIN periodeformation ON  promotion.promo_id = periodeformation.promo_id ';
+				$SQLQuery .= 'WHERE periodeformation.pf_id = :idPf ';
+				$SQLQuery .= 'ORDER BY composer.comp_chrono';
+
+				$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
+				$SQLStmt->bindValue(':idPf', $idPf);
+				$SQLStmt->execute();
+
+				$retVal = array();
+				$chrono = 0;
+				while ($SQLRow = $SQLStmt->fetchObject()){
+					$chrono = $SQLRow->comp_chrono;
+					$newUnit = new UniteEnseignement($SQLRow->unit_id, $SQLRow->unit_libelle, $chrono);
+					$newUnit->fillModules(Module::getListeFromUeAndPf($SQLRow->unit_id, $idPf));
+					$retVal[] = $newUnit;
+				}
+
+				//Récupération de la liste des modules sans UE
+				$newUnit = new UniteEnseignement(0, 'Sans Unité d\'enseignement', $chrono++);
+				$newUnit->fillModules(Module::getListeFromPfSansUE($idPf));
+				if ($newUnit->getNbModules() > 0){
+					$retVal[] = $newUnit;
+				}
+
+				$SQLStmt->closeCursor();
+				return $retVal;
+			}
 		}
 
 		public static function getListeFromPromo($idPromo, $trialpha = true){

@@ -5,20 +5,20 @@ include_once ROOTMODELS.'model_periodeformation.php';
 
 $idetudiant = isset($_GET['idetudiant'])?$_GET['idetudiant']:0;
 $idpf = isset($_GET['idpf'])?$_GET['idpf']:0;
+$pf = Periodeformation::getById($idPf);
 if ($action == 'listemodules'){
 	if ($idetudiant == 0){
 		//Affichage de la liste des modules de la pf
 		$includeJs = true;
 		$scriptname[] = 'js_listemodules.js';
 
-		$listeUnitesEnseignement = UniteEnseignement::getListeFromPromo($promo->getId(), false);
-		$listeModulesHorsUE = Module::getListeFromPf($idPf, false);
-
+		$listeUnitesEnseignement = $pf->getUE();
+		$listeModulesHorsUE = array();
+//var_dump($listeUnitesEnseignement);
 		include_once ROOTVIEWS.'view_listemodulespf.php';
 	}elseif ($idetudiant != 0 AND $idpf != 0){
 		//Affichage de la liste des modules suivis par un étudiant
 		$etudiant = Etudiant::getById($idetudiant);
-		$pf = Periodeformation::getById($idpf, false);
 
 		$listeModules = Module::getListeFromEtudiant($idetudiant);
 		include_once ROOTVIEWS.'view_listemodules.php';
@@ -26,10 +26,9 @@ if ($action == 'listemodules'){
 }elseif ($action == 'ajoutmodule'){
 	$includeJs = true;
 	$scriptname[] = 'js_module.js';
-	$pf = Periodeformation::getById($idPf);
 	$module = new Module();
-	$listeIntervenants = Intervenant::getListe(Intervenant::class);
-    $listeUnitesEnseignement = $promo->getUnitesEnseignement();
+	$listeIntervenants = Intervenant::getListe();
+    $listeUnitesEnseignement = $pf->getUE();
 	if (!empty($_POST)){
 		$libModule = $_POST['ttLibelle'];
 		$detailsModule = $_POST['ttResume'];
@@ -51,7 +50,7 @@ if ($action == 'listemodules'){
 	$idModule = isset($_GET['idmodule'])?$_GET['idmodule']:0;
 	$module = Module::getById($idModule);
 	$listeIntervenants = Intervenant::getListe(Intervenant::class);
-	$listeUnitesEnseignement = $promo->getUnitesEnseignement();
+	$listeUnitesEnseignement = $pf->getUE();
 
 	if (!empty($_POST)){
 		$module->setLibelle(trim($_POST['ttLibelle']));

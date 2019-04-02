@@ -28,11 +28,39 @@
 		$listeStatutPf = StatutPeriodeFormation::getListe();
 		include_once ROOTVIEWS.'view_listeperiodesformations.php';
 	}elseif ($action == 'ajoutpf'){
+		$includeJs = true;
+		$scriptname[] = 'js_periodeformation.js';
+		$pf = new Periodeformation();
 
+		$listeResponsables = ResponsablePedago::getListe();
+		$listeStatutPf = StatutPeriodeFormation::getListe();
+		$promo = Promotion::getById($idPromo);
+
+		if (!empty($_POST)){
+			$dateDebut = $_POST['ttDateDebut'];
+			$dateFin = $_POST['ttDateFin'];
+			$duree = $_POST['ttDuree'];
+			$responsable = (isset($_POST['cbResponsable']) AND $_POST['cbResponsable'] != '0')?ResponsablePedago::getById($_POST['cbResponsable']):new ResponsablePedago();
+			$statut = (isset($_POST['cbStatut']) AND $_POST['cbStatut'] != '0')?StatutPeriodeFormation::getById($_POST['cbStatut']):new StatutPeriodeFormation();
+
+			$newPf = new Periodeformation(0, $dateDebut, $dateFin, $promo, $statut->getId(), $duree);
+			var_dump($newPf->getDateDebut());
+			die();
+			if (Periodeformation::insert($newPf)){
+				header('Location: index.php?p=periodesformation&a=listepf&idpromo='.$idPromo);
+			}else{
+				var_dump("Erreur d'enregistrement");
+			}
+		}
+		include_once ROOTVIEWS.'view_fichepf.php';
 	}elseif ($action == 'editpf'){
+		$includeJs = true;
+		$scriptname[] = 'js_periodeformation.js';
+
+		$promo = Promotion::getByIdPf($idPf);
+		$pf = Periodeformation::getById($idPf);
 
 	}else{
-
 		if (isset($idPf) AND $idPf != 0){
 			$promo = Promotion::getByIdPf($idPf);
 			$pf = Periodeformation::getById($idPf);

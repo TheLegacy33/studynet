@@ -174,7 +174,7 @@ class Personne{
 		}
 	}
 
-    public function clonepers($persToClone){
+    public function clonepers(Personne $persToClone){
         $this->setId($persToClone->getId());
         $this->setPrenom($persToClone->getPrenom());
         $this->setNom($persToClone->getNom());
@@ -321,6 +321,10 @@ class Personne{
 		}
 		$SQLStmt->execute();
     }
+
+    public static function insert($personne, $other){
+
+	}
 }
 
 ?>

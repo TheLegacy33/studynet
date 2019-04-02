@@ -8,7 +8,6 @@
 			$listePromos = Promotion::getListe();
 		}else{
 			$ecole = Ecole::getById($idEcole);
-			$ecole->fillPromotions();
 			$listePromos = $ecole->getPromos();
 		}
 		include_once ROOTVIEWS.'view_listepromotions.php';

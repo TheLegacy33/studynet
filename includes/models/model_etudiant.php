@@ -6,7 +6,7 @@
 	include_once ROOTMODELS.'model_evaluationmodule.php';
 
 	class Etudiant extends Personne {
-		private $etu_id, , $photo; //TODO : remplacer promo par pf
+		private $etu_id, $pf, $photo; //TODO : remplacer promo par pf
 
 		public function __construct($id = 0, $nom = '', $prenom = '', $email = '', $photo = '', $idPers = 0){
 			parent::__construct($idPers, $nom, $prenom, $email);
@@ -27,8 +27,8 @@
 			return $this->photo;
 		}
 
-		public function getPromo(){
-			return $this->promo;
+		public function getPf(){
+			return $this->pf;
 		}
 
 		public function setId($id){
@@ -39,18 +39,18 @@
 			parent::setId($id);
 		}
 
-		public function setPromo($promo){
-			$this->promo = $promo;
+		public function setPf(Periodeformation $pf){
+			$this->pf = $pf;
 		}
 
 		public function setPhoto($photo){
 		    $this->photo = $photo;
         }
 
-		public function clonepers($etudToClone){
+		public function clonepers(Personne $etudToClone){
             parent::clonepers($etudToClone);
-            $this->setPromo(Promotion::getById(Etudiant::getPromoById($this->etu_id)));
-            $this->setPhoto(Etudiant::getPhotoById($this->etu_id));
+            $this->setPf($etudToClone->getPf());
+            $this->setPhoto($etudToClone->getPhoto());
         }
 
         public function getEvaluationContenuModule($idcmod){
@@ -195,7 +195,7 @@
             return $retVal;
         }
 
-		public static function getListeFromPromo($idPromo = 0){
+		public static function getListeFromPromo($idPromo = 0){ //TODO Adapter selon la PF
 			$SQLQuery = "SELECT * FROM etudiant INNER JOIN personne ON etudiant.pers_id = personne.pers_id";
 			if ($idPromo != 0){
 				$SQLQuery .= " WHERE promo_id = :idpromo";
@@ -218,8 +218,7 @@
 				return null;
 			}
 			$SQLQuery = 'SELECT * FROM etudiant INNER JOIN personne ON etudiant.pers_id = personne.pers_id ';
-			$SQLQuery .= 'INNER JOIN promotion ON etudiant.promo_id = promotion.promo_id ';
-			$SQLQuery .= 'INNER JOIN periodeformation ON promotion.promo_id = periodeformation.promo_id ';
+			$SQLQuery .= 'INNER JOIN integrer ON etudiant.etu_id = integrer.etu_id ';
  			$SQLQuery .= 'WHERE pf_id = :idpf ORDER BY pers_nom, pers_prenom';
 			$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
 			$SQLStmt->bindValue(':idpf', $idPf);
@@ -228,7 +227,6 @@
 			$retVal = array();
 			while ($SQLRow = $SQLStmt->fetchObject()){
 				$newEtud = new Etudiant($SQLRow->etu_id, $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->pers_email, $SQLRow->etu_photo, $SQLRow->pers_id);
-				$newEtud->setPromo(Promotion::getById($SQLRow->promo_id));
 				$retVal[] = $newEtud;
 			}
 			$SQLStmt->closeCursor();
@@ -236,13 +234,16 @@
 		}
 
 		public static function getById($id){
-			$SQLStmt = DAO::getInstance()->prepare("SELECT * FROM etudiant INNER JOIN personne ON etudiant.pers_id = personne.pers_id WHERE etu_id = :idetudiant");
+			$SQLQuery = 'SELECT * FROM etudiant INNER JOIN personne ON etudiant.pers_id = personne.pers_id ';
+			$SQLQuery .= 'INNER JOIN integrer ON etudiant.etu_id = integrer.etu_id ';
+			$SQLQuery .= "WHERE etu_id = :idetudiant";
+			$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
 			$SQLStmt->bindValue(':idetudiant', $id);
 			$SQLStmt->execute();
 			$SQLRow = $SQLStmt->fetchObject();
 			$newEtud = new Etudiant($SQLRow->etu_id, $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->pers_email, $SQLRow->etu_photo, $SQLRow->pers_id);
 			$newEtud->fillAuth(User::getById($SQLRow->us_id));
-			$newEtud->setPromo(Promotion::getById($SQLRow->promo_id));
+			$newEtud->setPf(Periodeformation::getById($SQLRow->pf_id));
 			$SQLStmt->closeCursor();
 			return $newEtud;
 		}
@@ -259,16 +260,6 @@
 
         public static function getPhotoById($idEtudiant){
 			$SQLQuery = 'SELECT etu_photo FROM etudiant WHERE etu_id = :idetudiant';
-            $SQLStmt = DAO::getInstance()->prepare($SQLQuery);
-            $SQLStmt->bindValue(':idetudiant', $idEtudiant);
-            $SQLStmt->execute();
-			$retVal = $SQLStmt->fetchColumn(0);
-            $SQLStmt->closeCursor();
-			return $retVal;
-		}
-
-        public static function getPromoById($idEtudiant){
-			$SQLQuery = 'SELECT promo_id FROM etudiant WHERE etu_id = :idetudiant';
             $SQLStmt = DAO::getInstance()->prepare($SQLQuery);
             $SQLStmt->bindValue(':idetudiant', $idEtudiant);
             $SQLStmt->execute();
@@ -315,10 +306,9 @@
 				return false;
 			}else{
 				$etudiant->setPersId(DAO::getInstance()->lastInsertId());
-				$SQLQuery2 = "INSERT INTO etudiant(etu_photo, promo_id, pers_id) VALUES (:photo, :idpromo, :idpers)";
+				$SQLQuery2 = "INSERT INTO etudiant(etu_photo, pers_id) VALUES (:photo, :idpromo, :idpers)";
 				$SQLStmt2 = DAO::getInstance()->prepare($SQLQuery2);
                 $SQLStmt2->bindValue(':photo', (!is_null($etudiant->getPhoto())?$etudiant->getPhoto():null));
-                $SQLStmt2->bindValue(':idpromo', $etudiant->getPromo()->getId());
                 $SQLStmt2->bindValue(':idpers', $etudiant->getPersId());
 				if (!$SQLStmt2->execute()) {
 					var_dump($SQLStmt2->errorInfo());
@@ -326,7 +316,9 @@
 					return false;
 				}else{
 					$etudiant->setId(DAO::getInstance()->lastInsertId());
-					$SQLQuery3 = "INSERT INTO appreciationGenerale(etu_id, pf_id) VALUES (:idetudiant, :idPf)";
+
+					//Je rajoute l'étudiant à la pf
+					$SQLQuery3 = "INSERT INTO integrer (etu_id, pf_id) VALUES (:idetudiant, :idPf)";
 					$SQLStmt3 = DAO::getInstance()->prepare($SQLQuery3);
 					$SQLStmt3->bindValue(':idetudiant', $etudiant->getId());
 					$SQLStmt3->bindValue(':idPf', $pf->getId());
@@ -335,8 +327,18 @@
 						DAO::getInstance()->rollBack();
 						return false;
 					}else{
-						DAO::getInstance()->commit();
-						return true;
+						$SQLQuery4 = "INSERT INTO appreciationGenerale(etu_id, pf_id) VALUES (:idetudiant, :idPf)";
+						$SQLStmt4 = DAO::getInstance()->prepare($SQLQuery4);
+						$SQLStmt4->bindValue(':idetudiant', $etudiant->getId());
+						$SQLStmt4->bindValue(':idPf', $pf->getId());
+						if (!$SQLStmt4->execute()){
+							var_dump($SQLStmt4->errorInfo());
+							DAO::getInstance()->rollBack();
+							return false;
+						}else{
+							DAO::getInstance()->commit();
+							return true;
+						}
 					}
 				}
 			}

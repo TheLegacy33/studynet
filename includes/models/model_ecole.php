@@ -34,8 +34,8 @@
 			$this->logo = $logo;
 		}
 
-		public function fillPromotions(){
-			$this->promotions = Promotion::getListeFromEcole($this->id);
+		public function fillPromotions($promotions){
+			$this->promotions = $promotions;
 		}
 
 		public function getPromos(){
@@ -47,12 +47,11 @@
 		}
 
 		public static function getListe(){
-			$SQLStmt = DAO::getInstance()->prepare("SELECT * FROM ecole ORDER BY eco_nom");
+			$SQLStmt = DAO::getInstance()->prepare("SELECT eco_id FROM ecole ORDER BY eco_nom");
 			$SQLStmt->execute();
 			$retVal = array();
 			while ($SQLRow = $SQLStmt->fetchObject()){
-				$newEcole = new Ecole($SQLRow->eco_id, $SQLRow->eco_nom, $SQLRow->eco_logo);
-				$newEcole->fillPromotions();
+				$newEcole = Ecole::getById($SQLRow->eco_id);
 				$retVal[] = $newEcole;
 			}
 			$SQLStmt->closeCursor();
@@ -72,9 +71,10 @@
 			$SQLStmt->bindValue(':idecole', $id);
 			$SQLStmt->execute();
 			$SQLRow = $SQLStmt->fetchObject();
-			$newPromo = new Ecole($SQLRow->eco_id, $SQLRow->eco_nom, $SQLRow->eco_logo);
+			$newEcole = new Ecole($SQLRow->eco_id, $SQLRow->eco_nom, $SQLRow->eco_logo);
+			$newEcole->fillPromotions(Promotion::getListeFromEcole($newEcole));
 			$SQLStmt->closeCursor();
-			return $newPromo;
+			return $newEcole;
 		}
 
 		public static function update(Ecole $ecole){

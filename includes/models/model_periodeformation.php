@@ -6,25 +6,30 @@ include_once ROOTMODELS.'model_responsablepedago.php';
 include_once ROOTMODELS.'model_statutperiodeformation.php';
 
 class Periodeformation {
-	private $id, $datedebut, $datefin, $promo, $responsable;
-	private $etudiants, $modules, $statut;
+	private $id, $datedebut, $datefin, $duree, $promo, $responsable;
+	private $etudiants, $unitesenseignements, $statut;
 
-	public function __construct($id = 0, $datedebut = '', $datefin = '', $promo = null, $idstatut = 1){
+	public function __construct($id = 0, $datedebut = '', $datefin = '', $promo = null, $idstatut = 1, $duree = 0){
 		$this->id = $id;
 		$this->datedebut = $datedebut;
 		$this->datefin = $datefin;
 		$this->promo = $promo;
 		$this->etudiants = array();
-		$this->modules = array();
+		$this->unitesenseignements = array();
 		$this->statut = StatutPeriodeFormation::getById($idstatut);
+		$this->duree = $duree;
 	}
 	public function getId(){
 		return $this->id;
 	}
 
 	public function getDateDebut(){
-		$ret = new DateTime($this->datedebut);
-		return $ret->format('d/m/Y');
+		if ($this->datedebut == ''){
+			return null;
+		}else{
+			$ret = new DateTime($this->datedebut);
+			return $ret->format('d/m/Y');
+		}
 	}
 
 	public function getDateFin(){
@@ -36,16 +41,28 @@ class Periodeformation {
 		return $this->promo;
 	}
 
-	public function getModules(){
-	    return $this->modules;
-    }
+	public function getStudents(){
+		return $this->etudiants;
+	}
 
 	public function getEffectif(){
 		return count($this->etudiants);
 	}
 
 	public function getNbModules(){
-		return count($this->modules);
+		$retVal = 0;
+		foreach ($this->unitesenseignements as $ue){
+			$retVal += $ue->getNbModules();
+		}
+		return $retVal;
+	}
+
+	public function getUE(){
+		return $this->unitesenseignements;
+	}
+
+	public function getDuree(){
+		return $this->duree;
 	}
 
 	public function getResponsable(){
@@ -56,8 +73,8 @@ class Periodeformation {
 		$this->etudiants = $listeEtudiants;
 	}
 
-	public function fillModules($listeModules){
-		$this->modules = $listeModules;
+	public function fillUE($listeUE){
+		$this->unitesenseignements = $listeUE;
 	}
 
 	public function getStatut(){
@@ -70,6 +87,10 @@ class Periodeformation {
 
 	public function setResponsable($responsable){
 		$this->responsable = $responsable;
+	}
+
+	public function setDuree($duree){
+		$this->duree = $duree;
 	}
 
 	public static function getListe($idPf = 0, $statut = 1){
@@ -91,10 +112,7 @@ class Periodeformation {
 		$SQLStmt->execute();
 		$retVal = array();
 		while ($SQLRow = $SQLStmt->fetchObject()){
-			$newPf = new Periodeformation($SQLRow->pf_id, $SQLRow->pf_datedebut, $SQLRow->pf_datefin, Promotion::getById($SQLRow->promo_id), $SQLRow->statpf_id);
-			$newPf->fillStudents(Etudiant::getListeFromPf($SQLRow->pf_id));
-			$newPf->fillModules(Module::getListeFromPf($SQLRow->pf_id));
-			$newPf->setResponsable(ResponsablePedago::getById($SQLRow->resp_id));
+			$newPf = Periodeformation::getById($SQLRow->pf_id);
 			$retVal[] = $newPf;
 		}
 		$SQLStmt->closeCursor();
@@ -103,20 +121,17 @@ class Periodeformation {
 
 	public static function getListeFromPromo($idPromo = 0, $statut = 1){
 		$SQLQuery = 'SELECT * ';
-		$SQLQuery .= 'FROM periodeformation INNER JOIN promotion ON periodeformation.promo_id = promotion.promo_id ';
-		$SQLQuery .= 'WHERE promotion.promo_id = :idpromo ';
+		$SQLQuery .= 'FROM periodeformation ';
+		$SQLQuery .= 'WHERE promo_id = :idpromo ';
 		$SQLQuery .= 'AND statpf_id = :idstatut ';
-		$SQLQuery .= 'ORDER BY promotion.promo_libelle, pf_datedebut DESC, pf_datefin DESC';
+		$SQLQuery .= 'ORDER BY pf_datedebut DESC, pf_datefin DESC';
 		$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
 		$SQLStmt->bindValue(':idpromo', $idPromo);
 		$SQLStmt->bindValue(':idstatut', $statut);
 		$SQLStmt->execute();
 		$retVal = array();
 		while ($SQLRow = $SQLStmt->fetchObject()){
-			$newPf = new Periodeformation($SQLRow->pf_id, $SQLRow->pf_datedebut, $SQLRow->pf_datefin, Promotion::getById($SQLRow->promo_id), $SQLRow->statpf_id);
-			$newPf->fillStudents(Etudiant::getListeFromPf($SQLRow->pf_id));
-			$newPf->fillModules(Module::getListeFromPf($SQLRow->pf_id));
-			$newPf->setResponsable(ResponsablePedago::getById($SQLRow->resp_id));
+			$newPf = Periodeformation::getById($SQLRow->pf_id);
 			$retVal[] = $newPf;
 		}
 		$SQLStmt->closeCursor();
@@ -130,7 +145,7 @@ class Periodeformation {
 		$SQLRow = $SQLStmt->fetchObject();
 		$newPf = new Periodeformation($SQLRow->pf_id, $SQLRow->pf_datedebut, $SQLRow->pf_datefin, Promotion::getById($SQLRow->promo_id), $SQLRow->statpf_id);
 		$newPf->fillStudents(Etudiant::getListeFromPf($SQLRow->pf_id));
-        $newPf->fillModules(Module::getListeFromPf($SQLRow->pf_id));
+		$newPf->fillUE(UniteEnseignement::getListeFromPF($SQLRow->pf_id));
 		$newPf->setResponsable(ResponsablePedago::getById($SQLRow->resp_id));
 		$SQLStmt->closeCursor();
 		return $newPf;
@@ -150,11 +165,16 @@ class Periodeformation {
 		}*/
 	}
 
-	public static function insert($pf){
-		$SQLQuery = 'INSERT INTO promotion(promo_libelle, eco_id) VALUES (:nom, :idecole)';
+	public static function insert(Periodeformation $pf){
+		$SQLQuery = 'INSERT INTO periodeformation(pf_datedebut, pf_datefin, pf_duree, promo_id, resp_id, statpf_id) ';
+		$SQLQuery .= 'VALUES (:datedebut, :datefin, :duree, :idpromo, :idresp, ;idstatut)';
 		$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
-		$SQLStmt->bindValue(':nom', $promo->getLibelle());
-		$SQLStmt->bindValue(':idecole', $promo->getEcole()->getId());
+		$SQLStmt->bindValue(':datedebut', $pf->getDateDebut());
+		$SQLStmt->bindValue(':datefin', $pf->getDateFin());
+		$SQLStmt->bindValue(':duree', $pf->getDuree());
+		$SQLStmt->bindValue(':idpromo', $pf->getPromo()->getId());
+		$SQLStmt->bindValue(':idresp', $pf->getResponsable()->getId());
+		$SQLStmt->bindValue(':idstatut', $pf->getStatut()->getId());
 		/*if (!$SQLStmt->execute()){
 			var_dump($SQLStmt->errorInfo());
 			return false;

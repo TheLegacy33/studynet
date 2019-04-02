@@ -52,5 +52,13 @@ class StatutPeriodeFormation{
 	public function __toString(){
 		return $this->statpf_libelle;
 	}
+
+	public function equals(StatutPeriodeFormation $statut){
+		if ($this->getId() == $statut->getId() AND $this->getLibelle() == $statut->getLibelle()){
+			return true;
+		}else{
+			return false;
+		}
+	}
 }
 ?>
