@@ -173,7 +173,7 @@ class Periodeformation {
 		$SQLStmt->bindValue(':datefin', date_fr_to_mysql($pf->getDateFin()));
 		$SQLStmt->bindValue(':duree', $pf->getDuree());
 		$SQLStmt->bindValue(':idpromo', $pf->getPromo()->getId());
-		$SQLStmt->bindValue(':idresp', (is_null($pf->getResponsable())?null:$pf->getResponsable()->getId()));
+		$SQLStmt->bindValue(':idresp', (!is_null($pf->getResponsable())?$pf->getResponsable()->getId():null));
 		$SQLStmt->bindValue(':idstatut', $pf->getStatut()->getId());
 		if (!$SQLStmt->execute()){
 			var_dump($SQLStmt->errorInfo());

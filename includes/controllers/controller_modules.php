@@ -14,7 +14,6 @@ if ($action == 'listemodules'){
 
 		$listeUnitesEnseignement = $pf->getUE();
 		$listeModulesHorsUE = array();
-//var_dump($listeUnitesEnseignement);
 		include_once ROOTVIEWS.'view_listemodulespf.php';
 	}elseif ($idetudiant != 0 AND $idpf != 0){
 		//Affichage de la liste des modules suivis par un étudiant
@@ -29,15 +28,16 @@ if ($action == 'listemodules'){
 	$module = new Module();
 	$listeIntervenants = Intervenant::getListe();
     $listeUnitesEnseignement = $pf->getUE();
+
 	if (!empty($_POST)){
 		$libModule = $_POST['ttLibelle'];
 		$detailsModule = $_POST['ttResume'];
 		$dureeModule = 0;
-		$chrono = Module::getNextChrono($idpf);
 		$intervenant = (isset($_POST['cbIntervenant']) AND $_POST['cbIntervenant'] != '0')?Intervenant::getById($_POST['cbIntervenant']):new Intervenant();
+		$uniteenseignement = (isset($_POST['cbUniteEnseignement']) AND $_POST['cbUniteEnseignement'] != '0')?UniteEnseignement::getById($_POST['cbUniteEnseignement']):new UniteEnseignement();
+		$newModule = new Module(0, $libModule, $detailsModule, $intervenant, $dureeModule, $uniteenseignement);
 
-		$newModule = new Module(0, $libModule, $detailsModule, $intervenant, $idpf, $dureeModule, $chrono);
-		if (Module::insert($newModule)){
+		if (Module::insert($newModule, $pf)){
 			header('Location: index.php?p=periodesformation&a=listemodules&idpf='.$idpf);
 		}else{
 			var_dump("Erreur d'enregistrement");
@@ -56,11 +56,11 @@ if ($action == 'listemodules'){
 		$module->setLibelle(trim($_POST['ttLibelle']));
 		$module->setDetails(trim($_POST['ttResume']));
 		$module->setDuree(0);
-		$module->setChrono($module->getChrono());
-		$intervenant = (isset($_POST['cbIntervenant']) AND $_POST['cbIntervenant'] != '0')?Intervenant::getById($_POST['cbIntervenant']):null;
+//TODO : Adapter suite à l'ajout de la relation rattacher
+		$intervenant = (isset($_POST['cbIntervenant']) AND $_POST['cbIntervenant'] != '0')?Intervenant::getById($_POST['cbIntervenant']):new Intervenant();
 		$module->setIntervenant($intervenant);
-		$iduniteenseignement = (isset($_POST['cbUniteEnseignement']) AND $_POST['cbUniteEnseignement'] != '0')?$_POST['cbUniteEnseignement']:null;
-		$module->setIdUniteEnseignement($iduniteenseignement);
+		$uniteenseignement = (isset($_POST['cbUniteEnseignement']) AND $_POST['cbUniteEnseignement'] != '0')?UniteEnseignement::getById($_POST['cbUniteEnseignement']):new UniteEnseignement();
+		$module->setUniteEnseignement($uniteenseignement);
 		if (Module::update($module)){
 			header('Location: index.php?p=periodesformation&a=listemodules&idpf='.$idpf);
 		}else{

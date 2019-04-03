@@ -50,6 +50,14 @@
 			$this->modules = $listeModules;
 		}
 
+		public function equals(UniteEnseignement $uniteEnseignement){
+			if ($this->getId() == $uniteEnseignement->getId() AND $this->getLibelle() == $uniteEnseignement->getLibelle()){
+				return true;
+			}else{
+				return false;
+			}
+		}
+
 		public static function getById($id){
 			$SQLStmt = DAO::getInstance()->prepare('SELECT * FROM uniteenseignement WHERE unit_id = :idunite');
 			$SQLStmt->bindValue(':idunite', $id);

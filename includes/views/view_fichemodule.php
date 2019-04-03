@@ -29,8 +29,8 @@
 						$script = '<option value="0"> --- </option>';
 						foreach ($listeUnitesEnseignement as $uniteenseignement){
 							$selected = '';
-							if (!is_null($module->getIdUniteEnseignement())){
-								if ($uniteenseignement->getId() == $module->getIdUniteEnseignement()){
+							if (!is_null($module->getUE())){
+								if ($uniteenseignement->equals($module->getUE())){
 									$selected = ' selected';
 								}
 							}

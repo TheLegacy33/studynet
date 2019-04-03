@@ -261,23 +261,44 @@ class Personne{
         $SQLStmt->execute();
 
         $retVal = array();
-        while ($SQLRow = $SQLStmt->fetchObject()){
-			$userType = Personne::getType($SQLRow->pers_id);
-            if ($userType == Intervenant::class){
-            	$idInt = Intervenant::getIdByIdPers($SQLRow->pers_id);
-                $newPers = new Intervenant($idInt, $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->pers_email, $SQLRow->pers_id);
-            }elseif ($userType == ResponsablePedago::class){
-            	$idResp = ResponsablePedago::getIdByIdPers($SQLRow->pers_id);
-                $newPers = new ResponsablePedago($idResp, $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->pers_email, $SQLRow->pers_id);
-            }elseif ($userType == Etudiant::class){
-            	$idEtud = Etudiant::getIdByIdPers($SQLRow->pers_id);
-                $newPers = new Etudiant($idEtud, $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->pers_email, Etudiant::getPhotoById($idEtud), $SQLRow->pers_id);
-            }else{
-                $newPers = new Personne($SQLRow->pers_id, $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->pers_email);
-            }
-            $newPers->fillAuth(User::getById($SQLRow->us_id));
-            $retVal[] = $newPers;
-        }
+
+        if ($critere == '*'){
+			while ($SQLRow = $SQLStmt->fetchObject()){
+				$userType = Personne::getType($SQLRow->pers_id);
+				if ($userType == Intervenant::class){
+					$idInt = Intervenant::getIdByIdPers($SQLRow->pers_id);
+					$newPers = new Intervenant($idInt, $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->pers_email, $SQLRow->pers_id);
+				}elseif ($userType == ResponsablePedago::class){
+					$idResp = ResponsablePedago::getIdByIdPers($SQLRow->pers_id);
+					$newPers = new ResponsablePedago($idResp, $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->pers_email, $SQLRow->pers_id);
+				}elseif ($userType == Etudiant::class){
+					$idEtud = Etudiant::getIdByIdPers($SQLRow->pers_id);
+					$newPers = new Etudiant($idEtud, $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->pers_email, Etudiant::getPhotoById($idEtud), $SQLRow->pers_id);
+				}else{
+					$newPers = new Personne($SQLRow->pers_id, $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->pers_email);
+				}
+				$newPers->fillAuth(User::getById($SQLRow->us_id));
+				$retVal[] = $newPers;
+			}
+		}else{
+			while ($SQLRow = $SQLStmt->fetchObject()){
+				if ($critere == Intervenant::class){
+					$idInt = Intervenant::getIdByIdPers($SQLRow->pers_id);
+					$newPers = new Intervenant($idInt, $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->pers_email, $SQLRow->pers_id);
+				}elseif ($critere == ResponsablePedago::class){
+					$idResp = ResponsablePedago::getIdByIdPers($SQLRow->pers_id);
+					$newPers = new ResponsablePedago($idResp, $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->pers_email, $SQLRow->pers_id);
+				}elseif ($critere == Etudiant::class){
+					$idEtud = Etudiant::getIdByIdPers($SQLRow->pers_id);
+					$newPers = new Etudiant($idEtud, $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->pers_email, Etudiant::getPhotoById($idEtud), $SQLRow->pers_id);
+				}else{
+					$newPers = new Personne($SQLRow->pers_id, $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->pers_email);
+				}
+				$newPers->fillAuth(User::getById($SQLRow->us_id));
+				$retVal[] = $newPers;
+			}
+		}
+
         $SQLStmt->closeCursor();
         return $retVal;
     }

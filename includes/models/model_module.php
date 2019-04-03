@@ -6,17 +6,16 @@
 	include_once ROOTMODELS.'model_uniteenseignement.php';
 
 	class Module{
-		private $id, $libelle, $details, $duree, $chrono, $idUe;
-		private $intervenant, $contenu;
+		private $id, $libelle, $details, $duree;
+		private $intervenant, $contenu, $uniteenseignement;
 
-		public function __construct($id = 0, $libelle = '', $details = '', $intervenant = null, $duree = 0, $chrono = 0, $idUniteEnseignement = 0){
+		public function __construct($id = 0, $libelle = '', $details = '', $intervenant = null, $duree = 0, $UniteEnseignement = null){
 			$this->id = $id;
 			$this->libelle = $libelle;
 			$this->details = $details;
 			$this->intervenant = $intervenant;
 			$this->duree = $duree;
-			$this->chrono = $chrono;
-			$this->idUe = $idUniteEnseignement;
+			$this->uniteenseignement = $UniteEnseignement;
 
 			$this->contenu = array();
 		}
@@ -45,12 +44,8 @@
 			return $this->duree;
 		}
 
-		public function getChrono(){
-			return $this->chrono;
-		}
-
-        public function getIdUniteEnseignement(){
-			return $this->idUe;
+        public function getUE(){
+			return $this->uniteenseignement;
 		}
 
         public function hasContenu(){
@@ -77,10 +72,6 @@
 			$this->intervenant = $intervenant;
 		}
 
-		public function setChrono($chrono){
-			$this->chrono = $chrono;
-		}
-
 		public function setDuree($duree){
 			$this->duree = $duree;
 		}
@@ -89,8 +80,8 @@
 			$this->contenu = $contenu;
 		}
 
-		public function setIdUniteEnseignement($iduniteenseignement){
-			$this->idUe = $iduniteenseignement;
+		public function setUniteEnseignement(UniteEnseignement $uniteenseignement){
+			$this->uniteenseignement = $uniteenseignement;
 		}
 
 		public static function getById($id){
@@ -98,7 +89,7 @@
 			$SQLStmt->bindValue(':idmodule', $id);
 			$SQLStmt->execute();
 			$SQLRow = $SQLStmt->fetchObject();
-			$newModule = new Module($SQLRow->mod_id, $SQLRow->mod_libelle, $SQLRow->mod_details, Intervenant::getById($SQLRow->int_id), $SQLRow->mod_duree, $SQLRow->mod_chrono, $SQLRow->unit_id);
+			$newModule = new Module($SQLRow->mod_id, $SQLRow->mod_libelle, $SQLRow->mod_details, Intervenant::getById($SQLRow->int_id), $SQLRow->mod_duree, UniteEnseignement::getById($SQLRow->unit_id));
 			$newModule->fillContenu(ContenuModule::getListeFromModule($id));
 			$SQLStmt->closeCursor();
 			return $newModule;
@@ -134,7 +125,7 @@
 			}else{
 				$SQLQuery = 'SELECT * FROM module ';
 				$SQLQuery .= 'WHERE unit_id = :iduniteenseignement ';
-				$SQLQuery .= 'ORDER BY mod_chrono';
+//				$SQLQuery .= 'ORDER BY ratt_chrono';
 
 				$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
 				$SQLStmt->bindValue(':iduniteenseignement', $idUniteEnseignement);
@@ -158,7 +149,7 @@
 				$SQLQuery .= 'FROM module INNER JOIN rattacher ON module.mod_id = rattacher.mod_id ';
 				$SQLQuery .= 'WHERE rattacher.pf_id = :idPf ';
 				$SQLQuery .= 'AND unit_id = :idue ';
-				$SQLQuery .= 'ORDER BY mod_chrono';
+				$SQLQuery .= 'ORDER BY ratt_chrono';
 
 				$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
 				$SQLStmt->bindValue(':idue', $idUniteEnseignement);
@@ -182,7 +173,7 @@
 				$SQLQuery = 'SELECT module.mod_id FROM module INNER JOIN rattacher ON module.mod_id = rattacher.mod_id ';
 				$SQLQuery .= 'WHERE pf_id = :idpf ';
 				$SQLQuery .= 'AND unit_id is null ';
-				$SQLQuery .= 'ORDER BY mod_chrono';
+				$SQLQuery .= 'ORDER BY ratt_chrono';
 
 				$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
 				$SQLStmt->bindValue(':idpf', $idPf);
@@ -202,7 +193,7 @@
 			if ($idpf == 0) {
 				return null;
 			}else{
-				$SQLQuery = 'SELECT IFNULL(MAX(mod_chrono), 0) + 1 FROM module WHERE pf_id = :idpf';
+				$SQLQuery = 'SELECT IFNULL(MAX(ratt_chrono), 0) + 1 FROM rattacher WHERE pf_id = :idpf';
 				$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
 				$SQLStmt->bindValue(':idpf', $idpf);
 				$SQLStmt->execute();
@@ -213,15 +204,14 @@
 			}
 		}
 
-		public static function update($module){
-			$SQLQuery = "UPDATE module SET mod_libelle = :libelle, mod_details = :details, int_id = :idintervenant, mod_duree = :duree, mod_chrono = :chrono, unit_id = :idunit WHERE mod_id = :idmod";
+		public static function update(Module $module){
+			$SQLQuery = "UPDATE module SET mod_libelle = :libelle, mod_details = :details, int_id = :idintervenant, mod_duree = :duree, unit_id = :idunit WHERE mod_id = :idmod";
 			$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
 			$SQLStmt->bindValue(':libelle', $module->getLibelle());
 			$SQLStmt->bindValue(':details', $module->getDetails());
 			$SQLStmt->bindValue(':idintervenant', (!is_null($module->getIntervenant()) AND $module->getIntervenant()->getId() != 0)?$module->getIntervenant()->getId():null);
-			$SQLStmt->bindValue(':idunit', (!is_null($module->getIdUniteEnseignement()) AND $module->getIdUniteEnseignement() != 0)?$module->getIdUniteEnseignement():null);
+			$SQLStmt->bindValue(':idunit', (!is_null($module->getUE()) AND $module->getUE()->getId() != 0)?$module->getUE()->getId():null);
 			$SQLStmt->bindValue(':duree', $module->getDuree());
-			$SQLStmt->bindValue(':chrono', $module->getChrono());
 			$SQLStmt->bindValue(':idmod', $module->getId());
 
 			if (!$SQLStmt->execute()){
@@ -232,21 +222,34 @@
 			}
 		}
 
-		public static function insert($module){
-			$SQLQuery = 'INSERT INTO module(mod_libelle, mod_details, int_id, mod_duree, mod_chrono, unit_id) ';
-			$SQLQuery .= 'VALUES (:libModule, :detailModule, :idIntervenant, :idPf, :dureeModule, :chronoModule, :idunit)';
+		public static function insert(Module $module, Periodeformation $pf){
+			$SQLQuery = 'INSERT INTO module(mod_libelle, mod_details, int_id, mod_duree, unit_id) VALUES (:libModule, :detailModule, :idIntervenant, :dureeModule, :idunit)';
 			$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
 			$SQLStmt->bindValue(':libModule', $module->getLibelle());
 			$SQLStmt->bindValue(':detailModule', $module->getDetails());
 			$SQLStmt->bindValue(':idIntervenant',(!is_null($module->getIntervenant()) AND $module->getIntervenant()->getId() != 0)?$module->getIntervenant()->getId():null);
-			$SQLStmt->bindValue(':idunit', (!is_null($module->getIdUniteEnseignement()) AND $module->getIdUniteEnseignement() != 0)?$module->getIdUniteEnseignement():null);
+			$SQLStmt->bindValue(':idunit', (!is_null($module->getUE()) AND $module->getUE()->getId() != 0)?$module->getUE()->getId():null);
 			$SQLStmt->bindValue(':dureeModule', $module->getDuree());
-			$SQLStmt->bindValue(':chronoModule', $module->getChrono());
+			DAO::getInstance()->beginTransaction();
 			if (!$SQLStmt->execute()){
 				var_dump($SQLStmt->errorInfo());
+				DAO::getInstance()->rollBack();
 				return false;
 			}else{
-				return true;
+				$module->setId(DAO::getInstance()->lastInsertId());
+				$SQLQuery = 'INSERT INTO rattacher (mod_id, pf_id, ratt_chrono) VALUES (:idmod, :idpf, :chrono)';
+				$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
+				$SQLStmt->bindValue(':idmod', $module->getId());
+				$SQLStmt->bindValue(':idpf', $pf->getId());
+				$SQLStmt->bindValue(':chrono', Module::getNextChrono($pf->getId()));
+				if (!$SQLStmt->execute()){
+					var_dump($SQLStmt->errorInfo());
+					DAO::getInstance()->rollBack();
+					return false;
+				}else{
+					DAO::getInstance()->commit();
+					return true;
+				}
 			}
 		}
 	}
