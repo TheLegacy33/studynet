@@ -3,7 +3,7 @@ if (!is_null($promo)){
 	if ($action == 'listepf'){
 		?>
 		<nav class="navinterne">
-			<a href="index.php?p=promotions&a=listepromotions&idecole=<?php print($promo->getEcole()->getId()); ?>"
+			<a href="index.php?p=promotions&a=listepromotions&idecole=<?php print($promo->getIdEcole()); ?>"
 			   title="Retour à la liste des promotions"><< Retour</a>
 		</nav>
 		<?php
@@ -26,7 +26,7 @@ if (!is_null($promo)){
 					if (is_null($promo)){
 						print('<a href="index.php?p=ecoles" class="card-link">Toutes</a>');
 					}else{
-						print('<a href="index.php?p=promotions&idecole='.$promo->getEcole()->getId().'">'.$promo->getEcole()->getNom().'</a>');
+						print('<a href="index.php?p=promotions&idecole='.$promo->getIdEcole().'">'.Ecole::getById($promo->getIdEcole())->getNom().'</a>');
 					}
 				?>
 			</div>
@@ -127,8 +127,8 @@ if (!is_null($promo)){
 								foreach ($listePf as $pf){
 									$script .= '<tr class="lignedata">';
 									if (is_null($promo)){
-										$script .= '<td>'.$pf->getPromo()->getEcole()->getNom().'</td>';
-										$script .= '<td>'.$pf->getPromo()->getLibelle().'</td>';
+										$script .= '<td>'.Ecole::getById(Promotion::getById($pf->getIdPromo())->getIdEcole())->getNom().'</td>';
+										$script .= '<td>'.Promotion::getById($pf->getIdPromo())->getLibelle().'</td>';
 									}
 									$script .= '<td>'.$pf->getDateDebut().'</td>';
 									$script .= '<td>'.$pf->getDateFin().'</td>';

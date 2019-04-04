@@ -8,7 +8,7 @@
 			$listePromos = Promotion::getListe();
 		}else{
 			$ecole = Ecole::getById($idEcole);
-			$listePromos = $ecole->getPromos();
+			$listePromos = $ecole->getPromotions();
 		}
 		include_once ROOTVIEWS.'view_listepromotions.php';
 	}elseif ($action == 'ajoutpromo'){
@@ -17,12 +17,11 @@
 
 		$promo = new Promotion();
 		$idEcole = isset($_GET['idecole'])?$_GET['idecole']:0;
-		$ecole = Ecole::getById($idEcole);
 
 		if (!empty($_POST)){
 			$nomPromo = $_POST['ttNom'];
 
-			$newPromo = new Promotion(0, $nomPromo, $ecole);
+			$newPromo = new Promotion(0, $nomPromo, $idEcole);
 			if (Promotion::insert($newPromo)){
 				header('Location: index.php?p=promotions&a=listepromotions&idecole='.$ecole->getId());
 			}else{
@@ -37,13 +36,13 @@
 
 		$idPromo = isset($_GET['idpromo'])?$_GET['idpromo']:0;
 		$promo = Promotion::getById($idPromo);
-		$ecole = $promo->getEcole();
+		$idEcole = $promo->getIdEcole();
 
 		if (!empty($_POST)){
 			$promo->setLibelle(trim($_POST['ttNom']));
 
 			if (Promotion::update($promo)){
-				header('Location: index.php?p=promotions&a=listepromotions&idecole='.$ecole->getId());
+				header('Location: index.php?p=promotions&a=listepromotions&idecole='.$idEcole);
 			}else{
 				var_dump("Erreur d'enregistrement");
 			}

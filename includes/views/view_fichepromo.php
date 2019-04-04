@@ -1,5 +1,5 @@
 <nav class="navinterne">
-	<a href="index.php?p=promotions&a=listepromotions&idecole=<?php print($ecole->getId()); ?>" title="Retour à la liste des promotions"><< Retour</a>
+	<a href="index.php?p=promotions&a=listepromotions&idecole=<?php print((isset($idEcole)) ? $idEcole : 0); ?>" title="Retour à la liste des promotions"><< Retour</a>
 </nav>
 <section id="content_body" class="container">
 	<form action="" method="post" id="frmSaisie" enctype="multipart/form-data">

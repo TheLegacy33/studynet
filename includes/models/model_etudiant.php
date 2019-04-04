@@ -6,13 +6,12 @@
 	include_once ROOTMODELS.'model_evaluationmodule.php';
 
 	class Etudiant extends Personne {
-		private $etu_id, $pf, $photo; //TODO : remplacer promo par pf
+		private $etu_id, $photo; //TODO : remplacer promo par pf
 
 		public function __construct($id = 0, $nom = '', $prenom = '', $email = '', $photo = '', $idPers = 0){
 			parent::__construct($idPers, $nom, $prenom, $email);
 			$this->etu_id = $id;
 			$this->photo = $photo;
-			$this->pf = null;
 		}
 
 		public function getId(){
@@ -27,10 +26,6 @@
 			return $this->photo;
 		}
 
-		public function getPf(){
-			return $this->pf;
-		}
-
 		public function setId($id){
 			$this->etu_id = $id;
 		}
@@ -39,17 +34,12 @@
 			parent::setId($id);
 		}
 
-		public function setPf(Periodeformation $pf){
-			$this->pf = $pf;
-		}
-
 		public function setPhoto($photo){
 		    $this->photo = $photo;
         }
 
 		public function clonepers(Personne $etudToClone){
             parent::clonepers($etudToClone);
-            $this->setPf($etudToClone->getPf());
             $this->setPhoto($etudToClone->getPhoto());
         }
 
@@ -243,7 +233,6 @@
 			$SQLRow = $SQLStmt->fetchObject();
 			$newEtud = new Etudiant($SQLRow->etu_id, $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->pers_email, $SQLRow->etu_photo, $SQLRow->pers_id);
 			$newEtud->fillAuth(User::getById($SQLRow->us_id));
-			$newEtud->setPf(Periodeformation::getById($SQLRow->pf_id));
 			$SQLStmt->closeCursor();
 			return $newEtud;
 		}

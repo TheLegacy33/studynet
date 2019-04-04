@@ -4,13 +4,13 @@ include_once ROOTMODELS.'model_ecole.php';
 include_once ROOTMODELS.'model_uniteenseignement.php';
 
 class Promotion {
-	private $id, $libelle;
+	private $id, $libelle, $idEcole;
 	private $pf;
 
-	public function __construct($id = 0, $libelle = ''){
+	public function __construct($id = 0, $libelle = '', $idEcole = 0){
 		$this->id = $id;
 		$this->libelle = $libelle;
-
+		$this->idEcole = $idEcole;
 		$this->pf = array();
 	}
 
@@ -34,20 +34,28 @@ class Promotion {
 		$this->pf = $pf;
 	}
 
+	public function getIdEcole(){
+		return $this->idEcole;
+	}
+
+	public function setIdEcole($idEcole){
+		$this->idEcole = $idEcole;
+	}
+
 	public static function getListe(Ecole $ecole = null){
-		$SQLQuery = 'SELECT * FROM promotion ';
+		$SQLQuery = 'SELECT promo_id, promo_libelle, promotion.eco_id FROM promotion INNER JOIN ecole ON promotion.eco_id = ecole.eco_id ';
 		if (!is_null($ecole)){
-			$SQLQuery .= 'WHERE eco_id = :idEcole ';
+			$SQLQuery .= 'WHERE ecole.eco_id = :idEcole ';
 		}
-		$SQLQuery .= 'ORDER BY promo_libelle';
+		$SQLQuery .= 'ORDER BY eco_nom, promo_libelle';
 		$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
 		if (!is_null($ecole)){
-			$SQLStmt->bindValue(':idecole', $ecole->getId());
+			$SQLStmt->bindValue(':idEcole', $ecole->getId());
 		}
 		$SQLStmt->execute();
 		$retVal = array();
 		while ($SQLRow = $SQLStmt->fetchObject()){
-			$newPromo = new Promotion($SQLRow->promo_id, $SQLRow->promo_libelle);
+			$newPromo = new Promotion($SQLRow->promo_id, $SQLRow->promo_libelle, $SQLRow->eco_id);
 			$retVal[] = $newPromo;
 		}
 		$SQLStmt->closeCursor();
@@ -68,7 +76,7 @@ class Promotion {
 		$SQLStmt->bindValue(':idpromo', $id);
 		$SQLStmt->execute();
 		$SQLRow = $SQLStmt->fetchObject();
-		$newPromo = new Promotion($SQLRow->promo_id, $SQLRow->promo_libelle);
+		$newPromo = new Promotion($SQLRow->promo_id, $SQLRow->promo_libelle, $SQLRow->eco_id);
 		$newPromo->setPf(Periodeformation::getListeFromPromo($id));
 		$SQLStmt->closeCursor();
 		return $newPromo;

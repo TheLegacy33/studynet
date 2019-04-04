@@ -54,7 +54,7 @@ if ($action == 'listeetudiants') {
 
 		if (!empty($_FILES)) {
 			$photo = $_FILES['ttPhoto'];
-			$newNomPhoto = 'photo_'.$personne->getNom().'_'.$personne->getPrenom().'.'.pathinfo($photo['name'], PATHINFO_EXTENSION);
+			$newNomPhoto = 'photo_'.$etudiant->getNom().'_'.$etudiant->getPrenom().'.'.pathinfo($photo['name'], PATHINFO_EXTENSION);
 			$pathFicPhoto = ROOTUPLOADS . $newNomPhoto;
 			if (!move_uploaded_file($photo['tmp_name'], $pathFicPhoto)) {
 				$message = "Une erreur est survenue lors de l'enregistrement de la photo.<br /> Veuillez réessayer plus tard.";

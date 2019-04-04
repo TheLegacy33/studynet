@@ -72,7 +72,7 @@
 			$SQLStmt->execute();
 			$SQLRow = $SQLStmt->fetchObject();
 			$newEcole = new Ecole($SQLRow->eco_id, $SQLRow->eco_nom, $SQLRow->eco_logo);
-			$newEcole->setPromotions(Promotion::getListeFromEcole($newEcole));
+			$newEcole->setPromotions(Promotion::getListe($newEcole));
 			$SQLStmt->closeCursor();
 			return $newEcole;
 		}
