@@ -10,14 +10,16 @@
 				<select id="cbIntervenant" name="cbIntervenant">
 					<?php
 						$script = '<option value="0"> --- </option>';
-						foreach ($listeIntervenants as $intervenant){
-							$selected = '';
-							if (!is_null($module->getIntervenant())){
-								if ($intervenant->equals($module->getIntervenant())){
-									$selected = ' selected';
+						if (isset($listeIntervenants)){
+							foreach ($listeIntervenants as $intervenant){
+								$selected = '';
+								if (!is_null($module->getIntervenant())){
+									if ($intervenant->equals($module->getIntervenant())){
+										$selected = ' selected';
+									}
 								}
+								$script .= '<option value="'.$intervenant->getId().'"'.$selected.'>'.$intervenant.'</option>';
 							}
-							$script .= '<option value="'.$intervenant->getId().'"'.$selected.'>'.$intervenant.'</option>';
 						}
 						print($script);
 					?>
@@ -27,14 +29,16 @@
 				<select id="cbUniteEnseignement" name="cbUniteEnseignement">
 					<?php
 						$script = '<option value="0"> --- </option>';
-						foreach ($listeUnitesEnseignement as $uniteenseignement){
-							$selected = '';
-							if (!is_null($module->getUE())){
-								if ($uniteenseignement->equals($module->getUE())){
-									$selected = ' selected';
+						if (isset($listeUnitesEnseignement)){
+							foreach ($listeUnitesEnseignement as $uniteenseignement){
+								$selected = '';
+								if (!is_null($module->getUE())){
+									if ($uniteenseignement->equals($module->getUE())){
+										$selected = ' selected';
+									}
 								}
+								$script .= '<option value="'.$uniteenseignement->getId().'"'.$selected.'>'.$uniteenseignement.'</option>';
 							}
-							$script .= '<option value="'.$uniteenseignement->getId().'"'.$selected.'>'.$uniteenseignement.'</option>';
 						}
 						print($script);
 					?>

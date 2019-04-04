@@ -19,7 +19,7 @@
 				$promo = Promotion::getByIdPf($idPf);
 				$pf = Periodeformation::getById($idPf);
 			}
-			$listePf = Periodeformation::getListe($idPf, $active);
+			$listePf = Periodeformation::getListe($active);
 		}
 		//Gestion du filtre de périodes de formations actives ou non
 		$includeJs = true;
@@ -64,7 +64,7 @@
 		if (isset($idPf) AND $idPf != 0){
 			$promo = Promotion::getByIdPf($idPf);
 			$pf = Periodeformation::getById($idPf);
-			$listePf = Periodeformation::getListe($idPf, $active);
+			$listePf = Array($pf);
 
 			include_once ROOTVIEWS.'view_listeperiodesformations.php';
 

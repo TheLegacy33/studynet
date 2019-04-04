@@ -56,12 +56,14 @@ if (!is_null($promo)){
 						<select name="cbactive">
 						<?php
 							$script = '';
-							foreach ($listeStatutPf as $statutPf){
-								$selected = '';
-								if ($active == $statutPf->getId()){
-									$selected = ' selected';
+							if (isset($listeStatutPf)){
+								foreach ($listeStatutPf as $statutPf){
+									$selected = '';
+									if ($active == $statutPf->getId()){
+										$selected = ' selected';
+									}
+									$script .= '<option value="'.$statutPf->getId().'"'.$selected.'>'.$statutPf.'</option>';
 								}
-								$script .= '<option value="'.$statutPf->getId().'"'.$selected.'>'.$statutPf.'</option>';
 							}
 							print($script);
 						?>
@@ -94,8 +96,10 @@ if (!is_null($promo)){
 			<header class="col-12 text-center text-info">Liste des périodes de formations</header>
 			<div class="col-12 btnactions">
 				<?php
-					if ($user->isAdmin() AND isset($promo)){
-						print('<a href="index.php?p=periodesformation&a=ajoutpf&idpromo='.$promo->getId().'" class="btn btn-secondary" title="Ajout d\'une période de formation">Nouvelle période de formation<span class="fa fa-plus"></span></a>');
+					if (isset($user)){
+						if ($user->isAdmin() AND isset($promo)){
+							print('<a href="index.php?p=periodesformation&a=ajoutpf&idpromo='.$promo->getId().'" class="btn btn-secondary" title="Ajout d\'une période de formation">Nouvelle période de formation<span class="fa fa-plus"></span></a>');
+						}
 					}
 				?>
 			</div>
@@ -116,24 +120,26 @@ if (!is_null($promo)){
 					</tr>
 					<?php
 						$script = '';
-						if (count($listePf) == 0){
-							$script .= '<tr><td colspan="6">Aucune donnée disponible !</td></tr>';
-						}else{
-							foreach ($listePf as $pf){
-								$script .= '<tr class="lignedata">';
-								if (is_null($promo)){
-									$script .= '<td>'.$pf->getPromo()->getEcole()->getNom().'</td>';
-									$script .= '<td>'.$pf->getPromo()->getLibelle().'</td>';
+						if (isset($listePf)){
+							if (count($listePf) == 0){
+								$script .= '<tr><td colspan="6">Aucune donnée disponible !</td></tr>';
+							}else{
+								foreach ($listePf as $pf){
+									$script .= '<tr class="lignedata">';
+									if (is_null($promo)){
+										$script .= '<td>'.$pf->getPromo()->getEcole()->getNom().'</td>';
+										$script .= '<td>'.$pf->getPromo()->getLibelle().'</td>';
+									}
+									$script .= '<td>'.$pf->getDateDebut().'</td>';
+									$script .= '<td>'.$pf->getDateFin().'</td>';
+									$script .= '<td>'.$pf->getEffectif().'</td>';
+									$script .= '<td>'.$pf->getNbModules().'</td>';
+									$script .= '<td>'.$pf->getResponsable().'</td>';
+									$script .= '<td><a href="index.php?p=periodesformation&a=listeetudiants&idpf='.$pf->getId().'" title="Liste des étudiants"><span class="fas fa-users align-middle"></span></a></td>';
+									$script .= '<td><a href="index.php?p=periodesformation&a=listemodules&idpf='.$pf->getId().'" title="Liste des modules"><span class="fas fa-list align-middle"></td>';
+									$script .= '<td><a href="index.php?p=periodesformation&a=participations&idpf='.$pf->getId().'" title="Gérer la participation des étudiants aux modules"><span class="fas fa-check-square align-middle"></td>';
+									$script .= '</tr>';
 								}
-								$script .= '<td>'.$pf->getDateDebut().'</td>';
-								$script .= '<td>'.$pf->getDateFin().'</td>';
-								$script .= '<td>'.$pf->getEffectif().'</td>';
-								$script .= '<td>'.$pf->getNbModules().'</td>';
-								$script .= '<td>'.$pf->getResponsable().'</td>';
-								$script .= '<td><a href="index.php?p=periodesformation&a=listeetudiants&idpf='.$pf->getId().'" title="Liste des étudiants"><span class="fas fa-users align-middle"></span></a></td>';
-								$script .= '<td><a href="index.php?p=periodesformation&a=listemodules&idpf='.$pf->getId().'" title="Liste des modules"><span class="fas fa-list align-middle"></td>';
-								$script .= '<td><a href="index.php?p=periodesformation&a=participations&idpf='.$pf->getId().'" title="Gérer la participation des étudiants aux modules"><span class="fas fa-check-square align-middle"></td>';
-								$script .= '</tr>';
 							}
 						}
 						print($script);

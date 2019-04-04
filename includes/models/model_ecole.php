@@ -34,11 +34,11 @@
 			$this->logo = $logo;
 		}
 
-		public function fillPromotions($promotions){
+		public function setPromotions($promotions){
 			$this->promotions = $promotions;
 		}
 
-		public function getPromos(){
+		public function getPromotions(){
 			return $this->promotions;
 		}
 
@@ -72,7 +72,7 @@
 			$SQLStmt->execute();
 			$SQLRow = $SQLStmt->fetchObject();
 			$newEcole = new Ecole($SQLRow->eco_id, $SQLRow->eco_nom, $SQLRow->eco_logo);
-			$newEcole->fillPromotions(Promotion::getListeFromEcole($newEcole));
+			$newEcole->setPromotions(Promotion::getListeFromEcole($newEcole));
 			$SQLStmt->closeCursor();
 			return $newEcole;
 		}

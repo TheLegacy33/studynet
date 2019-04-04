@@ -93,21 +93,13 @@ class Periodeformation {
 		$this->duree = $duree;
 	}
 
-	public static function getListe($idPf = 0, $statut = 1){
+	public static function getListe($statut = 1){
 		$SQLQuery = 'SELECT * ';
 		$SQLQuery .= 'FROM periodeformation INNER JOIN promotion ON periodeformation.promo_id = promotion.promo_id WHERE 1=1 ';
-		if ($idPf != 0){
-			$SQLQuery .= 'AND periodeformation.pf_id = :idpf ';
-		}else{
-			$SQLQuery .= 'AND statpf_id = :idstatut ';
-		}
+		$SQLQuery .= 'AND statpf_id = :idstatut ';
 		$SQLQuery .= 'ORDER BY promotion.promo_libelle, pf_datedebut DESC, pf_datefin DESC';
 		$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
-		if ($idPf != 0){
-			$SQLStmt->bindValue(':idpf', $idPf);
-		}else{
-			$SQLStmt->bindValue(':idstatut', $statut);
-		}
+		$SQLStmt->bindValue(':idstatut', $statut);
 
 		$SQLStmt->execute();
 		$retVal = array();
@@ -116,9 +108,11 @@ class Periodeformation {
 			$retVal[] = $newPf;
 		}
 		$SQLStmt->closeCursor();
+		var_dump($retVal);
 		return $retVal;
 	}
 
+	//TODO : Passer dans model promotion
 	public static function getListeFromPromo($idPromo = 0, $statut = 1){
 		$SQLQuery = 'SELECT * ';
 		$SQLQuery .= 'FROM periodeformation ';
