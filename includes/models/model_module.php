@@ -96,20 +96,23 @@
 			return $newModule;
 		}
 
-		public static function getListeFromEtudiant($idEtudiant = 0, $uniteaffected = true){
+		public static function getListeFromEtudiant($idEtudiant = 0, $idPeriodeFormation = 0, $uniteaffected = true){
 			if ($idEtudiant == 0){
 				return null;
 			}else{
-				$SQLQuery = 'SELECT * FROM module INNER JOIN participer ON module.mod_id = participer.mod_id ';
+				$SQLQuery = 'SELECT * ';
+				$SQLQuery .= 'FROM module INNER JOIN participer ON module.mod_id = participer.mod_id ';
+				$SQLQuery .= 'INNER JOIN rattacher ON module.mod_id = rattacher.mod_id ';
 				$SQLQuery .= 'WHERE etu_id = :idetudiant ';
+				$SQLQuery .= 'AND pf_id = :idpf ';
 				if (!$uniteaffected){
 					$SQLQuery .= 'AND unit_id IS NULL ';
 				}
-				$SQLQuery .= 'ORDER BY mod_chrono';
+				$SQLQuery .= 'ORDER BY ratt_chrono';
 				$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
 				$SQLStmt->bindValue(':idetudiant', $idEtudiant);
+				$SQLStmt->bindValue(':idpf', $idPeriodeFormation);
 				$SQLStmt->execute();
-
 				$retVal = array();
 				while ($SQLRow = $SQLStmt->fetchObject()){
 					$newModule = Module::getById($SQLRow->mod_id);

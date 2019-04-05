@@ -82,6 +82,7 @@ if ($action == 'view' OR $action == 'viewdetailsevaluations'){
 	}
 	include_once ROOTVIEWS . 'view_editappgenerale.php';
 }elseif ($action=='print') {
+	var_dump();
     include_once ROOTVIEWS.'view_printevaluation.php';
 }else{
 	header('Location: '.$_SERVER['HTTP_REFERER']);

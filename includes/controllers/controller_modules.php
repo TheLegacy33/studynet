@@ -20,7 +20,7 @@ if ($action == 'listemodules'){
 		//Affichage de la liste des modules suivis par un étudiant
 		$etudiant = Etudiant::getById($idetudiant);
 
-		$listeModules = Module::getListeFromEtudiant($idetudiant);
+		$listeModules = Module::getListeFromEtudiant($idetudiant, $idpf);
 		include_once ROOTVIEWS.'view_listemodules.php';
 	}
 }elseif ($action == 'ajoutmodule'){

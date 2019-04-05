@@ -78,7 +78,8 @@
 
         public function getModulesCount($idPf, $idModule = 0){
 		    $SQLQuery = 'SELECT COUNT(participer.mod_id) FROM participer INNER JOIN module ON participer.mod_id = module.mod_id ';
-		    $SQLQuery .= 'WHERE module.pf_id = :idpf ';
+		    $SQLQuery .= 'INNER JOIN rattacher ON module.mod_id = rattacher.mod_id ';
+		    $SQLQuery .= 'WHERE rattacher.pf_id = :idpf ';
 		    $SQLQuery .= 'AND etu_id = :idetudiant ';
 		    if ($idModule != 0){
 		        $SQLQuery .= 'AND participer.mod_id = :idmodule';

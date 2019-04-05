@@ -116,7 +116,7 @@
 			include_once ROOTMODELS.'model_module.php';
 			$idPf = isset($_GET['idpf'])?$_GET['idpf']:0;
 			$idEtudiant = isset($_GET['idetudiant'])?$_GET['idetudiant']:0;
-			$listeModules = Module::getListeFromEtudiant($idEtudiant);
+			$listeModules = Module::getListeFromEtudiant($idEtudiant, $idPf);
 			$listeIdModules = Array();
 			foreach ($listeModules as $module){
 				$listeIdModules[] = $module->getId();

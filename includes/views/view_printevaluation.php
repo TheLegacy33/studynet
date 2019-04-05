@@ -12,7 +12,7 @@
         function Header(){
             GLOBAL $etudiant, $pf;
             $this->SetLineWidth(0.4);
-            $this->Image(ROOTUPLOADS.$etudiant->getPromo()->getEcole()->getLogo(), 10, 2, 40, 30);
+            $this->Image(ROOTUPLOADS.Ecole::getById(Promotion::getById($pf->getIdPromo())->getIdEcole())->getLogo(), 10, 2, 40, 30);
 
             // Police Arial gras 15
             $this->SetFont('Arial','',12);

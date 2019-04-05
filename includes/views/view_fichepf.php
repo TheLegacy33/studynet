@@ -16,7 +16,7 @@
 					<label for="ttDuree">Durée :</label><input type="number" min="0" step="10" pattern="\d+" class="form-control" name="ttDuree" id="ttDuree" value="<?php print($pf->getDuree()); ?>"/>
 				</div>
 				<div class="form-group">
-					<label for="cbResponsable">Responsable pédagogique :</label>
+					<label for="cbResponsable">Référent pédagogique :</label>
 					<select class="form-control" name="cbResponsable" id="cbResponsable">
 						<?php
 							$script = '<option value="0"> --- </option>';
