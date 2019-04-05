@@ -4,6 +4,8 @@ $(document).ready(function(){
 
 $("input").change(function(){
     $("button[type=submit]").attr("disabled", false);
+}).blur(function(){
+	$("button[type=submit]").attr("disabled", false);
 });
 
 $("#ttResume").change(function(){

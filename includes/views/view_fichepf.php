@@ -7,10 +7,10 @@
 			<div class="card-header text-uppercase">Informations de la période de formation</div>
 			<div class="card-body">
 				<div class="form-group">
-					<label for="ttDateDebut">Date début :</label><input type="date" class="form-control" name="ttDateDebut" id="ttDateDebut" value="<?php print($pf->getDateDebut()); ?>"/>
+					<label for="ttDateDebut">Date début :</label><input type="date" class="form-control" name="ttDateDebut" id="ttDateDebut" value="<?php print(date_fr_to_mysql($pf->getDateDebut())); ?>"/>
 				</div>
 				<div class="form-group">
-					<label for="ttDateFin">Date fin :</label><input type="date" class="form-control" name="ttDateFin" id="ttDateFin" value="<?php print($pf->getDateFin()); ?>"/>
+					<label for="ttDateFin">Date fin :</label><input type="date" class="form-control" name="ttDateFin" id="ttDateFin" value="<?php print(date_fr_to_mysql($pf->getDateFin())); ?>"/>
 				</div>
 				<div class="form-group">
 					<label for="ttDuree">Durée :</label><input type="number" min="0" step="10" pattern="\d+" class="form-control" name="ttDuree" id="ttDuree" value="<?php print($pf->getDuree()); ?>"/>
@@ -20,14 +20,16 @@
 					<select class="form-control" name="cbResponsable" id="cbResponsable">
 						<?php
 							$script = '<option value="0"> --- </option>';
-							foreach ($listeResponsables as $responsable){
-								$selected = '';
-								if (!is_null($pf->getResponsable())){
-									if ($responsable->equals($pf->getResponsable())){
-										$selected = ' selected';
+							if (isset($listeResponsables)){
+								foreach ($listeResponsables as $responsable){
+									$selected = '';
+									if (!is_null($pf->getResponsable())){
+										if ($responsable->equals($pf->getResponsable())){
+											$selected = ' selected';
+										}
 									}
+									$script .= '<option value="'.$responsable->getId().'"'.$selected.'>'.$responsable.'</option>';
 								}
-								$script .= '<option value="'.$responsable->getId().'"'.$selected.'>'.$responsable.'</option>';
 							}
 							print($script);
 						?>
@@ -38,12 +40,14 @@
 					<select class="form-control" name="cbStatut" id="cbStatut">
 						<?php
 							$script = '';
-							foreach ($listeStatutPf as $statutPf){
-								$selected = '';
-								if ($statutPf->equals($pf->getStatut())){
-									$selected = ' selected';
+							if (isset($listeStatutPf)){
+								foreach ($listeStatutPf as $statutPf){
+									$selected = '';
+									if ($statutPf->equals($pf->getStatut())){
+										$selected = ' selected';
+									}
+									$script .= '<option value="'.$statutPf->getId().'"'.$selected.'>'.$statutPf.'</option>';
 								}
-								$script .= '<option value="'.$statutPf->getId().'"'.$selected.'>'.$statutPf.'</option>';
 							}
 							print($script);
 						?>

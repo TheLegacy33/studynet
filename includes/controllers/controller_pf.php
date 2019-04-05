@@ -1,11 +1,13 @@
 <?php
+	ini_set('memory_limit', '1024M'); // or you could use 1G
+
 	$action = isset($_GET['a'])?$_GET['a']:'listepf';
 	include_once ROOTMODELS.'model_periodeformation.php';
 
 	$promo = null;
 	$pf = null;
 	$active = isset($_GET['active'])?$_GET['active']:'1';
-
+	$statut = StatutPeriodeFormation::getById($active);
 
 	$idPromo = isset($_GET['idpromo'])?$_GET['idpromo']:0;
 	$idPf = isset($_GET['idpf'])?$_GET['idpf']:0;
@@ -13,14 +15,15 @@
 	if ($action == 'listepf'){
 		if (isset($_GET['idpromo'])) {
 			$promo = Promotion::getById($idPromo);
-			$listePf = $promo->getPf();
+			$listePf = $promo->getPf($statut);
 		}else{
 			if ($idPf != 0){
 				$promo = Promotion::getByIdPf($idPf);
 				$pf = Periodeformation::getById($idPf);
 			}
-			$listePf = Periodeformation::getListe($active);
+			$listePf = Periodeformation::getListe($statut);
 		}
+
 		//Gestion du filtre de périodes de formations actives ou non
 		$includeJs = true;
 		$scriptname[] = 'js_listepf.js';
@@ -31,19 +34,19 @@
 		$includeJs = true;
 		$scriptname[] = 'js_periodeformation.js';
 		$pf = new Periodeformation();
-
+		$promo = Promotion::getById($idPromo);
 		$listeResponsables = ResponsablePedago::getListe();
 		$listeStatutPf = StatutPeriodeFormation::getListe();
-		$promo = Promotion::getById($idPromo);
 
 		if (!empty($_POST)){
 			$dateDebut = $_POST['ttDateDebut'];
 			$dateFin = $_POST['ttDateFin'];
 			$duree = $_POST['ttDuree'];
-			$responsable = (isset($_POST['cbResponsable']) AND $_POST['cbResponsable'] != '0')?ResponsablePedago::getById($_POST['cbResponsable']):new ResponsablePedago();
-			$statut = (isset($_POST['cbStatut']) AND $_POST['cbStatut'] != '0')?StatutPeriodeFormation::getById($_POST['cbStatut']):new StatutPeriodeFormation();
+			$responsable = (isset($_POST['cbResponsable']) AND $_POST['cbResponsable'] != '0')?ResponsablePedago::getById($_POST['cbResponsable']):null;
+			$statut = (isset($_POST['cbStatut']) AND $_POST['cbStatut'] != '0')?StatutPeriodeFormation::getById($_POST['cbStatut']):null;
 
-			$newPf = new Periodeformation(0, $dateDebut, $dateFin, $promo, $statut->getId(), $duree);
+			$newPf = new Periodeformation(0, $dateDebut, $dateFin, $idPromo, $statut->getId(), $duree);
+			$newPf->setResponsable($responsable);
 
 
 			if (Periodeformation::insert($newPf)){
@@ -59,6 +62,29 @@
 
 		$promo = Promotion::getByIdPf($idPf);
 		$pf = Periodeformation::getById($idPf);
+		$listeResponsables = ResponsablePedago::getListe();
+		$listeStatutPf = StatutPeriodeFormation::getListe();
+
+		if (!empty($_POST)){
+			$dateDebut = $_POST['ttDateDebut'];
+			$dateFin = $_POST['ttDateFin'];
+			$duree = $_POST['ttDuree'];
+			$responsable = (isset($_POST['cbResponsable']) AND $_POST['cbResponsable'] != '0')?ResponsablePedago::getById($_POST['cbResponsable']):null;
+			$statut = (isset($_POST['cbStatut']) AND $_POST['cbStatut'] != '0')?StatutPeriodeFormation::getById($_POST['cbStatut']):null;
+
+			$pf->setDuree($duree);
+			$pf->setDateDebut($dateDebut);
+			$pf->setDateFin($dateFin);
+			$pf->setResponsable($responsable);
+			$pf->setStatut($statut);
+
+			if (Periodeformation::update($pf)){
+				header('Location: index.php?p=periodesformation&a=listepf&idpromo='.$promo->getId());
+			}else{
+				var_dump("Erreur d'enregistrement");
+			}
+		}
+		include_once ROOTVIEWS.'view_fichepf.php';
 
 	}else{
 		if (isset($idPf) AND $idPf != 0){
@@ -66,7 +92,7 @@
 			$pf = Periodeformation::getById($idPf);
 			$listePf = Array($pf);
 
-			include_once ROOTVIEWS.'view_listeperiodesformations.php';
+			include_once ROOTVIEWS.'view_enteteperiodesformations.php';
 
 			if ($action == 'listemodules' OR $action == 'ajoutmodule' OR $action == 'editmodule' OR $action == 'importmodules'){
 				include_once ROOTCTRL.'controller_modules.php';

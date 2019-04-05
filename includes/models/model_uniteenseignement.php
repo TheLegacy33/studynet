@@ -4,14 +4,11 @@
 
 	class UniteEnseignement{
 		private $id, $libelle, $chrono;
-		private $modules;
 
 		public function __construct($id = 0, $libelle = '', $chrono = 0){
 			$this->id = $id;
 			$this->libelle = $libelle;
 			$this->chrono = $chrono;
-
-			$this->modules = array();
 		}
 
 		public function getId(){
@@ -26,14 +23,6 @@
 			return $this->chrono;
 		}
 
-		public function getModules(){
-			return $this->modules;
-		}
-
-		public function getNbModules(){
-			return count($this->modules);
-		}
-
 		public function setId($id){
 			$this->id = $id;
 		}
@@ -44,10 +33,6 @@
 
 		public function setChrono($chrono){
 			$this->chrono = $chrono;
-		}
-
-		public function fillModules($listeModules){
-			$this->modules = $listeModules;
 		}
 
 		public function equals(UniteEnseignement $uniteEnseignement){
@@ -67,7 +52,6 @@
 			}else{
 				$SQLRow = $SQLStmt->fetchObject();
 				$newUnit = new UniteEnseignement($SQLRow->unit_id, $SQLRow->unit_libelle);
-				$newUnit->fillModules(Module::getListeFromUe($id));
 			}
 			$SQLStmt->closeCursor();
 			return $newUnit;
@@ -90,27 +74,21 @@
 				$SQLStmt->execute();
 
 				$retVal = array();
-				$chrono = 0;
 				while ($SQLRow = $SQLStmt->fetchObject()){
-					$chrono = $SQLRow->comp_chrono;
-					$newUnit = new UniteEnseignement($SQLRow->unit_id, $SQLRow->unit_libelle, $chrono);
-					$newUnit->fillModules(Module::getListeFromUeAndPf($SQLRow->unit_id, $idPf));
+					$newUnit = new UniteEnseignement($SQLRow->unit_id, $SQLRow->unit_libelle, $SQLRow->comp_chrono);
 					$retVal[] = $newUnit;
 				}
-
-				//Récupération de la liste des modules sans UE
-				$newUnit = new UniteEnseignement(0, 'Sans Unité d\'enseignement', $chrono++);
-				$newUnit->fillModules(Module::getListeFromPfSansUE($idPf));
-				if ($newUnit->getNbModules() > 0){
-					$retVal[] = $newUnit;
-				}
-
+				$retVal[] = UniteEnseignement::getEmptyUE();
 				$SQLStmt->closeCursor();
 				return $retVal;
 			}
 		}
 
-		public static function getListeFromPromo($idPromo, $trialpha = true){
+		public static function getEmptyUE(){
+			return new UniteEnseignement(0, 'Sans Unité d\'enseignement', 999);
+		}
+
+/*		public static function getListeFromPromo($idPromo, $trialpha = true){
 			if ($idPromo == 0){
 				return null;
 			}else{
@@ -129,13 +107,12 @@
 				$retVal = array();
 				while ($SQLRow = $SQLStmt->fetchObject()){
 					$newUnit = new UniteEnseignement($SQLRow->unit_id, $SQLRow->unit_libelle, $SQLRow->comp_chrono);
-					$newUnit->fillModules(Module::getListeFromUe($SQLRow->unit_id));
 					$retVal[] = $newUnit;
 				}
 				$SQLStmt->closeCursor();
 				return $retVal;
 			}
-		}
+		}*/
 
 		public static function getNextChrono($idPromo){
 			if ($idPromo == 0) {

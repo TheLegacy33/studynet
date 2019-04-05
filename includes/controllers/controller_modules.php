@@ -12,8 +12,9 @@ if ($action == 'listemodules'){
 		$includeJs = true;
 		$scriptname[] = 'js_listemodules.js';
 
-		$listeUnitesEnseignement = $pf->getUE();
-		$listeModulesHorsUE = array();
+		$listeUnitesEnseignement = $pf->getUnitesenseignement();
+		$listeModules = $pf->getModules();
+//var_dump($listeModules);
 		include_once ROOTVIEWS.'view_listemodulespf.php';
 	}elseif ($idetudiant != 0 AND $idpf != 0){
 		//Affichage de la liste des modules suivis par un étudiant
@@ -26,8 +27,9 @@ if ($action == 'listemodules'){
 	$includeJs = true;
 	$scriptname[] = 'js_module.js';
 	$module = new Module();
+	$module->setUniteEnseignement(UniteEnseignement::getEmptyUE());
 	$listeIntervenants = Intervenant::getListe();
-    $listeUnitesEnseignement = $pf->getUE();
+    $listeUnitesEnseignement = $pf->getUnitesenseignement();
 
 	if (!empty($_POST)){
 		$libModule = $_POST['ttLibelle'];
@@ -50,7 +52,7 @@ if ($action == 'listemodules'){
 	$idModule = isset($_GET['idmodule'])?$_GET['idmodule']:0;
 	$module = Module::getById($idModule);
 	$listeIntervenants = Intervenant::getListe(Intervenant::class);
-	$listeUnitesEnseignement = $pf->getUE();
+	$listeUnitesEnseignement = $pf->getUnitesenseignement();
 
 	if (!empty($_POST)){
 		$module->setLibelle(trim($_POST['ttLibelle']));

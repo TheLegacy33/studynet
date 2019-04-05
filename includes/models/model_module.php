@@ -44,7 +44,7 @@
 			return $this->duree;
 		}
 
-        public function getUE(){
+        public function getUniteEnseignement(){
 			return $this->uniteenseignement;
 		}
 
@@ -89,7 +89,8 @@
 			$SQLStmt->bindValue(':idmodule', $id);
 			$SQLStmt->execute();
 			$SQLRow = $SQLStmt->fetchObject();
-			$newModule = new Module($SQLRow->mod_id, $SQLRow->mod_libelle, $SQLRow->mod_details, Intervenant::getById($SQLRow->int_id), $SQLRow->mod_duree, UniteEnseignement::getById($SQLRow->unit_id));
+			$uniteEnseignement = (is_null($SQLRow->unit_id)?UniteEnseignement::getEmptyUE():UniteEnseignement::getById($SQLRow->unit_id));
+			$newModule = new Module($SQLRow->mod_id, $SQLRow->mod_libelle, $SQLRow->mod_details, Intervenant::getById($SQLRow->int_id), $SQLRow->mod_duree, $uniteEnseignement);
 			$newModule->fillContenu(ContenuModule::getListeFromModule($id));
 			$SQLStmt->closeCursor();
 			return $newModule;
@@ -129,6 +130,27 @@
 
 				$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
 				$SQLStmt->bindValue(':iduniteenseignement', $idUniteEnseignement);
+				$SQLStmt->execute();
+
+				$retVal = array();
+				while ($SQLRow = $SQLStmt->fetchObject()){
+					$newModule = Module::getById($SQLRow->mod_id);
+					$retVal[] = $newModule;
+				}
+				$SQLStmt->closeCursor();
+				return $retVal;
+			}
+		}
+
+		public static function getListeFromPf($idPf){
+			if ($idPf == 0){
+				return null;
+			}else{
+				$SQLQuery = 'SELECT module.mod_id FROM module INNER JOIN rattacher ON module.mod_id = rattacher.mod_id ';
+				$SQLQuery .= 'WHERE pf_id = :idpf ';
+				$SQLQuery .= 'ORDER BY ratt_chrono';
+				$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
+				$SQLStmt->bindValue(':idpf', $idPf);
 				$SQLStmt->execute();
 
 				$retVal = array();
@@ -210,7 +232,7 @@
 			$SQLStmt->bindValue(':libelle', $module->getLibelle());
 			$SQLStmt->bindValue(':details', $module->getDetails());
 			$SQLStmt->bindValue(':idintervenant', (!is_null($module->getIntervenant()) AND $module->getIntervenant()->getId() != 0)?$module->getIntervenant()->getId():null);
-			$SQLStmt->bindValue(':idunit', (!is_null($module->getUE()) AND $module->getUE()->getId() != 0)?$module->getUE()->getId():null);
+			$SQLStmt->bindValue(':idunit', (!is_null($module->getUniteEnseignement()) AND $module->getUniteEnseignement()->getId() != 0)?$module->getUniteEnseignement()->getId():null);
 			$SQLStmt->bindValue(':duree', $module->getDuree());
 			$SQLStmt->bindValue(':idmod', $module->getId());
 
@@ -228,7 +250,7 @@
 			$SQLStmt->bindValue(':libModule', $module->getLibelle());
 			$SQLStmt->bindValue(':detailModule', $module->getDetails());
 			$SQLStmt->bindValue(':idIntervenant',(!is_null($module->getIntervenant()) AND $module->getIntervenant()->getId() != 0)?$module->getIntervenant()->getId():null);
-			$SQLStmt->bindValue(':idunit', (!is_null($module->getUE()) AND $module->getUE()->getId() != 0)?$module->getUE()->getId():null);
+			$SQLStmt->bindValue(':idunit', (!is_null($module->getUniteEnseignement()) AND $module->getUniteEnseignement()->getId() != 0)?$module->getUniteEnseignement()->getId():null);
 			$SQLStmt->bindValue(':dureeModule', $module->getDuree());
 			DAO::getInstance()->beginTransaction();
 			if (!$SQLStmt->execute()){

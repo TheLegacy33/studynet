@@ -41,17 +41,6 @@ nav#navgenerale{
 	border-radius: 2px;
 }
 
-/*nav#navgenerale ul{
-    list-style-type: none;
-	width: 100%;
-	display: flex;
-	justify-content: stretch;
-	align-items: stretch;
-	align-content: stretch;
-	height: 100%;
-	margin: 0;
-}*/
-
 nav#navgenerale li{
     color: white;
     text-transform: uppercase;
@@ -67,7 +56,7 @@ nav.navinterne{
     line-height: 30px;
 }
 
-#content_body{
+#content_body, .content_body{
     margin-top: 10px;
 }
 

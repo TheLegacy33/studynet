@@ -26,8 +26,18 @@ class Promotion {
 		return $this->id;
 	}
 
-	public function getPf(){
-		return $this->pf;
+	public function getPf(StatutPeriodeFormation $statut = null){
+		$retVal = array();
+		if (is_null($statut)){
+			$retVal = $this->pf;
+		}else{
+			foreach ($this->pf as $pf){
+				if ($pf->getStatut()->equals($statut)){
+					$retVal[] = $pf;
+				}
+			}
+		}
+		return $retVal;
 	}
 
 	public function setPf($pf){
@@ -77,7 +87,7 @@ class Promotion {
 		$SQLStmt->execute();
 		$SQLRow = $SQLStmt->fetchObject();
 		$newPromo = new Promotion($SQLRow->promo_id, $SQLRow->promo_libelle, $SQLRow->eco_id);
-		$newPromo->setPf(Periodeformation::getListeFromPromo($id));
+		$newPromo->setPf(Periodeformation::getListeFromPromo($newPromo));
 		$SQLStmt->closeCursor();
 		return $newPromo;
 	}

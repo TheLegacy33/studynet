@@ -80,6 +80,10 @@ function Debug($message = "", $variable = null){
 }
 
 function date_fr_to_mysql($datefr){
-	return date_create_from_format('d/m/Y', $datefr)->format('Y-m-d');
+	if (!is_null($datefr)){
+		return date_create_from_format('d/m/Y', $datefr)->format('Y-m-d');
+	}else{
+		return '';
+	}
 }
 ?>

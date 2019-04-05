@@ -28,12 +28,12 @@
 			<div><label for="cbUniteEnseignement">Unite d'enseignement : </label>
 				<select id="cbUniteEnseignement" name="cbUniteEnseignement">
 					<?php
-						$script = '<option value="0"> --- </option>';
+						$script = '';
 						if (isset($listeUnitesEnseignement)){
 							foreach ($listeUnitesEnseignement as $uniteenseignement){
 								$selected = '';
-								if (!is_null($module->getUE())){
-									if ($uniteenseignement->equals($module->getUE())){
+								if (!is_null($module->getUniteEnseignement())){
+									if ($uniteenseignement->equals($module->getUniteEnseignement())){
 										$selected = ' selected';
 									}
 								}

@@ -40,6 +40,14 @@ $("input").change(function(){
 	}
 });
 
+$("#cbResponsable").change(function (){
+	$("button[type=submit]").attr("disabled", false);
+});
+
+$("#cbStatut").change(function (){
+	$("button[type=submit]").attr("disabled", false);
+});
+
 $("button[type=reset]").click(function(){
 	$("button[type=submit]").attr("disabled", true);
 });
@@ -62,5 +70,14 @@ $("#frmSaisie").submit(function(){
 		$("#ttDuree").focus();
 		return false;
 	}
+
+	var dateDebut = $("#ttDateDebut").val().trim();
+	var datefin = $("#ttDateFin").val().trim();
+	if (datefin <= dateDebut){
+		alert("Vous devez sélectionner une date de fin postérieure à la date de début !");
+		$("#ttDateFin").focus();
+		return false;
+	}
+
 	return true;
 });
