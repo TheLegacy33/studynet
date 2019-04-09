@@ -70,7 +70,7 @@
         }
 
         function contenuModule($module){
-            GLOBAL $etudiant, $pf;
+            GLOBAL $etudiant;
             foreach ($module->getContenu() as $contenuModule){
                 $eval = Evaluation::getById($etudiant->getId(), $module->getIntervenant()->getId(), $contenuModule->getId());
                 $acquis = $eval->estAcquis()?' X':'';
@@ -92,7 +92,7 @@
                 $commentaireModule = '';
             }
             $this->SetFont('Arial','I',8);
-            $this->MultiCell(0, 6, utf8_decode($commentaireModule), 'LBR', 'L');
+            $this->MultiCell(0, 5, utf8_decode($commentaireModule), 'LBR', 'L');
             $this->SetFont('Arial','',8);
         }
 
@@ -101,10 +101,13 @@
                 $appreciation = '';
             }
             $this->SetLineWidth(0.4);
+			if ($this->GetY() >= 250){
+				$this->AddPage();
+			}
             $this->SetFont('Arial','B',12);
             $this->Cell(0, 6, 'Commentaires', 1, 1, 'L', false);
             $this->SetFont('Arial','I',10);
-            $this->MultiCell(0, 6, utf8_decode($appreciation), 'LBR', 'L');
+            $this->MultiCell(0, 5, utf8_decode($appreciation), 'LBR', 'L');
             $this->SetFont('Arial','',10);
             $this->SetLineWidth(0.2);
         }
@@ -112,21 +115,28 @@
     $pdf = new PDF();
     $pdf->AddPage();
     $pdf->AliasNbPages();
+	if (isset($listeModules)){
+		foreach ($listeModules as $module){
+			$commentaireModule = null;
+			$appreciationG = null;
+			if (isset($etudiant)){
+				$commentaireModule = (Evaluation::getAppreciationModule($etudiant->getId(), $module->getIntervenant()->getId(), $module->getId()));
+			}
+			if ($commentaireModule == null){
+				$commentaireModule = 'Pas de commentaire';
+			}
+			if (isset($etudiant)){
+				$appreciationG = Evaluation::getAppreciationGenerale($etudiant->getId(), $pf->getId());
+			}
+			if ($appreciationG == null){
+				$appreciationG = 'Pas de commentaire';
+			}
 
-    foreach ($listeModules as $module){
-        $commentaireModule = (Evaluation::getAppreciationModule($etudiant->getId(), $module->getIntervenant()->getId(), $module->getId()));
-        if ($commentaireModule == null){
-            $commentaireModule = 'Pas de commentaire';
-        }
-        $appreciationG = Evaluation::getAppreciationGenerale($etudiant->getId(), $pf->getId());
-        if ($appreciationG == null){
-            $appreciationG = 'Pas de commentaire';
-        }
-
-        $pdf->headerModule($module);
-        $pdf->contenuModule($module);
-        $pdf->commentModule($commentaireModule);
-    }
+			$pdf->headerModule($module);
+			$pdf->contenuModule($module);
+			$pdf->commentModule($commentaireModule);
+		}
+	}
     $pdf->evalGenerale($appreciationG);
     //$pdf->Output();
     $pdfName = $etudiant->getNom().'_'.$etudiant->getPrenom().'_'.date('Ymd').'.pdf';
