@@ -64,7 +64,7 @@ class Personne{
         }
 	}
 
-	public function equals($personne){
+	public function equals(Personne $personne){
 	    if ($this->getPersId() == $personne->getPersId() AND $this->getNomComplet() == $personne->getNomComplet()){
 	        return true;
         }else{
@@ -195,7 +195,7 @@ class Personne{
 		$SQLStmt->execute();
 	    $retval = $SQLStmt->rowCount();
 		$SQLStmt->closeCursor();
-	    return $retval;
+	    return ($retval > 0);
     }
 
     public static function getType($idPers){
@@ -239,24 +239,36 @@ class Personne{
     }
 
     public static function getListe($critere = '*'){
-	    $SQLQuery = 'SELECT * FROM personne ';
-	    if ($critere != '*'){
-	    	if ($critere == Intervenant::class){
-	    		$SQLQuery .= 'INNER JOIN intervenant ON personne.pers_id = intervenant.pers_id ';
-			}elseif ($critere == Etudiant::class){
-				$SQLQuery .= 'INNER JOIN etudiant ON personne.pers_id = etudiant.pers_id ';
-			}elseif ($critere == ResponsablePedago::class){
-				$SQLQuery .= 'INNER JOIN responsablePedago ON personne.pers_id = responsablePedago.pers_id ';
-			}elseif ($critere == 'visiteur'){
-	    		$SQLQuery .= 'WHERE pers_id NOT IN (SELECT pers_id FROM intervenant) ';
-	    		$SQLQuery .= 'AND pers_id NOT IN (SELECT pers_id FROM etudiant) ';
-	    		$SQLQuery .= 'AND pers_id NOT IN (SELECT pers_id FROM responsablePedago) ';
-			}elseif ($critere == 'administrateur'){
-				$SQLQuery .= 'INNER JOIN userAuth ON personne.us_id = userAuth.us_id ';
-				$SQLQuery .= 'AND us_isadmin = 1 ';
+		$SQLQuery = 'SELECT * FROM personne ';
+		if (is_array($critere)){
+			$SQLQuery = '';
+			foreach ($critere as $item => $value){
+				if ($value == 'I'){
+					$SQLQuery .= 'SELECT personne.* FROM personne INNER JOIN intervenant ON personne.pers_id = intervenant.pers_id ';
+				}elseif ($value == 'R'){
+					$SQLQuery .= 'SELECT personne.* FROM personne INNER JOIN responsablePedago ON personne.pers_id = responsablePedago.pers_id ';
+				}elseif ($value == 'E'){
+					$SQLQuery .= 'SELECT personne.* FROM personne INNER JOIN etudiant ON personne.pers_id = etudiant.pers_id ';
+				}
+				if ($item != array_key_last($critere)){
+					$SQLQuery .= 'UNION ';
+				}
+			}
+		}else{
+			if ($critere != '*'){
+				if ($critere == 'visiteur'){
+					$SQLQuery .= 'WHERE pers_id NOT IN (SELECT pers_id FROM intervenant) ';
+					$SQLQuery .= 'AND pers_id NOT IN (SELECT pers_id FROM etudiant) ';
+					$SQLQuery .= 'AND pers_id NOT IN (SELECT pers_id FROM responsablePedago) ';
+				}elseif ($critere == 'administrateur'){
+					$SQLQuery .= 'INNER JOIN userAuth ON personne.us_id = userAuth.us_id ';
+					$SQLQuery .= 'WHERE us_isadmin = 1 ';
+				}
 			}
 		}
+
 	    $SQLQuery .= 'ORDER BY pers_nom, pers_prenom';
+
         $SQLStmt = DAO::getInstance()->prepare($SQLQuery);
         $SQLStmt->execute();
 
@@ -282,18 +294,7 @@ class Personne{
 			}
 		}else{
 			while ($SQLRow = $SQLStmt->fetchObject()){
-				if ($critere == Intervenant::class){
-					$idInt = Intervenant::getIdByIdPers($SQLRow->pers_id);
-					$newPers = new Intervenant($idInt, $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->pers_email, $SQLRow->pers_id);
-				}elseif ($critere == ResponsablePedago::class){
-					$idResp = ResponsablePedago::getIdByIdPers($SQLRow->pers_id);
-					$newPers = new ResponsablePedago($idResp, $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->pers_email, $SQLRow->pers_id);
-				}elseif ($critere == Etudiant::class){
-					$idEtud = Etudiant::getIdByIdPers($SQLRow->pers_id);
-					$newPers = new Etudiant($idEtud, $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->pers_email, Etudiant::getPhotoById($idEtud), $SQLRow->pers_id);
-				}else{
-					$newPers = new Personne($SQLRow->pers_id, $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->pers_email);
-				}
+				$newPers = new Personne($SQLRow->pers_id, $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->pers_email);
 				$newPers->fillAuth(User::getById($SQLRow->us_id));
 				$retVal[] = $newPers;
 			}
@@ -308,19 +309,19 @@ class Personne{
 		$SQLStmt->bindValue(':idpers', $id);
 		$SQLStmt->execute();
 		$SQLRow = $SQLStmt->fetchObject();
-		$userType = self::getType($SQLRow->pers_id);
-		if ($userType == Intervenant::class){
-			$idInt = Intervenant::getIdByIdPers($SQLRow->pers_id);
-			$newPers = new Intervenant($idInt, $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->pers_email, $SQLRow->pers_id);
-		}elseif ($userType == ResponsablePedago::class){
-			$idResp = ResponsablePedago::getIdByIdPers($SQLRow->pers_id);
-			$newPers = new ResponsablePedago($idResp, $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->pers_email, $SQLRow->pers_id);
-		}elseif ($userType == Etudiant::class){
-			$idEtud = Etudiant::getIdByIdPers($SQLRow->pers_id);
-			$newPers = new Etudiant($idEtud, $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->pers_email, Etudiant::getPhotoById($idEtud), $SQLRow->pers_id);
-		}else{
+//		$userType = self::getType($SQLRow->pers_id);
+//		if ($userType == Intervenant::class){
+//			$idInt = Intervenant::getIdByIdPers($SQLRow->pers_id);
+//			$newPers = new Intervenant($idInt, $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->pers_email, $SQLRow->pers_id);
+//		}elseif ($userType == ResponsablePedago::class){
+//			$idResp = ResponsablePedago::getIdByIdPers($SQLRow->pers_id);
+//			$newPers = new ResponsablePedago($idResp, $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->pers_email, $SQLRow->pers_id);
+//		}elseif ($userType == Etudiant::class){
+//			$idEtud = Etudiant::getIdByIdPers($SQLRow->pers_id);
+//			$newPers = new Etudiant($idEtud, $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->pers_email, Etudiant::getPhotoById($idEtud), $SQLRow->pers_id);
+//		}else{
 			$newPers = new Personne($SQLRow->pers_id, $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->pers_email);
-		}
+//		}
 		$newPers->fillAuth(User::getById($SQLRow->us_id));
 
 		$retVal[] = $newPers;
@@ -329,23 +330,37 @@ class Personne{
 	}
 
     public static function update($personne){
-	    $SQLQuery = "UPDATE personne SET pers_nom = :nom, pers_prenom = :prenom, pers_email = :email, us_id = :userid WHERE pers_id = :idpers";
-		$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
-		$SQLStmt->bindValue(':nom', $personne->getNom());
-		$SQLStmt->bindValue(':prenom', $personne->getPrenom());
-		$SQLStmt->bindValue(':email', $personne->getEmail());
-		$SQLStmt->bindValue(':userid', ($personne->getUserAuth()->getId() != 0)?$personne->getUserAuth()->getId():null);
-		if (get_class($personne) == Personne::class){
-			$SQLStmt->bindValue(':idpers', $personne->getId());
-		}else{
-			$SQLStmt->bindValue(':idpers', $personne->getPersId());
+		if (!is_null($personne)){
+			$SQLQuery = "UPDATE personne SET pers_nom = :nom, pers_prenom = :prenom, pers_email = :email, us_id = :userid WHERE pers_id = :idpers";
+			$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
+			$SQLStmt->bindValue(':nom', $personne->getNom());
+			$SQLStmt->bindValue(':prenom', $personne->getPrenom());
+			$SQLStmt->bindValue(':email', $personne->getEmail());
+			$SQLStmt->bindValue(':userid', ($personne->getUserAuth()->getId() != 0)?$personne->getUserAuth()->getId():null);
+			if (get_class($personne) == Personne::class){
+				$SQLStmt->bindValue(':idpers', $personne->getId());
+			}else{
+				$SQLStmt->bindValue(':idpers', $personne->getPersId());
+			}
+			$SQLStmt->execute();
 		}
-		$SQLStmt->execute();
     }
 
-    public static function insert($personne, $other){
-
+    public static function insert($personne){
+		if (!is_null($personne)){
+			$SQLQuery = "INSERT INTO personne (pers_nom, pers_prenom, pers_email, us_id) VALUES (:nom, :prenom, :email, :userid)";
+			$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
+			$SQLStmt->bindValue(':nom', $personne->getNom());
+			$SQLStmt->bindValue(':prenom', $personne->getPrenom());
+			$SQLStmt->bindValue(':email', $personne->getEmail());
+			$SQLStmt->bindValue(':userid', ($personne->getUserAuth()->getId() != 0)?$personne->getUserAuth()->getId():null);
+			if (get_class($personne) == Personne::class){
+				$SQLStmt->bindValue(':idpers', $personne->getId());
+			}else{
+				$SQLStmt->bindValue(':idpers', $personne->getPersId());
+			}
+			$SQLStmt->execute();
+		}
 	}
 }
-
 ?>

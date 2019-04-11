@@ -18,8 +18,24 @@
 			return parent::getId();
 		}
 
-		public static function getListe($critere = Intervenant::class){
-			return parent::getListe($critere);
+		public static function getListe($critere = '*'){
+			$SQLQuery = 'SELECT * FROM personne ';
+			$SQLQuery .= 'INNER JOIN intervenant ON personne.pers_id = intervenant.pers_id ';
+			$SQLQuery .= 'ORDER BY pers_nom, pers_prenom';
+			$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
+			$SQLStmt->execute();
+
+			$retVal = array();
+
+			while ($SQLRow = $SQLStmt->fetchObject()){
+				$idInt = Intervenant::getIdByIdPers($SQLRow->pers_id);
+				$newPers = new Intervenant($idInt, $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->pers_email, $SQLRow->pers_id);
+				$newPers->fillAuth(User::getById($SQLRow->us_id));
+				$retVal[] = $newPers;
+			}
+
+			$SQLStmt->closeCursor();
+			return $retVal;
 		}
 
 		public static function getListeFromPf($idPf = 0){
@@ -66,6 +82,32 @@
 			return $newInterv;
 		}
 
+		public function getNbModules($idModToExclude = 0){
+			$SQLQuery = 'SELECT COUNT(mod_id) FROM module WHERE int_id = :idInterv ';
+			if ($idModToExclude > 0){
+				$SQLQuery .= 'AND mod_id != :idModToExlude';
+			}
+			$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
+			$SQLStmt->bindValue(':idInterv', $this->getId());
+			if ($idModToExclude > 0){
+				$SQLStmt->bindValue(':idModToExlude', $idModToExclude);
+			}
+
+			$SQLStmt->execute();
+			$retVal = intval($SQLStmt->fetchColumn(0));
+			$SQLStmt->closeCursor();
+			return $retVal;
+		}
+
+		public static function exists($idPers){
+			$SQLStmt = DAO::getInstance()->prepare("SELECT pers_id FROM intervenant WHERE pers_id = :idPers");
+			$SQLStmt->bindValue(':idPers', $idPers);
+			$SQLStmt->execute();
+			$retval = $SQLStmt->rowCount();
+			$SQLStmt->closeCursor();
+			return ($retval > 0);
+		}
+
 		public static function update($intervenant){
 			$SQLQuery = "UPDATE personne SET pers_nom = :nom, pers_prenom = :prenom, pers_email = :email, us_id = :userid WHERE pers_id = :idpers";
 			$stmt = DAO::getInstance()->prepare($SQLQuery);
@@ -78,4 +120,26 @@
 				var_dump($stmt->errorInfo());
 			}
 		}
+
+		public static function insert($intervenant){
+			$SQLQuery = 'INSERT INTO intervenant (pers_id) VALUES (:idPers)';
+			$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
+			$SQLStmt->bindValue(':idPers', $intervenant->getPersId());
+			if (!$SQLStmt->execute()){
+				var_dump($SQLStmt->errorInfo());
+			}
+		}
+
+		public static function delete($intervenant){
+			$SQLQuery = 'DELETE FROM intervenant WHERE int_id = :idInterv';
+			$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
+			$SQLStmt->bindValue(':idInterv', $intervenant->getId());
+			if ($SQLStmt->execute()){
+				return true;
+			}else{
+				var_dump($SQLStmt->errorInfo());
+				return false;
+			}
+		}
 	}
+?>

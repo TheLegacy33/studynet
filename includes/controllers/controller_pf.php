@@ -35,19 +35,25 @@
 		$scriptname[] = 'js_periodeformation.js';
 		$pf = new Periodeformation();
 		$promo = Promotion::getById($idPromo);
-		$listeResponsables = ResponsablePedago::getListe();
+		$listePersonnes = Personne::getListe(array('I', 'R'));
 		$listeStatutPf = StatutPeriodeFormation::getListe();
 
 		if (!empty($_POST)){
 			$dateDebut = $_POST['ttDateDebut'];
 			$dateFin = $_POST['ttDateFin'];
 			$duree = $_POST['ttDuree'];
-			$responsable = (isset($_POST['cbResponsable']) AND $_POST['cbResponsable'] != '0')?ResponsablePedago::getById($_POST['cbResponsable']):null;
 			$statut = (isset($_POST['cbStatut']) AND $_POST['cbStatut'] != '0')?StatutPeriodeFormation::getById($_POST['cbStatut']):null;
 
+			//Je rajoute la personne en tant que responsable pédago
+			$personne = (isset($_POST['cbResponsable']) AND $_POST['cbResponsable'] != '0')?Personne::getById($_POST['cbResponsable']):null;
+
+
+			if (!ResponsablePedago::exists($personne->getId())){
+				ResponsablePedago::insert($personne);
+			}
+			$responsable = ResponsablePedago::getById(ResponsablePedago::getIdByIdPers($personne->getId()));
 			$newPf = new Periodeformation(0, $dateDebut, $dateFin, $idPromo, $statut->getId(), $duree);
 			$newPf->setResponsable($responsable);
-
 
 			if (Periodeformation::insert($newPf)){
 				header('Location: index.php?p=periodesformation&a=listepf&idpromo='.$idPromo);
@@ -62,23 +68,36 @@
 
 		$promo = Promotion::getByIdPf($idPf);
 		$pf = Periodeformation::getById($idPf);
-		$listeResponsables = ResponsablePedago::getListe();
+		$listePersonnes = Personne::getListe(array('I', 'R'));
 		$listeStatutPf = StatutPeriodeFormation::getListe();
 
 		if (!empty($_POST)){
 			$dateDebut = $_POST['ttDateDebut'];
 			$dateFin = $_POST['ttDateFin'];
 			$duree = $_POST['ttDuree'];
-			$responsable = (isset($_POST['cbResponsable']) AND $_POST['cbResponsable'] != '0')?ResponsablePedago::getById($_POST['cbResponsable']):null;
 			$statut = (isset($_POST['cbStatut']) AND $_POST['cbStatut'] != '0')?StatutPeriodeFormation::getById($_POST['cbStatut']):null;
+
+			$personne = (isset($_POST['cbResponsable']) AND $_POST['cbResponsable'] != '0')?Personne::getById($_POST['cbResponsable']):null;
+
+			if (!ResponsablePedago::exists($personne->getId())){
+				ResponsablePedago::insert($personne);
+			}
+			$newresponsable = ResponsablePedago::getById(ResponsablePedago::getIdByIdPers($personne->getId()));
+			$oldresponsable = $pf->getResponsable();
 
 			$pf->setDuree($duree);
 			$pf->setDateDebut($dateDebut);
 			$pf->setDateFin($dateFin);
-			$pf->setResponsable($responsable);
+			$pf->setResponsable($newresponsable);
 			$pf->setStatut($statut);
 
 			if (Periodeformation::update($pf)){
+				if (!$newresponsable->equals($oldresponsable)){
+					if ($oldresponsable->getNbPf($pf->getId()) == 0){
+						ResponsablePedago::delete($oldresponsable) or die('erreur');
+					}
+				}
+
 				header('Location: index.php?p=periodesformation&a=listepf&idpromo='.$promo->getId());
 			}else{
 				var_dump("Erreur d'enregistrement");
@@ -114,6 +133,4 @@
 			}
 		}
 	}
-
-
 ?>

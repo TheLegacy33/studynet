@@ -10,15 +10,15 @@
 				<select id="cbIntervenant" name="cbIntervenant">
 					<?php
 						$script = '<option value="0"> --- </option>';
-						if (isset($listeIntervenants)){
-							foreach ($listeIntervenants as $intervenant){
+						if (isset($listePersonnes)){
+							foreach ($listePersonnes as $personne){
 								$selected = '';
 								if (!is_null($module->getIntervenant())){
-									if ($intervenant->equals($module->getIntervenant())){
+									if ($personne->equals($module->getIntervenant())){
 										$selected = ' selected';
 									}
 								}
-								$script .= '<option value="'.$intervenant->getId().'"'.$selected.'>'.$intervenant.'</option>';
+								$script .= '<option value="'.$personne->getId().'"'.$selected.'>'.$personne.'</option>';
 							}
 						}
 						print($script);

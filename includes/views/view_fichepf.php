@@ -20,15 +20,15 @@
 					<select class="form-control" name="cbResponsable" id="cbResponsable">
 						<?php
 							$script = '<option value="0"> --- </option>';
-							if (isset($listeResponsables)){
-								foreach ($listeResponsables as $responsable){
+							if (isset($listePersonnes)){
+								foreach ($listePersonnes as $personne){
 									$selected = '';
 									if (!is_null($pf->getResponsable())){
-										if ($responsable->equals($pf->getResponsable())){
+										if ($personne->equals(Personne::getById($pf->getResponsable()->getPersId()))){
 											$selected = ' selected';
 										}
 									}
-									$script .= '<option value="'.$responsable->getId().'"'.$selected.'>'.$responsable.'</option>';
+									$script .= '<option value="'.$personne->getId().'"'.$selected.'>'.$personne.'</option>';
 								}
 							}
 							print($script);

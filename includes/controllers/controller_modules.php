@@ -14,7 +14,6 @@ if ($action == 'listemodules'){
 
 		$listeUnitesEnseignement = $pf->getUnitesenseignement();
 		$listeModules = $pf->getModules();
-//var_dump($listeModules);
 		include_once ROOTVIEWS.'view_listemodulespf.php';
 	}elseif ($idetudiant != 0 AND $idpf != 0){
 		//Affichage de la liste des modules suivis par un étudiant
@@ -28,15 +27,25 @@ if ($action == 'listemodules'){
 	$scriptname[] = 'js_module.js';
 	$module = new Module();
 	$module->setUniteEnseignement(UniteEnseignement::getEmptyUE());
-	$listeIntervenants = Intervenant::getListe();
-    $listeUnitesEnseignement = $pf->getUnitesenseignement();
+	$listeUnitesEnseignement = $pf->getUnitesenseignement();
+
+	$listePersonnes = Personne::getListe(array('I', 'R'));
 
 	if (!empty($_POST)){
 		$libModule = $_POST['ttLibelle'];
 		$detailsModule = $_POST['ttResume'];
 		$dureeModule = 0;
-		$intervenant = (isset($_POST['cbIntervenant']) AND $_POST['cbIntervenant'] != '0')?Intervenant::getById($_POST['cbIntervenant']):new Intervenant();
 		$uniteenseignement = (isset($_POST['cbUniteEnseignement']) AND $_POST['cbUniteEnseignement'] != '0')?UniteEnseignement::getById($_POST['cbUniteEnseignement']):new UniteEnseignement();
+
+		//Je rajoute la personne en tant qu'intervenant
+		$personne = (isset($_POST['cbIntervenant']) AND $_POST['cbIntervenant'] != '0')?Personne::getById($_POST['cbIntervenant']):null;
+
+
+		if (!Intervenant::exists($personne->getId())){
+			Intervenant::insert($personne);
+		}
+		$intervenant = Intervenant::getById(Intervenant::getIdByIdPers($personne->getId()));
+
 		$newModule = new Module(0, $libModule, $detailsModule, $intervenant, $dureeModule, $uniteenseignement);
 
 		if (Module::insert($newModule, $pf)){
@@ -51,19 +60,31 @@ if ($action == 'listemodules'){
 	$scriptname[] = 'js_module.js';
 	$idModule = isset($_GET['idmodule'])?$_GET['idmodule']:0;
 	$module = Module::getById($idModule);
-	$listeIntervenants = Intervenant::getListe(Intervenant::class);
+	$listePersonnes = Personne::getListe(array('I', 'R'));
 	$listeUnitesEnseignement = $pf->getUnitesenseignement();
 
 	if (!empty($_POST)){
+		$personne = (isset($_POST['cbIntervenant']) AND $_POST['cbIntervenant'] != '0')?Personne::getById($_POST['cbIntervenant']):null;
+
+		if (!Intervenant::exists($personne->getId())){
+			Intervenant::insert($personne);
+		}
+		$newintervenant = Intervenant::getById(Intervenant::getIdByIdPers($personne->getId()));
+		$oldintervenant = $module->getIntervenant();
+
 		$module->setLibelle(trim($_POST['ttLibelle']));
 		$module->setDetails(trim($_POST['ttResume']));
 		$module->setDuree(0);
-//TODO : Adapter suite à l'ajout de la relation rattacher
-		$intervenant = (isset($_POST['cbIntervenant']) AND $_POST['cbIntervenant'] != '0')?Intervenant::getById($_POST['cbIntervenant']):new Intervenant();
-		$module->setIntervenant($intervenant);
-		$uniteenseignement = (isset($_POST['cbUniteEnseignement']) AND $_POST['cbUniteEnseignement'] != '0')?UniteEnseignement::getById($_POST['cbUniteEnseignement']):new UniteEnseignement();
+		$module->setIntervenant($newintervenant);
+
+		$uniteenseignement = (isset($_POST['cbUniteEnseignement']) AND $_POST['cbUniteEnseignement'] != '0')?UniteEnseignement::getById($_POST['cbUniteEnseignement']):UniteEnseignement::getEmptyUE();
 		$module->setUniteEnseignement($uniteenseignement);
 		if (Module::update($module)){
+			if (!$newintervenant->equals($oldintervenant)){
+				if ($oldintervenant->getNbModules($module->getId()) == 0){
+					Intervenant::delete($oldintervenant) or die('erreur');
+				}
+			}
 			header('Location: index.php?p=periodesformation&a=listemodules&idpf='.$idpf);
 		}else{
 			var_dump("Erreur d'enregistrement");

@@ -61,7 +61,11 @@
 		public static function getListeForAPI(){
 			$SQLStmt = DAO::getInstance()->prepare("SELECT * FROM ecole ORDER BY eco_nom");
 			$SQLStmt->execute();
-			$retVal = $SQLStmt->fetchAll(PDO::FETCH_OBJ);
+			$retVal = array();
+			while ($SQLRow = $SQLStmt->fetchObject()){
+				$SQLRow->eco_logo = ROOTHTMLUPLOADS.$SQLRow->eco_logo;
+				$retVal[] = $SQLRow;
+			}
 			$SQLStmt->closeCursor();
 			return $retVal;
 		}

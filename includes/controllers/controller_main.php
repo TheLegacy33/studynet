@@ -47,10 +47,11 @@
 			include_once ROOTCTRL.'controller_api.php';
 		}else{
 			include_once ROOTCTRL.'controller_auth.php';
-
-			if (!$user->isAuthentified()){
-				$section = '';
-				$action = '';
+			if (isset($user)){
+				if (!$user->isAuthentified()){
+					$section = '';
+					$action = '';
+				}
 			}
 
 			if ($action != 'print' AND $section != 'ajax'){

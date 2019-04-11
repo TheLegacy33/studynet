@@ -16,7 +16,6 @@ if ($action == 'listeetudiants') {
 		$etudiant->setNom(trim($_POST['ttNom']));
 		$etudiant->setPrenom(trim($_POST['ttPrenom']));
 		$etudiant->setEmail(trim($_POST['ttEmail']));
-		$etudiant->setPf($pf);
 //TODO : Vérifier l'existence de l'étudiant au niveau de la période de formation
 		if (Etudiant::exists($etudiant)){
 			var_dump('Etudiant déjà présent !');
@@ -32,9 +31,17 @@ if ($action == 'listeetudiants') {
 			}else{
 				$etudiant->setPhoto(null);
 			}
-			if (Etudiant::insert($etudiant, $pf)){
-				header('Location: index.php?p=periodesformation&a=listeetudiants&idpf='.$idPf);
+			DAO::getInstance()->beginTransaction();
+			if (Etudiant::insert($etudiant)){
+				if ($pf->addStudent($etudiant)){
+					DAO::getInstance()->commit();
+					header('Location: index.php?p=periodesformation&a=listeetudiants&idpf='.$idPf);
+				}else{
+					DAO::getInstance()->rollBack();
+					var_dump("Erreur d'ajout de l'étudiant à la pf");
+				}
 			}else{
+				DAO::getInstance()->rollBack();
 				var_dump("Erreur d'enregistrement");
 			}
 		}
@@ -45,8 +52,6 @@ if ($action == 'listeetudiants') {
 	$scriptname[] = 'js_etudiant.js';
 	$idEtudiant = isset($_GET['idetudiant'])?$_GET['idetudiant']:0;
 	$etudiant = Etudiant::getById($idEtudiant);
-
-	$listeIntervenants = Intervenant::getListe(Intervenant::class);
 	if (!empty($_POST)){
 		$etudiant->setNom(trim($_POST['ttNom']));
 		$etudiant->setPrenom(trim($_POST['ttPrenom']));

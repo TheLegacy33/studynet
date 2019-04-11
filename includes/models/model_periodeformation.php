@@ -179,7 +179,7 @@ class Periodeformation {
 		$SQLStmt->bindValue(':idresp', (!is_null($pf->getResponsable())?$pf->getResponsable()->getId():null));
 		$SQLStmt->bindValue(':idstatut', $pf->getStatut()->getId());
 		$SQLStmt->bindValue(':idpf', $pf->getId());
-var_dump($pf->getResponsable());
+
 		if (!$SQLStmt->execute()){
 			var_dump($SQLStmt->errorInfo());
 			return false;
@@ -203,6 +203,29 @@ var_dump($pf->getResponsable());
 			return false;
 		}else{
 			return true;
+		}
+	}
+
+	public function addStudent(Etudiant $etudiant){
+		//Je rajoute l'étudiant à la pf
+		$SQLQuery3 = "INSERT INTO integrer (etu_id, pf_id) VALUES (:idetudiant, :idPf)";
+		$SQLStmt3 = DAO::getInstance()->prepare($SQLQuery3);
+		$SQLStmt3->bindValue(':idetudiant', $etudiant->getId());
+		$SQLStmt3->bindValue(':idPf', $this->getId());
+		if (!$SQLStmt3->execute()) {
+			var_dump($SQLStmt3->errorInfo());
+			return false;
+		}else{
+			$SQLQuery4 = "INSERT INTO appreciationGenerale(etu_id, pf_id) VALUES (:idetudiant, :idPf)";
+			$SQLStmt4 = DAO::getInstance()->prepare($SQLQuery4);
+			$SQLStmt4->bindValue(':idetudiant', $etudiant->getId());
+			$SQLStmt4->bindValue(':idPf', $this->getId());
+			if (!$SQLStmt4->execute()){
+				var_dump($SQLStmt4->errorInfo());
+				return false;
+			}else{
+				return true;
+			}
 		}
 	}
 }

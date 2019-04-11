@@ -164,11 +164,27 @@
 			$SQLStmt->execute();
 			$retVal = $SQLStmt->rowCount();
 			$SQLStmt->closeCursor();
-			return $retVal;
+			return ($retVal > 0);
 		}
 
-		public static function getListe($critere = Etudiant::class){
-			return parent::getListe($critere);
+		public static function getListe($critere = '*'){
+			$SQLQuery = 'SELECT * FROM personne ';
+			$SQLQuery .= 'INNER JOIN etudiant ON personne.pers_id = etudiant.pers_id ';
+			$SQLQuery .= 'ORDER BY pers_nom, pers_prenom';
+			$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
+			$SQLStmt->execute();
+
+			$retVal = array();
+
+			while ($SQLRow = $SQLStmt->fetchObject()){
+				$idEtud = Etudiant::getIdByIdPers($SQLRow->pers_id);
+				$newPers = new Etudiant($idEtud, $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->pers_email, Etudiant::getPhotoById($idEtud), $SQLRow->pers_id);
+				$newPers->fillAuth(User::getById($SQLRow->us_id));
+				$retVal[] = $newPers;
+			}
+
+			$SQLStmt->closeCursor();
+			return $retVal;
 		}
 
 		public static function getListeFromModule($idModule){
@@ -282,17 +298,15 @@
 			return true;
 		}
 
-		public static function insert($etudiant, $pf){
+		public static function insert($etudiant){
 			$SQLQuery1 = "INSERT INTO personne(pers_nom, pers_prenom, pers_email) VALUES (:nom, :prenom, :email)";
 			$SQLStmt1 = DAO::getInstance()->prepare($SQLQuery1);
             $SQLStmt1->bindValue(':nom', $etudiant->getNom());
             $SQLStmt1->bindValue(':prenom', $etudiant->getPrenom());
             $SQLStmt1->bindValue(':email', $etudiant->getEmail());
 
-			DAO::getInstance()->beginTransaction();
 			if (!$SQLStmt1->execute()) {
 				var_dump($SQLStmt1->errorInfo());
-				DAO::getInstance()->rollBack();
 				return false;
 			}else{
 				$etudiant->setPersId(DAO::getInstance()->lastInsertId());
@@ -302,35 +316,12 @@
                 $SQLStmt2->bindValue(':idpers', $etudiant->getPersId());
 				if (!$SQLStmt2->execute()) {
 					var_dump($SQLStmt2->errorInfo());
-					DAO::getInstance()->rollBack();
 					return false;
 				}else{
 					$etudiant->setId(DAO::getInstance()->lastInsertId());
-
-					//Je rajoute l'étudiant à la pf
-					$SQLQuery3 = "INSERT INTO integrer (etu_id, pf_id) VALUES (:idetudiant, :idPf)";
-					$SQLStmt3 = DAO::getInstance()->prepare($SQLQuery3);
-					$SQLStmt3->bindValue(':idetudiant', $etudiant->getId());
-					$SQLStmt3->bindValue(':idPf', $pf->getId());
-					if (!$SQLStmt3->execute()) {
-						var_dump($SQLStmt3->errorInfo());
-						DAO::getInstance()->rollBack();
-						return false;
-					}else{
-						$SQLQuery4 = "INSERT INTO appreciationGenerale(etu_id, pf_id) VALUES (:idetudiant, :idPf)";
-						$SQLStmt4 = DAO::getInstance()->prepare($SQLQuery4);
-						$SQLStmt4->bindValue(':idetudiant', $etudiant->getId());
-						$SQLStmt4->bindValue(':idPf', $pf->getId());
-						if (!$SQLStmt4->execute()){
-							var_dump($SQLStmt4->errorInfo());
-							DAO::getInstance()->rollBack();
-							return false;
-						}else{
-							DAO::getInstance()->commit();
-							return true;
-						}
-					}
+					return true;
 				}
 			}
 		}
 	}
+?>
