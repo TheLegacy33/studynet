@@ -19,28 +19,24 @@
 		}
 
 		public function isAuthentified($auth = null){
-		    if (is_null($auth)){
-                return $this->authentified;
-            }else{
+		    if (!is_null($auth)){
 		        $this->authentified = $auth;
             }
+			return $this->authentified;
 		}
 
 		public function isAdmin($admin = null){
-		    if (is_null($admin)){
-                return $this->isAdmin;
-            }else{
-		        $this->isAdmin = $admin;
+		    if (!is_null($admin)){
+                $this->isAdmin = $admin;
             }
-
-        }
+			return $this->isAdmin;
+		}
 
         public function exists($exists = null){
-		    if (is_null($exists)){
-		        return $this->exists;
-            }else{
+		    if (!is_null($exists)){
 		        $this->exists = $exists;
             }
+			return $this->exists;
         }
 
         public function getId(){
@@ -123,4 +119,3 @@
 			$stmt->execute();
 		}
     }
-?>
