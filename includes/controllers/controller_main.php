@@ -33,6 +33,7 @@
 	}
 
 	include_once ROOTSCRIPTS.'fonctions.php';
+
 	$page = basename($_SERVER['SCRIPT_NAME']);
 	if ($page != 'index.php'){
 		header('Location: '.ROOTHTML);
@@ -43,7 +44,7 @@
 		$section = isset($_GET['p'])?$_GET['p']:'';
 		$action = isset($_GET['a'])?$_GET['a']:'';
 
-		if ($section == 'api' AND isset($_GET['key'])){
+		if ($section == 'api'){
 			include_once ROOTCTRL.'controller_api.php';
 		}else{
 			include_once ROOTCTRL.'controller_auth.php';
@@ -60,10 +61,13 @@
 
 			if ($section == ''){
 				//Chargement des éléments de la page d'accueil
-				include_once ROOTVIEWS.'view_accueil.php';
+//				include_once ROOTVIEWS.'view_accueil.php';
 
 				//Inclusion du formulaire d'authentification
 				if (!$user->isAuthentified()){
+					$includeJs = true;
+					$scriptname[] = 'js_login.js';
+
 					include_once ROOTVIEWS.'view_loginform.php';
 				}else{
 					include_once ROOTVIEWS.'view_logoutform.php';

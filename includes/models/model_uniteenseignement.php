@@ -129,7 +129,7 @@
 			}
 		}
 
-		public static function update($uniteenseignement){
+		public static function update(UniteEnseignement $uniteenseignement){
 			$SQLQuery = "UPDATE uniteenseignement SET unit_libelle = :libelle WHERE unit_id = :iduniteenseignement";
 			$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
 			$SQLStmt->bindValue(':libelle', $uniteenseignement->getLibelle());
@@ -144,8 +144,7 @@
 		}
 
 		public static function insert($uniteenseignement){
-			$SQLQuery = 'INSERT INTO module(unit_libelle) ';
-			$SQLQuery .= 'VALUES (:libelle)';
+			$SQLQuery = 'INSERT INTO module(unit_libelle) VALUES (:libelle)';
 			$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
 			$SQLStmt->bindValue(':libelle', $uniteenseignement->getLibelle());
 			if (!$SQLStmt->execute()){

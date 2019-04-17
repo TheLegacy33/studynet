@@ -33,7 +33,7 @@ if ($action == 'profile'){
 				$user->setNom($newNom);
 				$user->setPrenom($newPrenom);
 				$user->setEmail($newEmail);
-				User::update($user);
+				User::update($user->getUserAuth());
 
 				Authentification::saveSession();
 				if ($user->estEtudiant() AND !empty($_FILES)){

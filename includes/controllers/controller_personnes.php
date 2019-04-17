@@ -6,8 +6,12 @@ if ($action == 'listepersonnes'){
 	$scriptname[] = 'js_listepersonnes.js';
 
 	$type = (isset($_GET['type']))?$_GET['type']:'*';
-
-    $listePersonnes = Personne::getListe($type);
+	if ($type == '*' OR $type == 'administrateur' OR $type == 'visiteur'){
+		$typeToGet = $type;
+	}else{
+		$typeToGet = array($type);
+	}
+    $listePersonnes = Personne::getListe($typeToGet);
     include_once ROOTVIEWS.'view_listepersonnes.php';
 }elseif ($action == 'editprofile'){
 	$idPersonne = isset($_GET['idpersonne'])?$_GET['idpersonne']:0;

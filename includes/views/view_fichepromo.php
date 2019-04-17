@@ -6,7 +6,11 @@
 		<div class="card text-justify">
 			<div class="card-header text-uppercase">Informations de la promotion</div>
 			<div class="card-body">
-				<div><label for="ttNom">Nom : </label><input type="text" name="ttNom" id="ttNom" value="<?php print($promo->getLibelle()); ?>" /></div>
+				<div class="form-group">
+					<label for="ttNom">Nom : </label>
+					<input class="form-control" type="text" aria-describedby="helpIdNom" name="ttNom" id="ttNom" value="<?php print($promo->getLibelle()); ?>" />
+					<small id="helpIdNom" class="form-text text-muted">Le nom de la promotion</small>
+				</div>
 			</div>
 			<div class="card-footer formbtn">
 				<button type="submit" class="btn btn-success mr-3">Enregistrer<span class="fa fa-save"></span></button>

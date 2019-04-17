@@ -25,12 +25,18 @@ class NavBar{
             if (!$user->estEtudiant()){
                 $nav->addMenu(new Menu('index.php?p=ecoles', 'Ecoles', 'Les écoles'));
                 $nav->addMenu(new Menu('index.php?p=periodesformation', 'Sessions', 'Les périodes de formations'));
-            }
+            }elseif ($user->estEtudiant()){
+
+			}elseif ($user->estIntervenant()){
+
+			}elseif ($user->estVisiteur()){
+
+			}
+			if ($user->isAdmin()){
+				$nav->addMenu(new Menu('index.php?p=personnes&a=listepersonnes', 'Personnes', 'Les personnes de l\'application'));
+			}
         }
 
-        if ($user->isAdmin()){
-            $nav->addMenu(new Menu('index.php?p=personnes&a=listepersonnes', 'Personnes', 'Les personnes de l\'application'));
-        }
         return $nav;
 	}
 }

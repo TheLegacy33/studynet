@@ -6,10 +6,13 @@
 		<div class="card text-justify">
 			<div class="card-header text-uppercase">Informations de l'école</div>
 			<div class="card-body">
-				<div><label for="ttNom">Nom : </label><input type="text" name="ttNom" id="ttNom" value="<?php print($ecole->getNom()); ?>" /></div>
-
+				<div class="form-group">
+					<label for="ttNom">Nom : </label>
+					<input type="text" class="form-control" aria-describedby="helpNom" name="ttNom" id="ttNom" value="<?php print($ecole->getNom()); ?>" />
+					<small id="helpNom" class="form-text text-muted">Nom de l'école</small>
+				</div>
 			</div>
-			<div class="card-body mt-3">
+			<div class="card-body mt-1">
 				<label for="ttFichier">Logo :</label><input type="file" name="ttFichier" id="ttFichier" />
 				<p class="text-muted">La taille maximum autorisée est de <?php print(number_format(getMaximumFileUploadSize(), 0, ',', ' ')); ?> octets</p>
 			</div>

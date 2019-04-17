@@ -64,14 +64,13 @@ if ($action == 'listemodules'){
 	$listeUnitesEnseignement = $pf->getUnitesenseignement();
 
 	if (!empty($_POST)){
-		$personne = (isset($_POST['cbIntervenant']) AND $_POST['cbIntervenant'] != '0')?Personne::getById($_POST['cbIntervenant']):null;
 
+		$personne = (isset($_POST['cbIntervenant']) AND $_POST['cbIntervenant'] != '0')?Personne::getById($_POST['cbIntervenant']):null;
 		if (!Intervenant::exists($personne->getId())){
 			Intervenant::insert($personne);
 		}
 		$newintervenant = Intervenant::getById(Intervenant::getIdByIdPers($personne->getId()));
 		$oldintervenant = $module->getIntervenant();
-
 		$module->setLibelle(trim($_POST['ttLibelle']));
 		$module->setDetails(trim($_POST['ttResume']));
 		$module->setDuree(0);

@@ -188,7 +188,7 @@
 			return $retVal > 0;
 		}
 
-		public static function update($rattrapage){
+		public static function update(Rattrapage $rattrapage){
 			//Je commence par récupérer à nouveau les données du rattrapage
 			$ratToUpdate = Rattrapage::getById($rattrapage->getId());
 
@@ -255,6 +255,10 @@
 			}
 			$stmt->bindValue(':idrattrapage', $rattrapage->getId());
 
-			$stmt->execute();
+			if ($stmt->execute()){
+				return true;
+			}else{
+				return false;
+			}
 		}
 	}

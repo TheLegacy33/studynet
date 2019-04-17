@@ -252,14 +252,12 @@ header.libelle{
 #frmLogin{
 	width: 400px;
 	margin: 10px auto;
-	border: solid 1px black;
 	clear: both;
 }
 
 #frmProfile{
     width: 600px;
     margin: 10px auto;
-    border: solid 1px black;
     clear: both;
 }
 

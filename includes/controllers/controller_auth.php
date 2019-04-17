@@ -14,17 +14,18 @@
 					session_destroy();
 					header('Location: '.ROOTHTML);
 				}else{
-					$user = new Personne();
 					if ($user->checkAuth($_POST['ttLogin'], $_POST['ttPassword'])){
-
 						$userType = Personne::getType($user->getId());
 						if ($userType == Etudiant::class){
-							$userTyped = new Etudiant(Etudiant::getIdByIdPers($user->getPersId()));
+							$userTyped = Etudiant::getById(Etudiant::getIdByIdPers($user->getPersId()));
 						}elseif ($userType == ResponsablePedago::class){
-							$userTyped = new ResponsablePedago(ResponsablePedago::getIdByIdPers($user->getPersId()));
+							$userTyped = ResponsablePedago::getById(ResponsablePedago::getIdByIdPers($user->getPersId()));
 						}elseif ($userType == Intervenant::class){
-							$userTyped = new Intervenant(Intervenant::getIdByIdPers($user->getPersId()));
+							$userTyped = Intervenant::getById(Intervenant::getIdByIdPers($user->getPersId()));
+						}else{
+							$userTyped = Personne::getById($user->getPersId());
 						}
+
 						$userTyped->clonepers($user);
 						$user = $userTyped;
 

@@ -104,7 +104,7 @@ class Promotion {
 		return $newPromo;
 	}
 
-	public static function update($promo){
+	public static function update(Promotion $promo){
 		$SQLQuery = "UPDATE promotion SET promo_libelle = :nom WHERE promo_id = :idpromo";
 		$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
 		$SQLStmt->bindValue(':nom', $promo->getLibelle());
@@ -118,11 +118,11 @@ class Promotion {
 		}
 	}
 
-	public static function insert($promo){
+	public static function insert(Promotion $promo){
 		$SQLQuery = 'INSERT INTO promotion(promo_libelle, eco_id) VALUES (:nom, :idecole)';
 		$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
 		$SQLStmt->bindValue(':nom', $promo->getLibelle());
-		$SQLStmt->bindValue(':idecole', $promo->getEcole()->getId());
+		$SQLStmt->bindValue(':idecole', $promo->getIdEcole());
 		if (!$SQLStmt->execute()){
 			var_dump($SQLStmt->errorInfo());
 			return false;

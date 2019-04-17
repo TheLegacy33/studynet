@@ -1,7 +1,6 @@
 var passChanged = false;
 
 $(document).ready(function(){
-    $("#ttPasswordVerif").attr("disabled", true);
     $("button[type=submit]").attr("disabled", true);
     $("#infosconn").hide();
     $("#infosconn input").each(function(){
@@ -16,9 +15,7 @@ $("input").change(function(){
 $("#ttPassword").keypress(function(){
     $("#ttPasswordVerif").attr("disabled", false);
 	passChanged = true;
-});
-
-$("#ttPassword").change(function(){
+}).change(function(){
     passChanged = true;
 });
 
@@ -28,6 +25,10 @@ $("#ttPasswordVerif").change(function(){
 
 $("button[type=reset]").click(function(){
 	$("button[type=submit]").attr("disabled", true);
+	$("#infosconn").hide();
+	$("#infosconn input").each(function(){
+		$(this).attr("disabled", !$("#infosconn").is(":visible"));
+	});
 });
 
 $("button[type=button]").click(function(){
@@ -38,7 +39,9 @@ $("button[type=button]").click(function(){
 		infos.show();
 	}
 	$("#infosconn input").each(function(){
-		$(this).attr("disabled", !infos.is(":visible"));
+		if ($(this).attr('name') !== $("#ttPasswordVerif").attr('name')){
+			$(this).attr("disabled", !infos.is(":visible"));
+		}
 	});
 });
 

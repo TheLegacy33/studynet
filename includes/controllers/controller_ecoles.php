@@ -11,7 +11,6 @@
 		$includeJs = true;
 		$scriptname[] = 'js_ecole.js';
 
-
 		$ecole = new Ecole();
 		if (!empty($_POST)){
 			$nomEcole = $_POST['ttNom'];

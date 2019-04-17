@@ -3,7 +3,7 @@
 /**
  * Définition des éléments de haut de page
  */
-include_once ROOTSCRIPTS.'NavBar.php';
+	include_once ROOTSCRIPTS.'NavBar.php';
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -24,12 +24,12 @@ include_once ROOTSCRIPTS.'NavBar.php';
 
 		<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
 
-		<link href="includes/styles/styles.css" rel="stylesheet" />
+		<link href="<?php print(ROOTHTML) ?>/includes/styles/styles.css" rel="stylesheet" />
 	</head>
 	<body>
 		<section id="wrapper" class="container">
 			<header id="logo" class="row d-flex align-items-center">
-				<div class="flex-grow-0"><img class="img-fluid" src="includes/images/logo.png" alt="logo"/></div>
+				<div class="flex-grow-0"><img class="img-fluid" src="<?php print(ROOTHTML) ?>/includes/images/logo.png" alt="logo"/></div>
 				<div class="flex-grow-1 text-center"><h2><?php print($pageTitle); ?></h2></div>
 			</header>
 			<nav id="navgenerale" class="row navbar navbar-expand-md navbar-dark">

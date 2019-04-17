@@ -243,11 +243,11 @@ class Personne{
 		if (is_array($critere)){
 			$SQLQuery = '';
 			foreach ($critere as $item => $value){
-				if ($value == 'I'){
+				if ($value == 'I' OR $value == Intervenant::class){
 					$SQLQuery .= 'SELECT personne.* FROM personne INNER JOIN intervenant ON personne.pers_id = intervenant.pers_id ';
-				}elseif ($value == 'R'){
+				}elseif ($value == 'R' OR $value == ResponsablePedago::class){
 					$SQLQuery .= 'SELECT personne.* FROM personne INNER JOIN responsablePedago ON personne.pers_id = responsablePedago.pers_id ';
-				}elseif ($value == 'E'){
+				}elseif ($value == 'E' OR $value == Etudiant::class){
 					$SQLQuery .= 'SELECT personne.* FROM personne INNER JOIN etudiant ON personne.pers_id = etudiant.pers_id ';
 				}
 				if ($item != array_key_last($critere)){
@@ -268,13 +268,12 @@ class Personne{
 		}
 
 	    $SQLQuery .= 'ORDER BY pers_nom, pers_prenom';
-
         $SQLStmt = DAO::getInstance()->prepare($SQLQuery);
         $SQLStmt->execute();
 
         $retVal = array();
 
-        if ($critere == '*'){
+//        if ($critere == '*'){
 			while ($SQLRow = $SQLStmt->fetchObject()){
 				$userType = Personne::getType($SQLRow->pers_id);
 				if ($userType == Intervenant::class){
@@ -292,13 +291,13 @@ class Personne{
 				$newPers->fillAuth(User::getById($SQLRow->us_id));
 				$retVal[] = $newPers;
 			}
-		}else{
-			while ($SQLRow = $SQLStmt->fetchObject()){
-				$newPers = new Personne($SQLRow->pers_id, $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->pers_email);
-				$newPers->fillAuth(User::getById($SQLRow->us_id));
-				$retVal[] = $newPers;
-			}
-		}
+//		}else{
+//			while ($SQLRow = $SQLStmt->fetchObject()){
+//				$newPers = new Personne($SQLRow->pers_id, $SQLRow->pers_nom, $SQLRow->pers_prenom, $SQLRow->pers_email);
+//				$newPers->fillAuth(User::getById($SQLRow->us_id));
+//				$retVal[] = $newPers;
+//			}
+//		}
 
         $SQLStmt->closeCursor();
         return $retVal;

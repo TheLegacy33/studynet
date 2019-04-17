@@ -5,9 +5,14 @@
 	<div class="card card-default text-justify">
 		<div class="card-header text-uppercase">Informations du module</div>
 		<div class="card-body">
-			<div><label for="ttLibelle">Libelle : </label><input type="text" name="ttLibelle" id="ttLibelle" value="<?php print($module->getLibelle()); ?>" /></div>
-			<div><label for="cbIntervenant">Intervenant : </label>
-				<select id="cbIntervenant" name="cbIntervenant">
+			<div class="form-group">
+				<label for="ttLibelle">Libelle : </label>
+				<input type="text" class="form-control" aria-describedby="helpLibelle" name="ttLibelle" id="ttLibelle" value="<?php print($module->getLibelle()); ?>" />
+				<small id="helpLibelle" class="form-text text-muted">Nom du module</small>
+			</div>
+			<div class="form-group">
+				<label for="cbIntervenant">Intervenant : </label>
+				<select id="cbIntervenant" class="form-control" aria-describedby="helpIntervenant" name="cbIntervenant">
 					<?php
 						$script = '<option value="0"> --- </option>';
 						if (isset($listePersonnes)){
@@ -18,15 +23,17 @@
 										$selected = ' selected';
 									}
 								}
-								$script .= '<option value="'.$personne->getId().'"'.$selected.'>'.$personne.'</option>';
+								$script .= '<option value="'.$personne->getPersId().'"'.$selected.'>'.$personne.'</option>';
 							}
 						}
 						print($script);
 					?>
 				</select>
+				<small id="helpIntervenant" class="form-text text-muted">Intervenant associé au module</small>
 			</div>
-			<div><label for="cbUniteEnseignement">Unite d'enseignement : </label>
-				<select id="cbUniteEnseignement" name="cbUniteEnseignement">
+			<div class="form-group">
+				<label for="cbUniteEnseignement">Unite d'enseignement : </label>
+				<select id="cbUniteEnseignement" class="form-control" aria-describedby="helpUnite" name="cbUniteEnseignement">
 					<?php
 						$script = '';
 						if (isset($listeUnitesEnseignement)){
@@ -43,8 +50,13 @@
 						print($script);
 					?>
 				</select>
+				<small id="helpUnite" class="form-text text-muted">Unité d'enseignement à laquelle est rattachée le module</small>
 			</div>
-			<div><label for="ttResume">Résumé : </label><textarea name="ttResume" id="ttResume"><?php print($module->getDetails()); ?></textarea></div>
+			<div class="form-group">
+				<label for="ttResume">Résumé : </label>
+				<textarea class="form-control" aria-describedby="helpResume" name="ttResume" id="ttResume"><?php print($module->getDetails()); ?></textarea>
+				<small id="helpResume" class="form-text text-muted">Résumé du module</small>
+			</div>
 			<?php
 			if (isset($message)){
 				print('<p class="text-danger">'.$message.'</p>');
