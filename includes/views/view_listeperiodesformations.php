@@ -70,7 +70,8 @@ if (!is_null($promo)){
 		?>
 	</div>
 	<div class="col-12 mt-2">
-		<table>
+		<table class="table table-bordered table-hover table-responsive-md">
+			<thead class="thead-light">
 			<tr>
 				<?php
 					if (is_null($promo)){
@@ -80,10 +81,12 @@ if (!is_null($promo)){
 				<th style="width: 120px;">Date Début</th>
 				<th style="width: 120px;">Date Fin</th>
 				<th style="width: 100px;">Effectif</th>
-				<th style="width: 100px;">Nb Modules</th>
-				<th style="width: 250px;">Resp. Peda.</th>
-				<th  style="width: 100px;" colspan="5">Actions</th>
+				<th style="width: 120px;">Nb Modules</th>
+				<th style="width: 400px;">Resp. Peda.</th>
+				<th  style="" colspan="5">Actions</th>
 			</tr>
+			</thead>
+			<tbody>
 			<?php
 				$script = '';
 				if (isset($listePf)){
@@ -114,6 +117,7 @@ if (!is_null($promo)){
 				}
 				print($script);
 			?>
+			</tbody>
 		</table>
 	</div>
 </section>

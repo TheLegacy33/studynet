@@ -16,7 +16,8 @@
 		</select>
 	</section>
 	<section class="col-12 mt-2">
-		<table>
+		<table class="table table-bordered table-hover table-responsive-md">
+			<thead class="thead-light">
 			<tr>
 				<th style="width: 200px;">Nom</th>
 				<th style="width: 150px;">Prénom</th>
@@ -24,6 +25,8 @@
 				<th style="width: 200px;">Auth ?</th>
 				<th style="width: 100px;" colspan="3">Actions</th>
 			</tr>
+			</thead>
+			<tbody>
 			<?php
 				$script = '';
 				if (count($listePersonnes) == 0){
@@ -65,6 +68,7 @@
 				}
 				print($script);
 			?>
+			</tbody>
 		</table>
 	</section>
 </section>
