@@ -9,15 +9,15 @@
 		private $id, $libelle, $details, $duree;
 		private $intervenant, $contenu, $uniteenseignement;
 
-		public function __construct($id = 0, $libelle = '', $details = '', $intervenant = null, $duree = 0, $UniteEnseignement = null){
+		public function __construct($id = 0, $libelle = '', $details = '', $duree = 0, $UniteEnseignement = null){
 			$this->id = $id;
 			$this->libelle = $libelle;
 			$this->details = $details;
-			$this->intervenant = $intervenant;
 			$this->duree = $duree;
 			$this->uniteenseignement = $UniteEnseignement;
 
 			$this->contenu = array();
+			$this->intervenant = null;
 		}
 
 		public function getLibelle(){
@@ -90,7 +90,7 @@
 			$SQLStmt->execute();
 			$SQLRow = $SQLStmt->fetchObject();
 			$uniteEnseignement = (is_null($SQLRow->unit_id)?UniteEnseignement::getEmptyUE():UniteEnseignement::getById($SQLRow->unit_id));
-			$newModule = new Module($SQLRow->mod_id, $SQLRow->mod_libelle, $SQLRow->mod_details, Intervenant::getById($SQLRow->int_id), $SQLRow->mod_duree, $uniteEnseignement);
+			$newModule = new Module($SQLRow->mod_id, $SQLRow->mod_libelle, $SQLRow->mod_details, $SQLRow->mod_duree, $uniteEnseignement);
 			$newModule->fillContenu(ContenuModule::getListeFromModule($id));
 			$SQLStmt->closeCursor();
 			return $newModule;
@@ -129,7 +129,6 @@
 			}else{
 				$SQLQuery = 'SELECT * FROM module ';
 				$SQLQuery .= 'WHERE unit_id = :iduniteenseignement ';
-//				$SQLQuery .= 'ORDER BY ratt_chrono';
 
 				$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
 				$SQLStmt->bindValue(':iduniteenseignement', $idUniteEnseignement);
@@ -159,6 +158,7 @@
 				$retVal = array();
 				while ($SQLRow = $SQLStmt->fetchObject()){
 					$newModule = Module::getById($SQLRow->mod_id);
+					$newModule->setIntervenant(Intervenant::getByPfAndMod($idPf, $newModule->getId()));
 					$retVal[] = $newModule;
 				}
 				$SQLStmt->closeCursor();
@@ -229,30 +229,59 @@
 			}
 		}
 
-		public static function update(Module $module){
-			$SQLQuery = "UPDATE module SET mod_libelle = :libelle, mod_details = :details, int_id = :idintervenant, mod_duree = :duree, unit_id = :idunit WHERE mod_id = :idmod";
+		public static function update(Module $module, Periodeformation $pf){
+			$SQLQuery = 'UPDATE module SET mod_libelle = :libelle, mod_details = :details, mod_duree = :duree, unit_id = :idunit WHERE mod_id = :idmod';
 			$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
 			$SQLStmt->bindValue(':libelle', $module->getLibelle());
 			$SQLStmt->bindValue(':details', $module->getDetails());
-			$SQLStmt->bindValue(':idintervenant', (!is_null($module->getIntervenant()) AND $module->getIntervenant()->getId() != 0)?$module->getIntervenant()->getId():null);
 			$SQLStmt->bindValue(':idunit', (!is_null($module->getUniteEnseignement()) AND $module->getUniteEnseignement()->getId() != 0)?$module->getUniteEnseignement()->getId():null);
 			$SQLStmt->bindValue(':duree', $module->getDuree());
 			$SQLStmt->bindValue(':idmod', $module->getId());
 
+			DAO::getInstance()->beginTransaction();
 			if (!$SQLStmt->execute()){
 				var_dump($SQLStmt->errorInfo());
+				DAO::getInstance()->rollBack();
 				return false;
 			}else{
+
+				$modInBdd = self::getById($module->getId());
+				$modInBdd->setIntervenant(Intervenant::getByPfAndMod($pf->getId(), $modInBdd->getId()));
+
+
+				if (!$modInBdd->getIntervenant()->equals($module->getIntervenant())){
+					if (is_null($module->getIntervenant()) OR $module->getIntervenant()->getId() == 0){
+						$SQLQuery = 'DELETE FROM dispenser WHERE int_id = :idintervenant AND mod_id = :idmodule AND pf_id = :idpf';
+						$idInterv = $modInBdd->getIntervenant()->getId();
+					}else{
+						if (is_null($modInBdd->getIntervenant()) OR $modInBdd->getIntervenant()->getId() == 0){
+							$SQLQuery = 'INSERT INTO dispenser (mod_id, int_id, pf_id) VALUES (:idmodule, :idintervenant, :idpf)';
+						}else{
+							$SQLQuery = 'UPDATE dispenser SET int_id = :idintervenant WHERE mod_id = :idmodule AND pf_id = :idpf';
+						}
+						$idInterv = $module->getIntervenant()->getId();
+					}
+
+					$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
+					$SQLStmt->bindValue(':idmodule', $module->getId());
+					$SQLStmt->bindValue(':idpf', $pf->getId());
+					$SQLStmt->bindValue(':idintervenant', $idInterv);
+					if (!$SQLStmt->execute()){
+						var_dump($SQLStmt->errorInfo());
+						DAO::getInstance()->rollBack();
+						return false;
+					}
+				}
+				DAO::getInstance()->commit();
 				return true;
 			}
 		}
 
 		public static function insert(Module $module, Periodeformation $pf){
-			$SQLQuery = 'INSERT INTO module(mod_libelle, mod_details, int_id, mod_duree, unit_id) VALUES (:libModule, :detailModule, :idIntervenant, :dureeModule, :idunit)';
+			$SQLQuery = 'INSERT INTO module(mod_libelle, mod_details, mod_duree, unit_id) VALUES (:libModule, :detailModule, :dureeModule, :idunit)';
 			$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
 			$SQLStmt->bindValue(':libModule', $module->getLibelle());
 			$SQLStmt->bindValue(':detailModule', $module->getDetails());
-			$SQLStmt->bindValue(':idIntervenant',(!is_null($module->getIntervenant()) AND $module->getIntervenant()->getId() != 0)?$module->getIntervenant()->getId():null);
 			$SQLStmt->bindValue(':idunit', (!is_null($module->getUniteEnseignement()) AND $module->getUniteEnseignement()->getId() != 0)?$module->getUniteEnseignement()->getId():null);
 			$SQLStmt->bindValue(':dureeModule', $module->getDuree());
 			DAO::getInstance()->beginTransaction();
@@ -272,6 +301,18 @@
 					DAO::getInstance()->rollBack();
 					return false;
 				}else{
+					if (!is_null($module->getIntervenant()) AND $module->getIntervenant()->getId() != 0){
+						$SQLQuery = 'INSERT INTO dispenser (mod_id, int_id, pf_id) VALUES (:idmodule, :idintervenant, :idpf)';
+						$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
+						$SQLStmt->bindValue(':idintervenant',$module->getIntervenant()->getId());
+						$SQLStmt->bindValue(':idmodule', $module->getId());
+						$SQLStmt->bindValue(':idpf', $pf->getId());
+						if (!$SQLStmt->execute()){
+							var_dump($SQLStmt->errorInfo());
+							DAO::getInstance()->rollBack();
+							return false;
+						}
+					}
 					DAO::getInstance()->commit();
 					return true;
 				}

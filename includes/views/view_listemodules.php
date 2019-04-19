@@ -24,32 +24,34 @@
 		</tr>
 		<?php
 			$script = '';
-			if (count($listeModules) == 0){
-				$script .= '<tr><td colspan="8">Aucune donnée disponible !</td></tr>';
-			}else{
-				foreach ($listeModules as $module){
-					$script .= '<tr>';
-					$script .= '<td style="font-weight: bold;">'.$module->getLibelle().'<span class="intervenant">'.$module->getIntervenant().'</span></td>';
-					$script .= '<td style="width: 30px;"><a href="index.php?p=periodesformation&a=viewdetailsevaluations&idetudiant='.$etudiant->getId().'&idpf='.$pf->getId().'&idmodule='.$module->getId().'" title="Voir les détails"><span class="fa fa-tasks"></span></a></td>';
-                    if ($user->canEdit('module', $pf, $module)) {
-                        $script .= '<td style="width: 30px;"><a href="index.php?p=periodesformation&a=editdetailsevaluations&idetudiant=' . $etudiant->getId() . '&idpf=' . $pf->getId() . '&idmodule=' . $module->getId() . '" title="Modifier l\'évaluation"><span class="fa fa-edit"></span></a></td>';
-                    }
-                    $script .= '</tr>';
-					if ($module->hasContenu()){
-
+			if (isset($listeModules)){
+				if (count($listeModules) == 0){
+					$script .= '<tr><td colspan="8">Aucune donnée disponible !</td></tr>';
+				}else{
+					foreach ($listeModules as $module){
 						$script .= '<tr>';
-						$script .= '<td colspan="3">';
-						$script .= '<table style="width: 98%; border: none; margin: 5px auto">';
-						foreach ($module->getContenu() as $contenuModule){
-							$script .= '<tr class="lignetab">';
-							$script .= '<td style="border: none; text-align: left">'.$contenuModule->getLibelle().'</td>';
-							$eval = $etudiant->getEvaluationContenuModule($contenuModule->getId());
-							$script .= '<td style="border: none;" class="eval_'.$eval.'">'.$eval.'</td>';
+						$script .= '<td style="font-weight: bold;">'.$module->getLibelle().'<span class="intervenant">'.$module->getIntervenant().'</span></td>';
+						$script .= '<td style="width: 30px;"><a href="index.php?p=periodesformation&a=viewdetailsevaluations&idetudiant='.$etudiant->getId().'&idpf='.$pf->getId().'&idmodule='.$module->getId().'" title="Voir les détails"><span class="fa fa-tasks"></span></a></td>';
+						if ($user->canEdit('module', $pf, $module)) {
+							$script .= '<td style="width: 30px;"><a href="index.php?p=periodesformation&a=editdetailsevaluations&idetudiant=' . $etudiant->getId() . '&idpf=' . $pf->getId() . '&idmodule=' . $module->getId() . '" title="Modifier l\'évaluation"><span class="fa fa-edit"></span></a></td>';
+						}
+						$script .= '</tr>';
+						if ($module->hasContenu()){
+
+							$script .= '<tr>';
+							$script .= '<td colspan="3">';
+							$script .= '<table style="width: 98%; border: none; margin: 5px auto">';
+							foreach ($module->getContenu() as $contenuModule){
+								$script .= '<tr class="lignetab">';
+								$script .= '<td style="border: none; text-align: left">'.$contenuModule->getLibelle().'</td>';
+								$eval = $etudiant->getEvaluationContenuModule($contenuModule->getId());
+								$script .= '<td style="border: none;" class="eval_'.$eval.'">'.$eval.'</td>';
+								$script .= '</tr>';
+							}
+							$script .= '</table>';
+							$script .= '</td>';
 							$script .= '</tr>';
 						}
-						$script .= '</table>';
-						$script .= '</td>';
-						$script .= '</tr>';
 					}
 				}
 			}

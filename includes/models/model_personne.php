@@ -263,6 +263,8 @@ class Personne{
 				}elseif ($critere == 'administrateur'){
 					$SQLQuery .= 'INNER JOIN userAuth ON personne.us_id = userAuth.us_id ';
 					$SQLQuery .= 'WHERE us_isadmin = 1 ';
+				}elseif ($critere == '!E'){
+					$SQLQuery .= 'WHERE pers_id NOT IN (SELECT pers_id FROM etudiant) ';
 				}
 			}
 		}

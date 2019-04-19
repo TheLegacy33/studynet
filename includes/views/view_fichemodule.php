@@ -53,6 +53,11 @@
 				<small id="helpUnite" class="form-text text-muted">Unité d'enseignement à laquelle est rattachée le module</small>
 			</div>
 			<div class="form-group">
+				<label for="ttDuree">Durée :</label>
+				<input type="number" min="0" step="10" pattern="\d+" class="form-control" aria-describedby="helpDuree" name="ttDuree" id="ttDuree" value="<?php print($module->getDuree()); ?>"/>
+				<small id="helpDuree" class="form-text text-muted">Durée totale en heures du module</small>
+			</div>
+			<div class="form-group">
 				<label for="ttResume">Résumé : </label>
 				<textarea class="form-control" aria-describedby="helpResume" name="ttResume" id="ttResume"><?php print($module->getDetails()); ?></textarea>
 				<small id="helpResume" class="form-text text-muted">Résumé du module</small>

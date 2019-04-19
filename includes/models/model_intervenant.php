@@ -82,8 +82,26 @@
 			return $newInterv;
 		}
 
+		public static function getByPfAndMod($idPf, $idMod){
+
+			$SQLQuery = 'SELECT int_id FROM dispenser WHERE pf_id = :idPf AND mod_id = :idModule';
+			$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
+			$SQLStmt->bindValue(':idPf', $idPf);
+			$SQLStmt->bindValue(':idModule', $idMod);
+
+			$SQLStmt->execute();
+			if ($SQLStmt->rowCount() == 0){
+				$retVal = new Intervenant(0, 'N.C.');
+			}else{
+				$SQLRow = $SQLStmt->fetchObject();
+				$retVal = self::getById(intval($SQLRow->int_id));
+				$SQLStmt->closeCursor();
+			}
+			return $retVal;
+		}
+
 		public function getNbModules($idModToExclude = 0){
-			$SQLQuery = 'SELECT COUNT(mod_id) FROM module WHERE int_id = :idInterv ';
+			$SQLQuery = 'SELECT COUNT(mod_id) FROM dispenser WHERE int_id = :idInterv ';
 			if ($idModToExclude > 0){
 				$SQLQuery .= 'AND mod_id != :idModToExlude';
 			}

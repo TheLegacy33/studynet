@@ -26,6 +26,7 @@ if ($action == 'listemodules'){
 	$includeJs = true;
 	$scriptname[] = 'js_module.js';
 	$module = new Module();
+	$module->setDuree(20);
 	$module->setUniteEnseignement(UniteEnseignement::getEmptyUE());
 	$listeUnitesEnseignement = $pf->getUnitesenseignement();
 
@@ -34,19 +35,22 @@ if ($action == 'listemodules'){
 	if (!empty($_POST)){
 		$libModule = $_POST['ttLibelle'];
 		$detailsModule = $_POST['ttResume'];
-		$dureeModule = 0;
+		$dureeModule = intval($_POST['ttDuree']);
 		$uniteenseignement = (isset($_POST['cbUniteEnseignement']) AND $_POST['cbUniteEnseignement'] != '0')?UniteEnseignement::getById($_POST['cbUniteEnseignement']):new UniteEnseignement();
 
 		//Je rajoute la personne en tant qu'intervenant
 		$personne = (isset($_POST['cbIntervenant']) AND $_POST['cbIntervenant'] != '0')?Personne::getById($_POST['cbIntervenant']):null;
-
-
-		if (!Intervenant::exists($personne->getId())){
-			Intervenant::insert($personne);
+		if (is_null($personne)){
+			$intervenant = new Intervenant();
+		}else{
+			if (!Intervenant::exists($personne->getId())){
+				Intervenant::insert($personne);
+			}
+			$intervenant = Intervenant::getById(Intervenant::getIdByIdPers($personne->getId()));
 		}
-		$intervenant = Intervenant::getById(Intervenant::getIdByIdPers($personne->getId()));
 
-		$newModule = new Module(0, $libModule, $detailsModule, $intervenant, $dureeModule, $uniteenseignement);
+		$newModule = new Module(0, $libModule, $detailsModule, $dureeModule, $uniteenseignement);
+		$newModule->setIntervenant($intervenant);
 
 		if (Module::insert($newModule, $pf)){
 			header('Location: index.php?p=periodesformation&a=listemodules&idpf='.$idpf);
@@ -60,30 +64,37 @@ if ($action == 'listemodules'){
 	$scriptname[] = 'js_module.js';
 	$idModule = isset($_GET['idmodule'])?$_GET['idmodule']:0;
 	$module = Module::getById($idModule);
-	$listePersonnes = Personne::getListe(array('I', 'R'));
+	$module->setIntervenant(Intervenant::getByPfAndMod($idPf, $idModule));
+	$listePersonnes = Personne::getListe('!E');
 	$listeUnitesEnseignement = $pf->getUnitesenseignement();
 
 	if (!empty($_POST)){
-
 		$personne = (isset($_POST['cbIntervenant']) AND $_POST['cbIntervenant'] != '0')?Personne::getById($_POST['cbIntervenant']):null;
-		if (!Intervenant::exists($personne->getId())){
-			Intervenant::insert($personne);
+		if (is_null($personne)){
+			$newintervenant = new Intervenant();
+		}else{
+			if (!Intervenant::exists($personne->getId())){
+				Intervenant::insert($personne);
+			}
+			$newintervenant = Intervenant::getById(Intervenant::getIdByIdPers($personne->getId()));
 		}
-		$newintervenant = Intervenant::getById(Intervenant::getIdByIdPers($personne->getId()));
 		$oldintervenant = $module->getIntervenant();
+
+		$module->setIntervenant($newintervenant);
+
 		$module->setLibelle(trim($_POST['ttLibelle']));
 		$module->setDetails(trim($_POST['ttResume']));
-		$module->setDuree(0);
-		$module->setIntervenant($newintervenant);
+		$module->setDuree(intval($_POST['ttDuree']));
 
 		$uniteenseignement = (isset($_POST['cbUniteEnseignement']) AND $_POST['cbUniteEnseignement'] != '0')?UniteEnseignement::getById($_POST['cbUniteEnseignement']):UniteEnseignement::getEmptyUE();
 		$module->setUniteEnseignement($uniteenseignement);
-		if (Module::update($module)){
-			if (!$newintervenant->equals($oldintervenant)){
-				if ($oldintervenant->getNbModules($module->getId()) == 0){
-					Intervenant::delete($oldintervenant) or die('erreur');
-				}
-			}
+
+		if (Module::update($module, $pf)){
+//			if (!$newintervenant->equals($oldintervenant)){
+//				if ($oldintervenant->getNbModules($module->getId()) == 0){
+//					Intervenant::delete($oldintervenant) or die('erreur');
+//				}
+//			}
 			header('Location: index.php?p=periodesformation&a=listemodules&idpf='.$idpf);
 		}else{
 			var_dump("Erreur d'enregistrement");
