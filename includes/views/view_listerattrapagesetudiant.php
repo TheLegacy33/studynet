@@ -1,12 +1,15 @@
 <section id="content_body" class="row">
 	<header class="col-12 text-center text-info">Vos rattrapages</header>
-	<table>
+	<table class="table table-bordered table-hover table-responsive-md">
+		<thead class="thead-light">
 		<tr>
 			<th style="width: 300px;">Module</th>
 			<th style="width: 250px;">Intervenant</th>
 			<th style="width: 100px;">Statut</th>
 			<th style="width: 100px;" colspan="2">Actions</th>
 		</tr>
+		</thead>
+		<tbody>
 		<?php
 			$script = '';
 			if (count($listeRattrapage) == 0){
@@ -44,5 +47,6 @@
 			}
 			print($script);
 		?>
+		</tbody>
 	</table>
 </section>

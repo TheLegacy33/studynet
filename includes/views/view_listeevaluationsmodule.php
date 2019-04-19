@@ -1,7 +1,7 @@
-<section id="content_body" class="row">
-	<nav class="navinterne">
-		<?php print('<a href="index.php?p=periodesformation&a=listemodules&idpf='.$idpf.'" title="Retour à la liste des modules"><< Retour</a>'); ?>
-	</nav>
+<nav class="navinterne">
+	<?php print('<a href="index.php?p=periodesformation&a=listemodules&idpf='.$idpf.'" title="Retour à la liste des modules"><< Retour</a>'); ?>
+</nav>
+<section id="content_body" class="container">
 	<header class="col-12 text-center text-info header-section">
 		Liste des évaluations pour le module <?php print($module->getLibelle()); ?>.
 	</header>
@@ -16,7 +16,8 @@
 		}
 	?>
 	<div class="row">
-		<table>
+		<table class="table table-bordered table-hover table-responsive-md">
+			<thead class="thead-light">
 			<tr>
 				<th style="width: 120px;">Date</th>
 				<th style="width: 120px;">Durée (min)</th>
@@ -25,6 +26,8 @@
 				<th style="width: 100px;">Type</th>
 				<th style="width: 100px;" colspan="3">Actions</th>
 			</tr>
+			</thead>
+			<tbody>
 			<?php
 				$script = '';
 				if (count($listeEvaluations) == 0){
@@ -45,6 +48,7 @@
 				}
 				print($script);
 			?>
+			</tbody>
 		</table>
 	</div>
 </section>

@@ -14,13 +14,16 @@
 		<a href="index.php?p=etudiants&a=exportliste&idpf=<?php print($pf->getId()); ?>" class="btn btn-secondary" title="Exporter une liste d'étudiants">Exporter une liste<span class="fa fa-download"></span></a>
 	</div>
 	<div class="col-12 mt-2">
-		<table>
+		<table class="table table-bordered table-hover table-responsive-md">
+			<thead class="thead-light">
 			<tr>
 				<th style="width: 200px;">Nom</th>
 				<th style="width: 200px;">Prénom</th>
 				<th style="width: 300px;">Email</th>
 				<th style="width: 100px;" colspan="3">Actions</th>
 			</tr>
+			</thead>
+			<tbody>
 			<?php
 				$script = '';
 				if (isset($listeEtudiants)){
@@ -46,6 +49,7 @@
 				}
 				print($script);
 			?>
+			</tbody>
 		</table>
 	</div>
 </section>

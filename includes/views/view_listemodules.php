@@ -17,11 +17,14 @@
 		$script .= '</section>';
 		print($script);
 	?>
-	<table>
+	<table class="table table-bordered table-hover table-responsive-md">
+		<thead class="thead-light">
 		<tr>
 			<th style="width: 700px;">Libellé</th>
 			<th style="width: 100px;" colspan="3">Action</th>
 		</tr>
+		</thead>
+		<tbody>
 		<?php
 			$script = '';
 			if (count($listeModules) == 0){
@@ -55,5 +58,6 @@
 			}
 			print($script);
 		?>
+		</tbody>
 	</table>
 </section>

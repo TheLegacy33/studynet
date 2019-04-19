@@ -14,11 +14,14 @@
 		}
 	?>
 	<div class="col-12">
-		<table>
+		<table class="table table-bordered table-hover table-responsive-md">
+			<thead class="thead-light">
 			<tr>
 				<th style="width: 600px;"></th>
 				<th style="width: 100px;" colspan="3">Actions</th>
 			</tr>
+			</thead>
+			<tbody>
 			<?php
 				$script = '';
 				if (isset($listeUnitesEnseignement)){
@@ -86,6 +89,7 @@
 				}
 				print($script);
 			?>
+			</tbody>
 		</table>
 	</div>
 </section>
