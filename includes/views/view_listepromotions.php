@@ -1,3 +1,11 @@
+<?php
+	/**
+	 * @var Personne $user
+	 * @var Ecole $ecole
+	 * @var $listePromos
+	 * @var Promotion $promo
+	 */
+?>
 <nav class="navinterne">
 	<a href="index.php?p=ecoles&a=listeecoles" title="Retour à la liste des écoles"><< Retour</a>
 </nav>
@@ -32,7 +40,7 @@
 						$script .= '</div>';
 						$script .= '<div class="card-footer">';
 						$script .= '<span><a href="index.php?p=periodesformation&a=listepf&idpromo='.$promo->getId().'" title="Liste des périodes de formation" class="fa fa-list"></a></span>';
-						$script .= '<span><a href="index.php?p=promotions&a=editpromo&idpromo='.$promo->getId().'" title="Modifier"class="fa fa-edit"></a></span>';
+						$script .= '<span><a href="index.php?p=promotions&a=editpromo&idpromo='.$promo->getId().'" title="Modifier" class="fa fa-edit"></a></span>';
 						$script .= '<span><a href="index.php?p=promotions&a=deletepromo&idpromo='.$promo->getId().'" title="Supprimer" class="fa fa-trash-alt"></a></span>';
 						$script .= '</div>';
 						$script .= '</div>';

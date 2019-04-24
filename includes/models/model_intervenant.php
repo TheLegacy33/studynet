@@ -42,8 +42,9 @@
 			if ($idPf == 0){
 				return null;
 			}
-			$SQLQuery = 'SELECT * FROM intervenant INNER JOIN personne ON intervenant.pers_id = personne.pers_id INNER JOIN module ON intervenant.int_id = module.int_id ';
- 			$SQLQuery .= 'WHERE pf_id = :idpf ORDER BY pers_nom, pers_prenom';
+			$SQLQuery = 'SELECT * FROM intervenant INNER JOIN personne ON intervenant.pers_id = personne.pers_id ';
+			$SQLQuery .= 'INNER JOIN dispenser ON intervenant.int_id = dispenser.int_id ';
+ 			$SQLQuery .= 'WHERE dispenser.pf_id = :idpf ORDER BY pers_nom, pers_prenom';
 			$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
 			$SQLStmt->bindValue(':idpf', $idPf);
 			$SQLStmt->execute();
@@ -127,6 +128,9 @@
 		}
 
 		public static function update($intervenant){
+			/**
+			 * @var Intervenant $intervenant
+			 */
 			$SQLQuery = "UPDATE personne SET pers_nom = :nom, pers_prenom = :prenom, pers_email = :email, us_id = :userid WHERE pers_id = :idpers";
 			$stmt = DAO::getInstance()->prepare($SQLQuery);
 			$stmt->bindValue(':nom', $intervenant->getNom());
@@ -140,6 +144,9 @@
 		}
 
 		public static function insert($intervenant){
+			/**
+			 * @var Intervenant $intervenant
+			 */
 			$SQLQuery = 'INSERT INTO intervenant (pers_id) VALUES (:idPers)';
 			$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
 			$SQLStmt->bindValue(':idPers', $intervenant->getPersId());
@@ -149,6 +156,9 @@
 		}
 
 		public static function delete($intervenant){
+			/**
+			 * @var Intervenant $intervenant
+			 */
 			$SQLQuery = 'DELETE FROM intervenant WHERE int_id = :idInterv';
 			$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
 			$SQLStmt->bindValue(':idInterv', $intervenant->getId());

@@ -1,3 +1,15 @@
+<?php
+	/**
+	 * @var $listePersonnes
+	 * @var Personne $personne
+	 * @var Module $module
+	 * @var ContenuModule $contenuModule
+	 * @var Periodeformation $pf
+	 * @var Etudiant $etudiant
+	 * @var Personne $user
+	 * @var UniteEnseignement $uniteenseignement
+	 */
+?>
 <nav class="navinterne">
 	<a href="index.php?p=periodesformation&a=listemodules&idpf=<?php print($pf->getId()); ?>" title="Retour à la liste des modules"><< Retour</a>
 </nav>
@@ -23,7 +35,7 @@
 										$selected = ' selected';
 									}
 								}
-								$script .= '<option value="'.$personne->getPersId().'"'.$selected.'>'.$personne.'</option>';
+								$script .= '<option value="'.$personne->getPersId().'" '.$selected.'>'.$personne.'</option>';
 							}
 						}
 						print($script);
@@ -44,7 +56,7 @@
 										$selected = ' selected';
 									}
 								}
-								$script .= '<option value="'.$uniteenseignement->getId().'"'.$selected.'>'.$uniteenseignement.'</option>';
+								$script .= '<option value="'.$uniteenseignement->getId().'" '.$selected.'>'.$uniteenseignement.'</option>';
 							}
 						}
 						print($script);

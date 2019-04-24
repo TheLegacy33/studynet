@@ -1,3 +1,11 @@
+<?php
+	/**
+	 * @var $listeRattrapages
+	 * @var Rattrapage $rattrapage
+	 * @var Module $module
+	 * @var StatutRattrapage $statutRattrapage
+	 */
+?>
 <section id="content_body" class="row">
 	<header class="col-12 text-center text-info">Vos rattrapages</header>
 	<table class="table table-bordered table-hover table-responsive-md">
@@ -12,22 +20,26 @@
 		<tbody>
 		<?php
 			$script = '';
-			if (count($listeRattrapage) == 0){
+			if (count($listeRattrapages) == 0){
 				$script .= '<tr><td colspan="8">Aucune donnée disponible !</td></tr>';
 			}else{
-				foreach ($listeRattrapage as $rattrapage){
+				foreach ($listeRattrapages as $rattrapage){
+
+					$module = $rattrapage->getModule();
+					$statutRattrapage = $rattrapage->getStatut();
+
 					$script .= '<tr class="lignedata">';
-					$script .= '<td style="text-align: left">'.$rattrapage->getModule()->getLibelle().'</td>';
-					$script .= '<td>'.$rattrapage->getModule()->getIntervenant().'</td>';
-					$script .= '<td>'.$rattrapage->getStatut()->getLibelle().'</td>';
+					$script .= '<td style="text-align: left">'.$module->getLibelle().'</td>';
+					$script .= '<td>'.$module->getIntervenant().'</td>';
+					$script .= '<td>'.$statutRattrapage->getLibelle().'</td>';
 
 					$widthColAction = '70px';
-					if ($rattrapage->getStatut() != StatutRattrapage::getByLibelle('En cours')){
+					if ($statutRattrapage !== StatutRattrapage::getByLibelle('En cours')){
                         $script .= '<td style="width: '.$widthColAction.'"></td>';
                         $script .= '<td style="width: '.$widthColAction.'"></td>';
                     }else{
-                        if ($rattrapage->getStatut() == StatutRattrapage::getByLibelle('En cours') AND !$rattrapage->uploaded()) {
-                            $script .= '<td style="width: '.$widthColAction.';" title="' . ($rattrapage->downloaded() ? $rattrapage->getDateRecup() : '') . '"><a data="lnkdld" href="index.php?p=rattrapages&a=getsujet&idrattrapage=' . $rattrapage->getId() . '" title="Télécharger le sujet"><span class="glyphicon glyphicon-download"></span></a></td>';
+                        if ($statutRattrapage === StatutRattrapage::getByLibelle('En cours') AND !$rattrapage->uploaded()) {
+                            $script .= '<td style="width: '.$widthColAction.';" title="' . ($rattrapage->downloaded() ? $rattrapage->getDateRecup() : '') . '"><a data-id="lnkdld" href="index.php?p=rattrapages&a=getsujet&idrattrapage='.$rattrapage->getId() . '" title="Télécharger le sujet"><span class="glyphicon glyphicon-download"></span></a></td>';
                         }else{
                             $script .= '<td style="width: '.$widthColAction.'"></td>';
                         }

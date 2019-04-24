@@ -1,3 +1,13 @@
+<?php
+	/**
+	 * @var Module $module
+	 * @var $listeModules
+	 * @var ContenuModule $contenuModule
+	 * @var Periodeformation $pf
+	 * @var Etudiant $etudiant
+	 * @var Personne $user
+	 */
+?>
 <section id="content_body" class="row formaffiche">
 	<header class="col-12 text-center text-info" style="font-size: 20px">Liste des modules suivis par
 		<?php print($etudiant->getNom().' '.$etudiant->getPrenom()); ?>

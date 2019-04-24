@@ -1,3 +1,14 @@
+<?php
+	/**
+	 * @var $listeEtudiants
+	 * @var Personne $user
+	 * @var Etudiant $etudiant
+	 * @var Module $module
+	 * @var Intervenant $intervenant
+	 * @var EvaluationModule $evaluation
+	 */
+?>
+
 <section id="content_body" class="row">
 	<nav class="navinterne">
 		<a href="index.php?p=periodesformation&a=listeevaluations&idpf=<?php print($pf->getId()); ?>&idmodule=<?php print($evaluation->getModule()->getId()); ?>" title="Retour à la liste des étudiants"><< Retour</a>
@@ -8,25 +19,26 @@
 	<div class="row">
 		<div class="col-xs-12 text-center">
             <?php
-            if ($user->isAdmin() OR $pf->getResponsable() == $user OR $module->getIntervenant()->equals($user)){
-                if ($action != 'editnotes'){
-                    ?>
-                    <div class="row btnactions">
-                        <a href="index.php?p=periodesformation&a=editnotes&idpf=<?php print($pf->getId()); ?>&idmodule=<?php print($evaluation->getModule()->getId()); ?>&idevaluation=<?php print($evaluation->getId()); ?>" class="btn btn-default" title="Modifier les notes">Modifier<span class="glyphicon glyphicon-edit"></span></a>
-                    </div>
-                    <?php
-                }else{
-                	?>
-					<div class="row btnactions" id="btAct">
-						<button>Tous présents</button>
-						<button>Tous absents justifiés</button>
-						<button>Tous absents non justifiés</button>
-						<button>Tous non rendu</button>
-						<button>Tous non évalué</button>
-					</div>
-					<?php
+				$intervenant = $module->getIntervenant();
+				if ($user->isAdmin() OR $pf->getResponsable() == $user OR $intervenant->equals($user)){
+					if ($action != 'editnotes'){
+						?>
+						<div class="row btnactions">
+							<a href="index.php?p=periodesformation&a=editnotes&idpf=<?php print($pf->getId()); ?>&idmodule=<?php print($evaluation->getModule()->getId()); ?>&idevaluation=<?php print($evaluation->getId()); ?>" class="btn btn-default" title="Modifier les notes">Modifier<span class="glyphicon glyphicon-edit"></span></a>
+						</div>
+						<?php
+					}else{
+						?>
+						<div class="row btnactions" id="btAct">
+							<button>Tous présents</button>
+							<button>Tous absents justifiés</button>
+							<button>Tous absents non justifiés</button>
+							<button>Tous non rendu</button>
+							<button>Tous non évalué</button>
+						</div>
+						<?php
+					}
 				}
-            }
             ?>
 			<div class="col-xs-12" style="height: 500px; overflow-y: scroll; margin-bottom: 5px">
 				<table id="tbetudiants">
@@ -95,7 +107,7 @@
 				</table>
 			</div>
 			<?php
-				if ($user->isAdmin() OR $pf->getResponsable() == $user OR $module->getIntervenant()->equals($user)){
+				if ($user->isAdmin() OR $pf->getResponsable() == $user OR $intervenant->equals($user)){
 					if ($action == 'editnotes'){
 						?>
 						<div class="row btnactions">

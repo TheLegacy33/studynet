@@ -2,7 +2,6 @@
     include_once ROOTSCRIPTS.'fpdf/fpdf.php';
 
     class PDF extends FPDF{
-        private $fontSize = 8;
         function __construct($orientation = 'P', $unit = 'mm', $size = 'A4')
         {
             parent::__construct($orientation, $unit, $size);
@@ -10,6 +9,9 @@
         }
 
         function Header(){
+			/**
+			 * @var Etudiant $etudiant
+			 */
             GLOBAL $etudiant, $pf;
             $this->SetLineWidth(0.4);
             $this->Image(ROOTUPLOADS.Ecole::getById(Promotion::getById($pf->getIdPromo())->getIdEcole())->getLogo(), 10, 2, 40, 30);
@@ -53,7 +55,13 @@
             $this->Cell(0,10,'Page '.$this->PageNo().'/{nb}',0,0,'C');
         }
 
-        function headerModule($module){
+        function headerModule(Module $module){
+			/**
+			 * @var Intervenant $intervenant
+			 */
+
+        	$intervenant = $module->getIntervenant();
+
             $this->SetLineWidth(0.4);
             $this->SetFont('Arial','B',10);
             $this->SetFillColor(119, 147, 60);
@@ -62,17 +70,24 @@
             }
             $this->Cell(120, 6, utf8_decode($module->getLibelle()), 'LTB', 0, 'L');
             $this->SetFont('Arial','I',10);
-            $this->Cell(40, 6, utf8_decode($module->getIntervenant()->getNom().' '.$module->getIntervenant()->getPrenom()), 'RTB', 0, 'R');
+            $this->Cell(40, 6, utf8_decode($intervenant->getNom().' '.$intervenant->getPrenom()), 'RTB', 0, 'R');
             $this->SetFont('Arial','',10);
             $this->Cell(10, 6, 'A', 1, 0, 'C', true);
             $this->Cell(10, 6, 'ECA', 1, 0, 'C', true);
             $this->Cell(10, 6, 'NA', 1, 1, 'C', true);
         }
 
-        function contenuModule($module){
+        function contenuModule(Module $module){
+			/**
+			 * @var Etudiant $etudiant
+			 * @var Intervenant $intervenant
+			 * @var ContenuModule $contenuModule
+			 */
+
             GLOBAL $etudiant;
+			$intervenant = $module->getIntervenant();
             foreach ($module->getContenu() as $contenuModule){
-                $eval = Evaluation::getById($etudiant->getId(), $module->getIntervenant()->getId(), $contenuModule->getId());
+                $eval = Evaluation::getById($etudiant->getId(), $intervenant->getId(), $contenuModule->getId());
                 $acquis = $eval->estAcquis()?' X':'';
                 $enacquisition = $eval->estEnCoursAcquisition()?' X':'';
                 $nonacquis = $eval->estNonAcquis()?' X':'';
@@ -115,12 +130,22 @@
     $pdf = new PDF();
     $pdf->AddPage();
     $pdf->AliasNbPages();
+	/**
+	 * @var Module $module
+	 * @var Intervenant $intervenant
+	 * @var ContenuModule $contenuModule
+	 * @var Etudiant $etudiant
+	 * @var $listeModules
+	 */
 	if (isset($listeModules)){
 		foreach ($listeModules as $module){
+
 			$commentaireModule = null;
 			$appreciationG = null;
+			$intervenant = $module->getIntervenant();
+
 			if (isset($etudiant)){
-				$commentaireModule = (Evaluation::getAppreciationModule($etudiant->getId(), $module->getIntervenant()->getId(), $module->getId()));
+				$commentaireModule = (Evaluation::getAppreciationModule($etudiant->getId(), $intervenant->getId(), $module->getId()));
 			}
 			if ($commentaireModule == null){
 				$commentaireModule = 'Pas de commentaire';

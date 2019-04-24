@@ -1,3 +1,9 @@
+<?php
+	/**
+	 * @var Personne $user
+	 */
+?>
+
 <section class="container">
 	<form action="index.php?p=auth" method="post" id="frmLogin">
 		<div class="card text-justify">

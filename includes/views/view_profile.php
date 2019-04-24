@@ -1,3 +1,8 @@
+<?php
+	/**
+	 * @var Personne $user
+	 */
+?>
 <section class="container">
 	<form action="" method="post" id="frmProfile" enctype="multipart/form-data">
 		<div class="card text-justify">
@@ -44,7 +49,8 @@
 						</div>
 						<?php
 							if ($user->estEtudiant()){
-								print('<div class="form-group"><label for="ttPhoto">Photo :</label><input class="form-control" type="file" name="ttPhoto" id="ttPhoto" value="'.$user->getPhoto().'" /></div>');
+								$etudiant = Etudiant::getById(Etudiant::getIdByIdPers($user->getPersId()));
+								print('<div class="form-group"><label for="ttPhoto">Photo :</label><input class="form-control" type="file" name="ttPhoto" id="ttPhoto" value="'.$etudiant->getPhoto().'" /></div>');
 							}
 						?>
 					</div>

@@ -1,12 +1,20 @@
 <?php
-if (!is_null($promo)){
-	?>
-	<nav class="navinterne">
-		<a href="index.php?p=promotions&a=listepromotions&idecole=<?php print($promo->getIdEcole()); ?>"
-		   title="Retour à la liste des promotions"><< Retour</a>
-	</nav>
-	<?php
-}
+	/**
+	 * @var Promotion $promo
+	 * @var $listeStatutPf
+	 * @var StatutPeriodeFormation $statutPf
+	 * @var StatutPeriodeFormation $statut
+	 * @var Personne $user
+	 */
+
+	if (!is_null($promo)){
+		?>
+		<nav class="navinterne">
+			<a href="index.php?p=promotions&a=listepromotions&idecole=<?php print($promo->getIdEcole()); ?>"
+			   title="Retour à la liste des promotions"><< Retour</a>
+		</nav>
+		<?php
+	}
 ?>
 <section id="content_body" class="container">
 	<section class="row card-deck justify-content-center">
@@ -41,7 +49,9 @@ if (!is_null($promo)){
 		<div class="card bg-light mb-4 shadow-lg text-center" style="max-width: 300px">
 			<div class="card-header">Statut</div>
 			<div class="card-body">
-				<select name="cbactive">
+
+				<label for="cbactive"></label>
+				<select id="cbactive" name="cbactive">
 				<?php
 					$script = '';
 					if (isset($listeStatutPf)){
@@ -50,7 +60,7 @@ if (!is_null($promo)){
 							if ($statut->equals($statutPf)){
 								$selected = ' selected';
 							}
-							$script .= '<option value="'.$statutPf->getId().'"'.$selected.'>'.$statutPf.'</option>';
+							$script .= '<option value="'.$statutPf->getId().'" '.$selected.'>'.$statutPf.'</option>';
 						}
 					}
 					print($script);

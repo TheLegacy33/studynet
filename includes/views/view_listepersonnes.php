@@ -1,16 +1,26 @@
+<?php
+	/**
+	 * @var Personne $user
+	 * @var $type
+	 * @var $listePersonnes
+	 * @var Personne $personne
+	 */
+?>
+
 <section id="content_body" class="row">
 	<header class="col-12 text-center text-info">Liste des personnes</header>
 	<section id="divfiltre" class="col-12 text-center">
+		<label for="cbFiltreType"></label>
 		<select id="cbFiltreType">
 			<?php
-				$script = '<option value="*"'.(($type=='*')?' selected':'').'>Tous</option>';
+				$script = '<option value="*" '.(($type=='*')?' selected':'').'>Tous</option>';
 				if ($user->isAdmin()){
-					$script .= '<option value="administrateur"'.(($type=='administrateur')?' selected':'').'>Administrateurs</option>';
+					$script .= '<option value="administrateur" '.(($type=='administrateur')?' selected':'').'>Administrateurs</option>';
 				}
-				$script .= '<option value="'.Etudiant::class.'"'.(($type==Etudiant::class)?' selected':'').'>Etudiant</option>';
-				$script .= '<option value="'.Intervenant::class.'"'.(($type==Intervenant::class)?' selected':'').'>Intervenant</option>';
-				$script .= '<option value="'.ResponsablePedago::class.'"'.(($type==ResponsablePedago::class)?' selected':'').'>Responsables Pédagogiques</option>';
-				$script .= '<option value="visiteur"'.(($type=='visiteur')?' selected':'').'>Visiteurs</option>';
+				$script .= '<option value=" '.Etudiant::class.'" '.(($type==Etudiant::class)?' selected':'').'>Etudiant</option>';
+				$script .= '<option value=" '.Intervenant::class.'" '.(($type==Intervenant::class)?' selected':'').'>Intervenant</option>';
+				$script .= '<option value=" '.ResponsablePedago::class.'" '.(($type==ResponsablePedago::class)?' selected':'').'>Responsables Pédagogiques</option>';
+				$script .= '<option value="visiteur" '.(($type=='visiteur')?' selected':'').'>Visiteurs</option>';
 				print ($script);
 			?>
 		</select>
