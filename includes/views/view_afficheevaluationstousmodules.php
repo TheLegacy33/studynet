@@ -1,8 +1,12 @@
 <?php
-$appreciationG = Evaluation::getAppreciationGenerale($etudiant->getId(), $pf->getId());
-if ($appreciationG == null){
-    $appreciationG = 'Pas de commentaire';
-}
+	/**
+	 * @var Etudiant $etudiant
+	 * @var Personne $user
+	 */
+	$appreciationG = Evaluation::getAppreciationGenerale($etudiant->getId(), $pf->getId());
+	if ($appreciationG == null){
+		$appreciationG = 'Pas de commentaire';
+	}
 
 ?>
 <section id="content_body" class="row formaffiche">
@@ -21,6 +25,10 @@ if ($appreciationG == null){
 		$script .= '<p class="commentaire">' . $appreciationG . '</p>';
 		$script .= '</section>';
 
+		/**
+		 * @var $listeModules
+		 * @var Module $module
+		 */
         foreach ($listeModules as $module){
             $commentaireModule = Evaluation::getAppreciationModule($etudiant->getId(), $module->getIntervenant()->getId(), $module->getId());
             if ($commentaireModule == null){
@@ -32,10 +40,12 @@ if ($appreciationG == null){
             $script .= '<label>Commentaire du module :</label><br />';
             $script .= '<p class="commentaire">'.$commentaireModule.'</p>';
             $script .= '</section>';
-
-
+			/**
+			 * @var ContenuModule $contenuModule
+			 * @var Evaluation $eval
+			 */
             foreach ($module->getContenu() as $contenuModule){
-                $eval = Evaluation::getById($etudiant->getId(), $module->getIntervenant()->getId(), $contenuModule->getId());
+				$eval = Evaluation::getById($etudiant->getId(), $module->getIntervenant()->getId(), $contenuModule->getId());
                 $acquis = $eval->estAcquis()?' checked':'';
                 $enacquisition = $eval->estEnCoursAcquisition()?' checked':'';
                 $nonacquis = $eval->estNonAcquis()?' checked':'';

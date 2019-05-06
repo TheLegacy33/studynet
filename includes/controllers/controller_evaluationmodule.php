@@ -31,6 +31,7 @@ if ($idpf != 0) {
 }
 if ($idModule != 0) {
 	$module = Module::getById($idModule);
+	$module->setIntervenant(Intervenant::getByPfAndMod($idpf, $idModule));
 }
 if ($idEvaluation != 0) {
 	$evaluation = EvaluationModule::getById($idEvaluation);

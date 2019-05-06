@@ -91,6 +91,7 @@ class Personne{
         return $this->id == 0;
     }
 
+	//TODO : Implémenter la méthode de vérification des capacités d'édition
 	public function canEdit($what, $pf = null, $module = null, $contenumodule = null){
 		if ($this->isAdmin()){
 			return true;

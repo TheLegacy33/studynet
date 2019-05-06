@@ -35,6 +35,7 @@
 			<tbody>
 			<?php
 				$script = '';
+
 				if (isset($listeUnitesEnseignement)){
 					if (count($listeUnitesEnseignement) == 0){
 						$script .= '<tr><td colspan="8">Aucune donnée disponible !</td></tr>';

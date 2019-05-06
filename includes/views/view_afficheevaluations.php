@@ -1,4 +1,10 @@
 <?php
+	/**
+	 * @var Etudiant $etudiant
+	 * @var Module $module
+	 *
+	 */
+
     $commentaireModule = Evaluation::getAppreciationModule($etudiant->getId(), $module->getIntervenant()->getId(), $module->getId());
     if ($commentaireModule == null){
         $commentaireModule = 'Pas de commentaire';
@@ -20,6 +26,11 @@
 	</section>
 	<?php
 		$script = '';
+		/**
+		 * @var $listeContenusModule
+		 * @var ContenuModule $contenuModule
+		 *
+		 */
 		foreach ($listeContenusModule as $contenuModule){
             $eval = Evaluation::getById($etudiant->getId(), $module->getIntervenant()->getId(), $contenuModule->getId());
             $acquis = $eval->estAcquis()?' checked':'';

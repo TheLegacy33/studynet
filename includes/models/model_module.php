@@ -116,6 +116,7 @@
 				$retVal = array();
 				while ($SQLRow = $SQLStmt->fetchObject()){
 					$newModule = Module::getById($SQLRow->mod_id);
+					$newModule->setIntervenant(Intervenant::getByPfAndMod($idPeriodeFormation, $newModule->getId()));
 					$retVal[] = $newModule;
 				}
 				$SQLStmt->closeCursor();
@@ -184,6 +185,7 @@
 				$retVal = array();
 				while ($SQLRow = $SQLStmt->fetchObject()){
 					$newModule = Module::getById($SQLRow->mod_id);
+					$newModule->setIntervenant(Intervenant::getByPfAndMod($idPf, $newModule->getId()));
 					$retVal[] = $newModule;
 				}
 				$SQLStmt->closeCursor();
@@ -207,6 +209,7 @@
 				$retVal = array();
 				while ($SQLRow = $SQLStmt->fetchObject()){
 					$newModule = Module::getById($SQLRow->mod_id);
+					$newModule->setIntervenant(Intervenant::getByPfAndMod($idPf, $newModule->getId()));
 					$retVal[] = $newModule;
 				}
 				$SQLStmt->closeCursor();

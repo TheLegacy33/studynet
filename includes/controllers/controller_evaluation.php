@@ -13,6 +13,7 @@ if ($idetudiant != 0 AND $idpf != 0 AND $idModule != 0){
 	$etudiant = Etudiant::getById($idetudiant);
 	$pf = Periodeformation::getById($idpf);
 	$module = Module::getById($idModule);
+	$module->setIntervenant(Intervenant::getByPfAndMod($idpf, $idModule));
 
 	$listeContenusModule = $module->getContenu();
 }elseif ($idetudiant != 0 AND $idpf != 0){
@@ -20,6 +21,7 @@ if ($idetudiant != 0 AND $idpf != 0 AND $idModule != 0){
     $pf = Periodeformation::getById($idpf);
 	$listeModules = Module::getListeFromPf($idpf, $idetudiant);
 }
+
 if ($action == 'view' OR $action == 'viewdetailsevaluations'){
     if ($idModule == 0){
         include_once ROOTVIEWS.'view_afficheevaluationstousmodules.php';

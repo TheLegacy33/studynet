@@ -79,14 +79,6 @@ nav.navinterne{
 	line-height: 30px;
 }
 
-table {
-    border-collapse: collapse;
-    border: solid 1px black;
-    /*width: 80%;*/
-    margin: 0 auto;
-    cursor: default;
-}
-
 img.logoecole{
 	max-width: 100%;
 	max-height: 120px;
@@ -114,7 +106,6 @@ th{
 }
 
 th, td {
-    border: solid 1px black;
     text-align: center;
 }
 

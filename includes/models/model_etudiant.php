@@ -43,16 +43,18 @@
             $this->setPhoto($etudToClone->getPhoto());
         }
 
-        public function getEvaluationContenuModule($idcmod){
-			$idIntervenant = ContenuModule::getById($idcmod)->getModule()->getIntervenant()->getId();
+        public function getEvaluationContenuModule(ContenuModule $contenumodule, Periodeformation $pf){
+			$module = $contenumodule->getModule();
+			$intervenant = Intervenant::getByPfAndMod($pf->getId(), $module->getId());
+
 			$SQLQuery = 'SELECT evaluer.* FROM evaluer WHERE etu_id = :idetudiant AND cmod_id = :idcmod AND int_id = :idintervenant';
 			$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
-			$SQLStmt->bindValue(':idcmod', $idcmod);
+			$SQLStmt->bindValue(':idcmod', $contenumodule->getId());
 			$SQLStmt->bindValue(':idetudiant', $this->etu_id);
-			$SQLStmt->bindValue(':idintervenant', $idIntervenant);
+			$SQLStmt->bindValue(':idintervenant', $intervenant->getId());
 			$SQLStmt->execute();
 			if ($SQLStmt->rowCount() == 0){
-				$newEvaluation = new Evaluation($this->etu_id, $idIntervenant, $idcmod);
+				$newEvaluation = new Evaluation($this->etu_id, $intervenant->getId(), $contenumodule->getId());
 				Evaluation::insert($newEvaluation);
 				$retVal = 'NA';
 			}else{
