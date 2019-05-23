@@ -1,3 +1,10 @@
+<?php
+	/**
+	 * @var Periodeformation $pf
+	 * @var $listePersonnes
+	 * @var Personne $personne
+	 */
+?>
 <nav class="navinterne">
 	<a href="index.php?p=periodesformation&a=listepf&idpromo=<?php print($promo->getId()); ?>" title="Retour à la liste des périodes de formation"><< Retour</a>
 </nav>
@@ -34,7 +41,7 @@
 											$selected = ' selected';
 										}
 									}
-									$script .= '<option value="'.$personne->getId().'"'.$selected.'>'.$personne.'</option>';
+									$script .= '<option value="'.$personne->getPersId().'"'.$selected.'>'.$personne.'</option>';
 								}
 							}
 							print($script);

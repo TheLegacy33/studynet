@@ -39,6 +39,9 @@
 		$listeStatutPf = StatutPeriodeFormation::getListe();
 
 		if (!empty($_POST)){
+			var_dump($_POST);
+			die();
+
 			$dateDebut = $_POST['ttDateDebut'];
 			$dateFin = $_POST['ttDateFin'];
 			$duree = $_POST['ttDuree'];
@@ -72,19 +75,18 @@
 		$listeStatutPf = StatutPeriodeFormation::getListe();
 
 		if (!empty($_POST)){
+
 			$dateDebut = $_POST['ttDateDebut'];
 			$dateFin = $_POST['ttDateFin'];
 			$duree = $_POST['ttDuree'];
 			$statut = (isset($_POST['cbStatut']) AND $_POST['cbStatut'] != '0')?StatutPeriodeFormation::getById($_POST['cbStatut']):null;
 
 			$personne = (isset($_POST['cbResponsable']) AND $_POST['cbResponsable'] != '0')?Personne::getById($_POST['cbResponsable']):null;
-
 			if (!ResponsablePedago::exists($personne->getId())){
 				ResponsablePedago::insert($personne);
 			}
 			$newresponsable = ResponsablePedago::getById(ResponsablePedago::getIdByIdPers($personne->getId()));
 			$oldresponsable = $pf->getResponsable();
-
 			$pf->setDuree($duree);
 			$pf->setDateDebut($dateDebut);
 			$pf->setDateFin($dateFin);

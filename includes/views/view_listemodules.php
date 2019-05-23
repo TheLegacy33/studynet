@@ -57,7 +57,7 @@
 							foreach ($module->getContenu() as $contenuModule){
 								$script .= '<tr class="lignetab">';
 								$script .= '<td style="border: none; text-align: left">'.$contenuModule->getLibelle().'</td>';
-								$eval = $etudiant->getEvaluationContenuModule($contenuModule->getId());
+								$eval = $etudiant->getEvaluationContenuModule($contenuModule, $pf);
 								$script .= '<td style="border: none;" class="eval_'.$eval.'">'.$eval.'</td>';
 								$script .= '</tr>';
 							}
