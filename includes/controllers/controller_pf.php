@@ -39,9 +39,6 @@
 		$listeStatutPf = StatutPeriodeFormation::getListe();
 
 		if (!empty($_POST)){
-			var_dump($_POST);
-			die();
-
 			$dateDebut = $_POST['ttDateDebut'];
 			$dateFin = $_POST['ttDateFin'];
 			$duree = $_POST['ttDuree'];
@@ -49,13 +46,12 @@
 
 			//Je rajoute la personne en tant que responsable pédago
 			$personne = (isset($_POST['cbResponsable']) AND $_POST['cbResponsable'] != '0')?Personne::getById($_POST['cbResponsable']):null;
-
-
 			if (!ResponsablePedago::exists($personne->getId())){
 				ResponsablePedago::insert($personne);
 			}
 			$responsable = ResponsablePedago::getById(ResponsablePedago::getIdByIdPers($personne->getId()));
-			$newPf = new Periodeformation(0, $dateDebut, $dateFin, $idPromo, $statut->getId(), $duree);
+
+            $newPf = new Periodeformation(0, $dateDebut, $dateFin, $idPromo, $statut->getId(), $duree);
 			$newPf->setResponsable($responsable);
 
 			if (Periodeformation::insert($newPf)){

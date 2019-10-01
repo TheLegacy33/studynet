@@ -242,9 +242,24 @@
 			return $retVal;
 		}
 
+		public function existsInPf($idPf = 0){
+            if ($idPf == 0){
+                return null;
+            }
+            $SQLQuery = 'SELECT COUNT(*) FROM integrer ';
+            $SQLQuery .= 'WHERE pf_id = :idpf AND etu_id = :idetudiant';
+            $SQLStmt = DAO::getInstance()->prepare($SQLQuery);
+            $SQLStmt->bindValue(':idpf', $idPf);
+            $SQLStmt->bindValue(':idetudiant', $this->getId());
+            $SQLStmt->execute();
+            $nb = $SQLStmt->fetchColumn(0);
+            $SQLStmt->closeCursor();
+            return ($nb > 0);
+        }
+
 		public static function getById($id){
 			$SQLQuery = 'SELECT * FROM etudiant INNER JOIN personne ON etudiant.pers_id = personne.pers_id ';
-			$SQLQuery .= 'INNER JOIN integrer ON etudiant.etu_id = integrer.etu_id ';
+//			$SQLQuery .= 'INNER JOIN integrer ON etudiant.etu_id = integrer.etu_id ';
 			$SQLQuery .= "WHERE etudiant.etu_id = :idetudiant";
 			$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
 			$SQLStmt->bindValue(':idetudiant', $id);
@@ -254,6 +269,24 @@
 			$newEtud->fillAuth(User::getById($SQLRow->us_id));
 			$SQLStmt->closeCursor();
 			return $newEtud;
+		}
+
+        public function populate(){
+			$SQLQuery = 'SELECT * FROM etudiant INNER JOIN personne ON etudiant.pers_id = personne.pers_id ';
+			$SQLQuery .= "WHERE pers_nom = :nometudiant AND pers_prenom = :prenometudiant";
+			$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
+			$SQLStmt->bindValue(':nometudiant', $this->getNom());
+			$SQLStmt->bindValue(':prenometudiant', $this->getPrenom());
+			$SQLStmt->execute();
+			$SQLRow = $SQLStmt->fetchObject();
+
+			$this->setId($SQLRow->etu_id);
+			$this->setEmail($SQLRow->pers_email);
+			$this->setPhoto($SQLRow->etu_photo);
+			$this->setPersId($SQLRow->pers_id);
+			$this->fillAuth(User::getById($SQLRow->us_id));
+
+			$SQLStmt->closeCursor();
 		}
 
 		public static function getIdByIdPers($idPers){

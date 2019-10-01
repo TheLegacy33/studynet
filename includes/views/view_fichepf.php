@@ -25,7 +25,7 @@
 				</div>
 				<div class="form-group">
 					<label for="ttDuree">Durée :</label>
-					<input type="number" min="0" step="10" pattern="\d+" class="form-control" aria-describedby="helpDuree" name="ttDuree" id="ttDuree" value="<?php print($pf->getDuree()); ?>"/>
+					<input type="number" min="0" step="1" pattern="\d+" class="form-control" aria-describedby="helpDuree" name="ttDuree" id="ttDuree" value="<?php print($pf->getDuree()); ?>"/>
 					<small id="helpDuree" class="form-text text-muted">Durée de la période de formation</small>
 				</div>
 				<div class="form-group">

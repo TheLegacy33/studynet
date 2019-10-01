@@ -57,11 +57,11 @@ if ($action == 'listeetudiants') {
 		$etudiant->setPrenom(trim($_POST['ttPrenom']));
 		$etudiant->setEmail(trim($_POST['ttEmail']));
 
-		if (!empty($_FILES)) {
+		if (!empty($_FILES)){
 			$photo = $_FILES['ttPhoto'];
 			$newNomPhoto = 'photo_'.$etudiant->getNom().'_'.$etudiant->getPrenom().'.'.pathinfo($photo['name'], PATHINFO_EXTENSION);
-			$pathFicPhoto = ROOTUPLOADS . $newNomPhoto;
-			if (!move_uploaded_file($photo['tmp_name'], $pathFicPhoto)) {
+			$pathFicPhoto = ROOTUPLOADS.$newNomPhoto;
+			if (!move_uploaded_file($photo['tmp_name'], $pathFicPhoto)){
 				$message = "Une erreur est survenue lors de l'enregistrement de la photo.<br /> Veuillez réessayer plus tard.";
 			}
 			$etudiant->setPhoto($newNomPhoto);
@@ -101,18 +101,39 @@ if ($action == 'listeetudiants') {
 					$etudiant->setNom(trim($infosLigne[0]));
 					$etudiant->setPrenom(trim($infosLigne[1]));
 					$etudiant->setEmail(trim((isset($infosLigne[2])?$infosLigne[2]:'')));
-					$etudiant->setPf($pf);
-					if (Etudiant::exists($etudiant)){
-						$message .= "L'etudiant ".$etudiant." existe déjà !<br />";
-						$nbErreurs++;
-					}else{
-						if (!Etudiant::insert($etudiant, $pf)){
-							$message .= "Erreur d'enregistrement de l'etudiant ".$etudiant;
+
+                    DAO::getInstance()->beginTransaction();
+                    if (Etudiant::exists($etudiant)){
+                    	$etudiant->populate();
+                        if ($etudiant->existsInPf($idPf)){
+                            $message .= "L'etudiant ".$etudiant." existe déjà dans cette période de formation!<br />";
 							$nbErreurs++;
-						}else{
-							$nbEtudiantImportes++;
-						}
-					}
+                            DAO::getInstance()->rollBack();
+                        }else{
+                            if ($pf->addStudent($etudiant)){
+								$message .= "L'etudiant ".$etudiant." a été ajouté à cette période de formation!<br />";
+                                DAO::getInstance()->commit();
+                                $nbEtudiantImportes++;
+                            }else{
+                                DAO::getInstance()->rollBack();
+                                $nbErreurs++;
+                            }
+                        }
+                    }else{
+                        if (Etudiant::insert($etudiant)){
+                            if ($pf->addStudent($etudiant)){
+                                DAO::getInstance()->commit();
+                                $nbEtudiantImportes++;
+                            }else{
+                                DAO::getInstance()->rollBack();
+                                $nbErreurs++;
+                            }
+                        }else{
+                            DAO::getInstance()->rollBack();
+                            $message .= "Erreur d'enregistrement de l'etudiant ".$etudiant;
+                            $nbErreurs++;
+                        }
+                    }
 				}
 			}
 			if ($nbErreurs == 0){
