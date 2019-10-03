@@ -25,7 +25,7 @@
 			$script = '';
 			if (isset($listePromos)){
 				if (count($listePromos) == 0){
-					$script .= 'Aucune donnée disponible !';
+					$script .= 'Aucune promotion disponible !';
 				}else{
 					$num = 0;
 					$script .= '<div class="row card-deck justify-content-center">';

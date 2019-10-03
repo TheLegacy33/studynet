@@ -23,7 +23,7 @@
 
 			$newPromo = new Promotion(0, $nomPromo, $idEcole);
 			if (Promotion::insert($newPromo)){
-				header('Location: index.php?p=promotions&a=listepromotions&idecole='.$ecole->getId());
+				header('Location: index.php?p=promotions&a=listepromotions&idecole='.$idEcole);
 			}else{
 				var_dump("Erreur d'enregistrement");
 			}
