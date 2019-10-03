@@ -228,4 +228,24 @@ class Periodeformation {
 			}
 		}
 	}
+
+	public function findStudent(Etudiant $etudiant){
+		$retVal = null;
+		$SQLQuery = "SELECT etu_id FROM integrer WHERE pf_id = :idPf AND etu_id = :idetudiant";
+		$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
+		$SQLStmt->bindValue(':idetudiant', $etudiant->getId());
+		$SQLStmt->bindValue(':idPf', $this->getId());
+		if ($SQLStmt->execute()){
+			$SQLRow = $SQLStmt->fetchObject();
+			if ($SQLStmt->rowCount() == 0){
+				$retVal = new Etudiant();
+			}else{
+				$retVal = Etudiant::getById($SQLRow->etu_id);
+			}
+			$SQLStmt->closeCursor();
+		}else{
+			$retVal = new Etudiant();
+		}
+		return $retVal;
+	}
 }
