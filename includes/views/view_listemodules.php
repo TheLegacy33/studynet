@@ -43,7 +43,7 @@
 				}else{
 					foreach ($listeModules as $module){
 						$script .= '<tr>';
-						$script .= '<td style="font-weight: bold;">'.$module->getLibelle().'<span class="intervenant">'.$module->getIntervenant().'</span></td>';
+						$script .= '<td style="font-weight: bold;">'.$module->getLibelle().($module->getCode() != ''?' - '.$module->getCode():'').'<span class="intervenant">'.$module->getIntervenant().'</span></td>';
 						$script .= '<td style="width: 30px;"><a href="index.php?p=periodesformation&a=viewdetailsevaluations&idetudiant='.$etudiant->getId().'&idpf='.$pf->getId().'&idmodule='.$module->getId().'" title="Voir les détails"><span class="fa fa-tasks"></span></a></td>';
 						if ($user->canEdit('module', $pf, $module)) {
 							$script .= '<td style="width: 30px;"><a href="index.php?p=periodesformation&a=editdetailsevaluations&idetudiant=' . $etudiant->getId() . '&idpf=' . $pf->getId() . '&idmodule=' . $module->getId() . '" title="Modifier l\'évaluation"><span class="fa fa-edit"></span></a></td>';

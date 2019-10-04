@@ -23,6 +23,11 @@
 				<small id="helpLibelle" class="form-text text-muted">Nom du module</small>
 			</div>
 			<div class="form-group">
+				<label for="ttCode">Code : </label>
+				<input type="text" class="form-control" aria-describedby="helpCode" name="ttCode" id="ttCode" value="<?php print($module->getCode()); ?>" />
+				<small id="helpCode" class="form-text text-muted">Code du module</small>
+			</div>
+			<div class="form-group">
 				<label for="cbIntervenant">Intervenant : </label>
 				<select id="cbIntervenant" class="form-control" aria-describedby="helpIntervenant" name="cbIntervenant">
 					<?php

@@ -1,3 +1,9 @@
+<?php
+	/**
+	 * @var $listeEtudiants
+	 * @var $listeModules
+	 */
+?>
 <section id="content_body" class="row">
 	<header class="col-12 text-center text-info header-section">
 		Participation des étudiant aux modules de la période de formation
@@ -36,7 +42,7 @@
 					}else{
 						foreach ($listeModules as $module){
 							$script .= '<tr class="lignedata">';
-							$script .= '<td class="text-left">'.$module->getLibelle().'</td>';
+							$script .= '<td class="text-left">'.($module->getCode() != ''?$module->getCode().' - ':'').$module->getLibelle().'</td>';
 							$script .= '<td class="text-center"><input type="checkbox" name="chk_'.$module->getId().'" data-name="chkmodule" /></td>';
 							$script .= '</tr>';
 						}

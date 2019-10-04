@@ -54,7 +54,7 @@
 			$SQLStmt->bindValue(':idcmod', $idContenuModule);
 			$SQLStmt->bindValue(':idintervenant', $idIntervenant);
 			$SQLStmt->execute();
-
+			//TODO : Est-ce vraiment utile d'avoir l'intervenant ? Vu que le module est rattaché à son intervenant ...
 			if ($SQLStmt->rowCount() == 0){
 				$newEval = new Evaluation($idEtudiant, $idIntervenant, $idContenuModule);
 				Evaluation::insert($newEval);
@@ -136,7 +136,7 @@
         }
 
         public static function update($evaluation){
-            $SQLQuery = 'UPDATE evaluer SET eval_acquis = :acquis, eval_enacquisition = :enacquisition, eval_nonacquis = :nonacquis, eval_commentaire = :commentaire ';
+			$SQLQuery = 'UPDATE evaluer SET eval_acquis = :acquis, eval_enacquisition = :enacquisition, eval_nonacquis = :nonacquis, eval_commentaire = :commentaire ';
             $SQLQuery .= 'WHERE etu_id = :idetudiant AND cmod_id = :idcmod AND int_id = :idintervenant';
             $SQLStmt = DAO::getInstance()->prepare($SQLQuery);
             $SQLStmt->bindValue(':commentaire', $evaluation->getCommentaire());

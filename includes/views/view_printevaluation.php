@@ -68,7 +68,7 @@
             if ($this->GetY() >= 260){
                 $this->AddPage();
             }
-            $this->Cell(120, 6, utf8_decode($module->getLibelle()), 'LTB', 0, 'L');
+            $this->Cell(120, 6, utf8_decode($module->getLibelle().($module->getCode() != ''?' - '.$module->getCode():'')), 'LTB', 0, 'L');
             $this->SetFont('Arial','I',10);
             $this->Cell(40, 6, utf8_decode($intervenant->getNom().' '.$intervenant->getPrenom()), 'RTB', 0, 'R');
             $this->SetFont('Arial','',10);
@@ -138,12 +138,12 @@
 	 * @var $listeModules
 	 */
 	if (isset($listeModules)){
+
 		foreach ($listeModules as $module){
 
 			$commentaireModule = null;
 			$appreciationG = null;
 			$intervenant = $module->getIntervenant();
-
 			if (isset($etudiant)){
 				$commentaireModule = (Evaluation::getAppreciationModule($etudiant->getId(), $intervenant->getId(), $module->getId()));
 			}
@@ -162,6 +162,7 @@
 			$pdf->commentModule($commentaireModule);
 		}
 	}
+
     $pdf->evalGenerale($appreciationG);
     //$pdf->Output();
     $pdfName = $etudiant->getNom().'_'.$etudiant->getPrenom().'_'.date('Ymd').'.pdf';

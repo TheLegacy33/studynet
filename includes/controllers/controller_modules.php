@@ -34,6 +34,7 @@ if ($action == 'listemodules'){
 
 	if (!empty($_POST)){
 		$libModule = $_POST['ttLibelle'];
+		$codeModule = $_POST['ttCode'];
 		$detailsModule = $_POST['ttResume'];
 		$dureeModule = intval($_POST['ttDuree']);
 		$uniteenseignement = (isset($_POST['cbUniteEnseignement']) AND $_POST['cbUniteEnseignement'] != '0')?UniteEnseignement::getById($_POST['cbUniteEnseignement']):new UniteEnseignement();
@@ -49,7 +50,7 @@ if ($action == 'listemodules'){
 			$intervenant = Intervenant::getById(Intervenant::getIdByIdPers($personne->getId()));
 		}
 
-		$newModule = new Module(0, $libModule, $detailsModule, $dureeModule, $uniteenseignement);
+		$newModule = new Module(0, $libModule, $detailsModule, $dureeModule, $uniteenseignement, $codeModule);
 		$newModule->setIntervenant($intervenant);
 
 		if (Module::insert($newModule, $pf)){
@@ -83,6 +84,7 @@ if ($action == 'listemodules'){
 		$module->setIntervenant($newintervenant);
 
 		$module->setLibelle(trim($_POST['ttLibelle']));
+		$module->setCode(trim($_POST['ttCode']));
 		$module->setDetails(trim($_POST['ttResume']));
 		$module->setDuree(intval($_POST['ttDuree']));
 
@@ -90,11 +92,6 @@ if ($action == 'listemodules'){
 		$module->setUniteEnseignement($uniteenseignement);
 
 		if (Module::update($module, $pf)){
-//			if (!$newintervenant->equals($oldintervenant)){
-//				if ($oldintervenant->getNbModules($module->getId()) == 0){
-//					Intervenant::delete($oldintervenant) or die('erreur');
-//				}
-//			}
 			header('Location: index.php?p=periodesformation&a=listemodules&idpf='.$idpf);
 		}else{
 			var_dump("Erreur d'enregistrement");

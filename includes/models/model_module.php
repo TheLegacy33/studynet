@@ -6,15 +6,16 @@
 	include_once ROOTMODELS.'model_uniteenseignement.php';
 
 	class Module{
-		private $id, $libelle, $details, $duree;
+		private $id, $libelle, $details, $duree, $code;
 		private $intervenant, $contenu, $uniteenseignement;
 
-		public function __construct($id = 0, $libelle = '', $details = '', $duree = 0, $UniteEnseignement = null){
+		public function __construct($id = 0, $libelle = '', $details = '', $duree = 0, $UniteEnseignement = null, $code = ''){
 			$this->id = $id;
 			$this->libelle = $libelle;
 			$this->details = $details;
 			$this->duree = $duree;
 			$this->uniteenseignement = $UniteEnseignement;
+			$this->code = $code;
 
 			$this->contenu = array();
 			$this->intervenant = null;
@@ -48,6 +49,10 @@
 			return $this->uniteenseignement;
 		}
 
+		public function getCode(){
+			return $this->code;
+		}
+
         public function hasContenu(){
 			return (!empty($this->contenu));
 		}
@@ -55,10 +60,10 @@
 		public function setId($id){
 			$this->id = $id;
 		}
-
-		public function setContenu($contenu){
-			$this->contenu = $contenu;
-		}
+//
+//		public function setContenu($contenu){
+//			$this->contenu = $contenu;
+//		}
 
 		public function setLibelle($libelle){
 			$this->libelle = $libelle;
@@ -76,6 +81,10 @@
 			$this->duree = $duree;
 		}
 
+		public function setCode($code){
+			$this->code = $code;
+		}
+
 		public function fillContenu($contenu){
 			$this->contenu = $contenu;
 		}
@@ -90,7 +99,7 @@
 			$SQLStmt->execute();
 			$SQLRow = $SQLStmt->fetchObject();
 			$uniteEnseignement = (is_null($SQLRow->unit_id)?UniteEnseignement::getEmptyUE():UniteEnseignement::getById($SQLRow->unit_id));
-			$newModule = new Module($SQLRow->mod_id, $SQLRow->mod_libelle, $SQLRow->mod_details, $SQLRow->mod_duree, $uniteEnseignement);
+			$newModule = new Module($SQLRow->mod_id, $SQLRow->mod_libelle, $SQLRow->mod_details, $SQLRow->mod_duree, $uniteEnseignement, $SQLRow->mod_code);
 			$newModule->fillContenu(ContenuModule::getListeFromModule($id));
 			$SQLStmt->closeCursor();
 			return $newModule;
@@ -233,13 +242,14 @@
 		}
 
 		public static function update(Module $module, Periodeformation $pf){
-			$SQLQuery = 'UPDATE module SET mod_libelle = :libelle, mod_details = :details, mod_duree = :duree, unit_id = :idunit WHERE mod_id = :idmod';
+			$SQLQuery = 'UPDATE module SET mod_libelle = :libelle, mod_details = :details, mod_duree = :duree, unit_id = :idunit, mod_code = :code WHERE mod_id = :idmod';
 			$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
 			$SQLStmt->bindValue(':libelle', $module->getLibelle());
 			$SQLStmt->bindValue(':details', $module->getDetails());
 			$SQLStmt->bindValue(':idunit', (!is_null($module->getUniteEnseignement()) AND $module->getUniteEnseignement()->getId() != 0)?$module->getUniteEnseignement()->getId():null);
 			$SQLStmt->bindValue(':duree', $module->getDuree());
 			$SQLStmt->bindValue(':idmod', $module->getId());
+			$SQLStmt->bindValue(':code', $module->getCode());
 
 			DAO::getInstance()->beginTransaction();
 			if (!$SQLStmt->execute()){
@@ -250,7 +260,6 @@
 
 				$modInBdd = self::getById($module->getId());
 				$modInBdd->setIntervenant(Intervenant::getByPfAndMod($pf->getId(), $modInBdd->getId()));
-
 
 				if (!$modInBdd->getIntervenant()->equals($module->getIntervenant())){
 					if (is_null($module->getIntervenant()) OR $module->getIntervenant()->getId() == 0){
@@ -281,10 +290,11 @@
 		}
 
 		public static function insert(Module $module, Periodeformation $pf){
-			$SQLQuery = 'INSERT INTO module(mod_libelle, mod_details, mod_duree, unit_id) VALUES (:libModule, :detailModule, :dureeModule, :idunit)';
+			$SQLQuery = 'INSERT INTO module(mod_libelle, mod_details, mod_duree, unit_id, mod_code) VALUES (:libModule, :detailModule, :dureeModule, :idunit, :code)';
 			$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
 			$SQLStmt->bindValue(':libModule', $module->getLibelle());
 			$SQLStmt->bindValue(':detailModule', $module->getDetails());
+			$SQLStmt->bindValue(':code', $module->getCode());
 			$SQLStmt->bindValue(':idunit', (!is_null($module->getUniteEnseignement()) AND $module->getUniteEnseignement()->getId() != 0)?$module->getUniteEnseignement()->getId():null);
 			$SQLStmt->bindValue(':dureeModule', $module->getDuree());
 			DAO::getInstance()->beginTransaction();
