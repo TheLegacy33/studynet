@@ -2,7 +2,24 @@
 $action = isset($_GET['a'])?$_GET['a']:'listeetudiants';
 include_once ROOTMODELS.'model_periodeformation.php';
 
-$idPf = isset($_GET['idpf'])?$_GET['idpf']:0;
+
+function traitePhoto(Etudiant $etudiant, $fichiers){
+	if (!empty($fichiers)){
+		$photo = $fichiers['ttPhoto'];
+		$newNomPhoto = 'photo_'.$etudiant->getNom().'_'.$etudiant->getPrenom().'.'.pathinfo($photo['name'], PATHINFO_EXTENSION);
+		$pathFicPhoto = ROOTUPLOADS.$newNomPhoto;
+		if (!move_uploaded_file($photo['tmp_name'], $pathFicPhoto)){
+			var_dump("Une erreur est survenue lors de l'enregistrement de la photo.<br /> Veuillez réessayer plus tard.");
+		}
+		$etudiant->setPhoto($newNomPhoto);
+	}else{
+		$etudiant->setPhoto(null);
+	}
+}
+
+
+
+	$idPf = isset($_GET['idpf'])?$_GET['idpf']:0;
 if ($action == 'listeetudiants') {
 	$listeEtudiants = Etudiant::getListeFromPf($idPf);
 	include_once ROOTVIEWS.'view_listeetudiants.php';
@@ -20,17 +37,7 @@ if ($action == 'listeetudiants') {
 		if (Etudiant::exists($etudiant)){
 			var_dump('Etudiant déjà présent !');
 		}else{
-			if (!empty($_FILES)){
-				$photo = $_FILES['ttPhoto'];
-				$newNomPhoto = 'photo_'.$etudiant->getNom().'_'.$etudiant->getPrenom().'.'.pathinfo($photo['name'], PATHINFO_EXTENSION);
-				$pathFicPhoto = ROOTUPLOADS.$newNomPhoto;
-				if (!move_uploaded_file($photo['tmp_name'], $pathFicPhoto)){
-					$message = "Une erreur est survenue lors de l'enregistrement de la photo.<br /> Veuillez réessayer plus tard.";
-				}
-				$etudiant->setPhoto($newNomPhoto);
-			}else{
-				$etudiant->setPhoto(null);
-			}
+			traitePhoto($etudiant, $_FILES);
 			DAO::getInstance()->beginTransaction();
 			if (Etudiant::insert($etudiant)){
 				if ($pf->addStudent($etudiant)){
@@ -57,17 +64,7 @@ if ($action == 'listeetudiants') {
 		$etudiant->setPrenom(trim($_POST['ttPrenom']));
 		$etudiant->setEmail(trim($_POST['ttEmail']));
 
-		if (!empty($_FILES)){
-			$photo = $_FILES['ttPhoto'];
-			$newNomPhoto = 'photo_'.$etudiant->getNom().'_'.$etudiant->getPrenom().'.'.pathinfo($photo['name'], PATHINFO_EXTENSION);
-			$pathFicPhoto = ROOTUPLOADS.$newNomPhoto;
-			if (!move_uploaded_file($photo['tmp_name'], $pathFicPhoto)){
-				$message = "Une erreur est survenue lors de l'enregistrement de la photo.<br /> Veuillez réessayer plus tard.";
-			}
-			$etudiant->setPhoto($newNomPhoto);
-		}else{
-			$etudiant->setPhoto(null);
-		}
+		traitePhoto($etudiant, $_FILES);
 
 		if (Etudiant::update($etudiant)){
 			header('Location: index.php?p=periodesformation&a=listeetudiants&idpf='.$idPf);

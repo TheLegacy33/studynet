@@ -62,7 +62,7 @@ $(document).ready(function(){
 		createToolTip(event, contenuInfo);
 	}).mouseout(function(){
 		$('div.infobulle').fadeOut('slow');
-	})
+	});
 
 	$('#btAct button').click(function(){
 		var newStatut = $(this).data('id');
@@ -76,7 +76,7 @@ function verifFormat(champ){
 		valeur = 0.00;
 		ok = false;
 	}else{
-		var valeur = Math.abs(parseFloat(valeur));
+		valeur = Math.abs(parseFloat(valeur));
 		if (valeur < 0 || valeur > 20){
 			valeur = 0.00;
 			ok = false;

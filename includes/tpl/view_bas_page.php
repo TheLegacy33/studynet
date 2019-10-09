@@ -1,6 +1,7 @@
 <?php
 /**
  * Définition des éléments de bas de page
+ * @var $scriptname
  */
 ?>
 		<footer id="footer" class="row"><span>Copyrights © 2017</span></footer>

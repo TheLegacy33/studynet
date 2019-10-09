@@ -10,7 +10,7 @@ $(document).ready(function(){
 					return element;
 				}
 			});
-			var href = "index.php?";
+			href = "index.php?";
 
 			//console.log(found);
 

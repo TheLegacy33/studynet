@@ -136,8 +136,8 @@
         }
 
         public static function update($evaluation){
-			$SQLQuery = 'UPDATE evaluer SET eval_acquis = :acquis, eval_enacquisition = :enacquisition, eval_nonacquis = :nonacquis, eval_commentaire = :commentaire ';
-            $SQLQuery .= 'WHERE etu_id = :idetudiant AND cmod_id = :idcmod AND int_id = :idintervenant';
+			$SQLQuery = 'UPDATE evaluer SET eval_acquis = :acquis, eval_enacquisition = :enacquisition, eval_nonacquis = :nonacquis, eval_commentaire = :commentaire 
+            			WHERE etu_id = :idetudiant AND cmod_id = :idcmod AND int_id = :idintervenant';
             $SQLStmt = DAO::getInstance()->prepare($SQLQuery);
             $SQLStmt->bindValue(':commentaire', $evaluation->getCommentaire());
             $SQLStmt->bindValue(':idetudiant', $evaluation->getIdEtudiant());
@@ -155,8 +155,8 @@
         }
 
 		public static function insert($evaluation){
-			$SQLQuery = 'INSERT INTO evaluer (eval_acquis, eval_enacquisition, eval_nonacquis, eval_commentaire, etu_id, cmod_id, int_id) ';
-			$SQLQuery .= 'VALUES(:acquis, :enacquisition, :nonacquis, :commentaire, :idetudiant, :idcmod, :idintervenant)';
+			$SQLQuery = 'INSERT INTO evaluer (eval_acquis, eval_enacquisition, eval_nonacquis, eval_commentaire, etu_id, cmod_id, int_id) 
+						VALUES(:acquis, :enacquisition, :nonacquis, :commentaire, :idetudiant, :idcmod, :idintervenant)';
 
 			$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
 			$SQLStmt->bindValue(':commentaire', $evaluation->getCommentaire());

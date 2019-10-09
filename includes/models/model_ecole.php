@@ -97,8 +97,7 @@
 		}
 
 		public static function insert(Ecole $ecole){
-			$SQLQuery = 'INSERT INTO ecole(eco_nom, eco_logo) ';
-			$SQLQuery .= 'VALUES (:nom, :logo)';
+			$SQLQuery = 'INSERT INTO ecole(eco_nom, eco_logo) VALUES (:nom, :logo)';
 			$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
 			$SQLStmt->bindValue(':nom', $ecole->getNom());
 			$SQLStmt->bindValue(':logo', $ecole->getLogo());

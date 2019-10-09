@@ -189,8 +189,8 @@ class Periodeformation {
 	}
 
 	public static function insert(Periodeformation $pf){
-		$SQLQuery = 'INSERT INTO periodeformation(pf_datedebut, pf_datefin, pf_duree, promo_id, resp_id, statpf_id) ';
-		$SQLQuery .= 'VALUES (:datedebut, :datefin, :duree, :idpromo, :idresp, :idstatut)';
+		$SQLQuery = 'INSERT INTO periodeformation(pf_datedebut, pf_datefin, pf_duree, promo_id, resp_id, statpf_id)
+					VALUES (:datedebut, :datefin, :duree, :idpromo, :idresp, :idstatut)';
 		$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
 		$SQLStmt->bindValue(':datedebut', date_fr_to_mysql($pf->getDateDebut()));
 		$SQLStmt->bindValue(':datefin', date_fr_to_mysql($pf->getDateFin()));

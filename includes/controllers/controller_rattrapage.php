@@ -1,6 +1,8 @@
 <?php
 include_once ROOTMODELS.'model_rattrapage.php';
-
+/**
+ * @var $user
+ */
 if (!file_exists(ROOTUPLOADS.'/sujets/')){
 	mkdir(ROOTUPLOADS.'/sujets/', 0755, true);
 	@chmod(ROOTUPLOADS.'/sujets/', 0777);

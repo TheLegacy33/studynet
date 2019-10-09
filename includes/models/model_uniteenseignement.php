@@ -144,7 +144,7 @@
 		}
 
 		public static function insert($uniteenseignement){
-			$SQLQuery = 'INSERT INTO module(unit_libelle) VALUES (:libelle)';
+			$SQLQuery = 'INSERT INTO uniteenseignement(unit_libelle) VALUES (:libelle)';
 			$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
 			$SQLStmt->bindValue(':libelle', $uniteenseignement->getLibelle());
 			if (!$SQLStmt->execute()){
