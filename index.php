@@ -15,6 +15,7 @@
         $rootHtml .= dirname($_SERVER['SCRIPT_NAME']);
     }
     define('ROOTHTML', $rootHtml);
+	define('REQUESTED_URI', $_SERVER['REQUEST_URI']);
 
 	include_once ROOT.'/includes/controllers/controller_main.php';
 ?>

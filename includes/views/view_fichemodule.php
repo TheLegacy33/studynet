@@ -11,7 +11,7 @@
 	 */
 ?>
 <nav class="navinterne">
-	<a href="index.php?p=periodesformation&a=listemodules&idpf=<?php print($pf->getId()); ?>" title="Retour à la liste des modules"><< Retour</a>
+	<a href="<?php print(ROOTHTML); ?>/index.php?p=periodesformation&a=listemodules&idpf=<?php print($pf->getId()); ?>" title="Retour à la liste des modules"><< Retour</a>
 </nav>
 <form action="" method="post" id="frmSaisie">
 	<div class="card card-default text-justify">
@@ -71,7 +71,7 @@
 			</div>
 			<div class="form-group">
 				<label for="ttDuree">Durée :</label>
-				<input type="number" min="0" step="10" pattern="\d+" class="form-control" aria-describedby="helpDuree" name="ttDuree" id="ttDuree" value="<?php print($module->getDuree()); ?>"/>
+				<input type="number" min="0" step="1" pattern="\d+" class="form-control" aria-describedby="helpDuree" name="ttDuree" id="ttDuree" value="<?php print($module->getDuree()); ?>"/>
 				<small id="helpDuree" class="form-text text-muted">Durée totale en heures du module</small>
 			</div>
 			<div class="form-group">
