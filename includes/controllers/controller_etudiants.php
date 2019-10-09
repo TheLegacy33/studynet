@@ -33,12 +33,22 @@ if ($action == 'listeetudiants') {
 		$etudiant->setNom(trim($_POST['ttNom']));
 		$etudiant->setPrenom(trim($_POST['ttPrenom']));
 		$etudiant->setEmail(trim($_POST['ttEmail']));
-//TODO : Vérifier l'existence de l'étudiant au niveau de la période de formation
+		DAO::getInstance()->beginTransaction();
 		if (Etudiant::exists($etudiant)){
-			var_dump('Etudiant déjà présent !');
+			$etudiant->populate();
+			if ($etudiant->existsInPf($idPf)){
+				DAO::getInstance()->rollBack();
+			}else{
+				if ($pf->addStudent($etudiant)){
+					DAO::getInstance()->commit();
+					header('Location: index.php?p=periodesformation&a=listeetudiants&idpf='.$idPf);
+				}else{
+					DAO::getInstance()->rollBack();
+					var_dump("Erreur d'ajout de l'étudiant à la pf");
+				}
+			}
 		}else{
 			traitePhoto($etudiant, $_FILES);
-			DAO::getInstance()->beginTransaction();
 			if (Etudiant::insert($etudiant)){
 				if ($pf->addStudent($etudiant)){
 					DAO::getInstance()->commit();

@@ -84,7 +84,7 @@
 		    $SQLQuery .= 'WHERE rattacher.pf_id = :idpf ';
 		    $SQLQuery .= 'AND etu_id = :idetudiant ';
 		    if ($idModule != 0){
-		        $SQLQuery .= 'AND participer.mod_id = :idmodule';
+		        $SQLQuery .= 'AND rattacher.mod_id = :idmodule';
             }
             $SQLStmt = DAO::getInstance()->prepare($SQLQuery);
             $SQLStmt->bindValue(':idetudiant', $this->etu_id);
@@ -259,7 +259,6 @@
 
 		public static function getById($id){
 			$SQLQuery = 'SELECT * FROM etudiant INNER JOIN personne ON etudiant.pers_id = personne.pers_id ';
-//			$SQLQuery .= 'INNER JOIN integrer ON etudiant.etu_id = integrer.etu_id ';
 			$SQLQuery .= "WHERE etudiant.etu_id = :idetudiant";
 			$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
 			$SQLStmt->bindValue(':idetudiant', $id);
