@@ -1,44 +1,18 @@
-$(document).ready(function(){
-    $("button[type=submit]").attr("disabled", true);
-});
-var ttResume = $("#ttResume");
-var ttLibelle = $("#ttLibelle");
-var cbIntervenant = $("#cbIntervenant");
-$("input").change(function(){
-    $("button[type=submit]").attr("disabled", false);
-}).blur(function(){
-	$("button[type=submit]").attr("disabled", false);
-});
+let ttLibelle = $("#ttLibelle");
+let cbIntervenant = $("#cbIntervenant");
 
-ttResume.change(function(){
-	$("button[type=submit]").attr("disabled", false);
-});
+ttLibelle.data('msg', "Vous devez saisir le libellé !").data('incorrectvalue', '');
+cbIntervenant.data('msg', "Vous devez sélectionner un intervenant !").data('incorrectvalue', '0');
 
-cbIntervenant.change(function (){
-	$("button[type=submit]").attr("disabled", false);
-});
+let requiredFields = [ttLibelle, cbIntervenant];
 
-$("#cbUniteEnseignement").change(function (){
-	$("button[type=submit]").attr("disabled", false);
-});
-
-$("button[type=reset]").click(function(){
-	$("button[type=submit]").attr("disabled", true);
+let ttCode = $("#ttCode");
+ttCode.change(function(){
+	$(this).val($(this).val().toLocaleUpperCase());
 });
 
 $("#frmSaisie").submit(function(){
-    if (ttLibelle.val().trim() === ''){
-        alert("Vous devez saisir le libellé !");
-		ttLibelle.focus();
-        return false;
-    }
-
-    if (cbIntervenant.val() === '0'){
-    	alert('Vous devez sélectionner un intervenant !');
-		cbIntervenant.focus();
-    	return false;
-	}
-    return true;
+	return testFormFields(true);
 });
 
 

@@ -52,7 +52,7 @@ if ($action == 'ajoutevaluation'){
     $evaluation->fillNotes($listeEtudiants);
 
 	$includeJs = true;
-	$scriptname[] = 'js_evaluations.js';
+	$scriptname = ['js_evaluations.js', 'js_formscripts.js'];
 
     include_once ROOTVIEWS.'view_notesevaluationmodule.php';
 }else{

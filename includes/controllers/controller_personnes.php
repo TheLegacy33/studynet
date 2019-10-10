@@ -23,7 +23,8 @@ if ($action == 'listepersonnes'){
 		}
 	}else{
 		$includeJs = true;
-		$scriptname[] = 'js_personne.js';
+		$scriptname = ['js_personne.js']; //, 'js_formscripts.js'];
+
 		$personne = Personne::getById($idPersonne);
 
 		if (!empty($_POST)){

@@ -13,7 +13,7 @@
 		include_once ROOTVIEWS.'view_listepromotions.php';
 	}elseif ($action == 'ajoutpromo'){
 		$includeJs = true;
-		$scriptname[] = 'js_promotion.js';
+		$scriptname = ['js_promotion.js', 'js_formscripts.js'];
 
 		$promo = new Promotion();
 		$idEcole = isset($_GET['idecole'])?$_GET['idecole']:0;
@@ -32,7 +32,7 @@
 
 	}elseif ($action == 'editpromo'){
 		$includeJs = true;
-		$scriptname[] = 'js_promotion.js';
+		$scriptname = ['js_promotion.js', 'js_formscripts.js'];
 
 		$idPromo = isset($_GET['idpromo'])?$_GET['idpromo']:0;
 		$promo = Promotion::getById($idPromo);

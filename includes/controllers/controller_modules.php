@@ -24,7 +24,8 @@ if ($action == 'listemodules'){
 	}
 }elseif ($action == 'ajoutmodule'){
 	$includeJs = true;
-	$scriptname[] = 'js_module.js';
+	$scriptname = ['js_module.js', 'js_formscripts.js'];
+
 	$module = new Module();
 	$module->setDuree(20);
 	$module->setUniteEnseignement(UniteEnseignement::getEmptyUE());
@@ -62,7 +63,8 @@ if ($action == 'listemodules'){
 	include_once ROOTVIEWS.'view_fichemodule.php';
 }elseif ($action == 'editmodule'){
 	$includeJs = true;
-	$scriptname[] = 'js_module.js';
+	$scriptname = ['js_module.js', 'js_formscripts.js'];
+
 	$idModule = isset($_GET['idmodule'])?$_GET['idmodule']:0;
 	$module = Module::getById($idModule);
 	$module->setIntervenant(Intervenant::getByPfAndMod($idPf, $idModule));

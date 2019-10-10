@@ -3,8 +3,8 @@ $(document).ready(function(){
 	var newIndex = 0;
 	var selectedId = 0;
     $('#tbetudiants .lignedata').click(function(){
-    	if (selectedId != 0){
-    		if (selectedId == parseInt($(this).data('id'))){
+    	if (selectedId !== 0){
+    		if (selectedId === parseInt($(this).data('id'))){
 				$(this).removeClass('active');
 				selectedId = 0;
 			}else{
@@ -32,7 +32,7 @@ $(document).ready(function(){
 });
 
 function refreshModules(idEtudiant){
-	if (idEtudiant != 0){
+	if (idEtudiant !== 0){
 		$.ajax({
 			url: 'index.php',
 			type: 'get',

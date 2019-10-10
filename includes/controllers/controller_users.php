@@ -4,7 +4,7 @@ include_once ROOTMODELS . 'model_authentification.php';
 if ($action == 'profile'){
 	//Visu profil
 	$includeJs = true;
-	$scriptname[] = 'js_profile.js';
+	$scriptname = ['js_profile.js']; //, 'js_formscripts.js'];
 	if (!empty($_POST)){
 		$newLogin = $_POST['ttLogin'];
 		$newPassword = $_POST['ttPassword'];

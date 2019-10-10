@@ -24,7 +24,6 @@
 			$listePf = Periodeformation::getListe($statut);
 		}
 
-		//Gestion du filtre de périodes de formations actives ou non
 		$includeJs = true;
 		$scriptname[] = 'js_listepf.js';
 
@@ -32,7 +31,8 @@
 		include_once ROOTVIEWS.'view_listeperiodesformations.php';
 	}elseif ($action == 'ajoutpf'){
 		$includeJs = true;
-		$scriptname[] = 'js_periodeformation.js';
+		$scriptname = ['js_periodeformation.js', 'js_formscripts.js'];
+
 		$pf = new Periodeformation();
 		$promo = Promotion::getById($idPromo);
 		$listePersonnes = Personne::getListe(array('I', 'R'));
@@ -63,7 +63,7 @@
 		include_once ROOTVIEWS.'view_fichepf.php';
 	}elseif ($action == 'editpf'){
 		$includeJs = true;
-		$scriptname[] = 'js_periodeformation.js';
+		$scriptname = ['js_periodeformation.js', 'js_formscripts.js'];
 
 		$promo = Promotion::getByIdPf($idPf);
 		$pf = Periodeformation::getById($idPf);

@@ -1,43 +1,21 @@
-$(document).ready(function(){
-    $("button[type=submit]").attr("disabled", true);
-});
+let ttNom = $("#ttNom");
+let ttPrenom = $("#ttPrenom");
 
-$("input").change(function(){
-    $("button[type=submit]").attr("disabled", false);
-});
+ttNom.data('msg', "Vous devez saisir le nom de l'étudiant !").data('incorrectvalue', '');
+ttPrenom.data('msg', "Vous devez saisir le prénom de l'étudiant!").data('incorrectvalue', '');
 
-$("#ttNom").change(function(){
-	$("button[type=submit]").attr("disabled", false);
+let requiredFields = [ttNom, ttPrenom];
+
+ttNom.change(function(){
 	$(this).val($(this).val().toUpperCase().trim());
 });
 
-$("#ttPrenom").change(function (){
-	$("button[type=submit]").attr("disabled", false);
-	$(this).val($(this).val().substr(0, 1).toUpperCase().trim() + $(this).val().substr(1).toLowerCase().trim());
-});
-
-$("#ttEmail").change(function (){
-	$("button[type=submit]").attr("disabled", false);
-});
-
-$("button[type=reset]").click(function(){
-	$("button[type=submit]").attr("disabled", true);
+ttPrenom.change(function (){
+	$(this).val($(this).val().trim().substr(0, 1).toUpperCase().trim() + $(this).val().trim().substr(1).toLowerCase().trim());
 });
 
 $("#frmSaisie").submit(function(){
-    if ($("#ttNom").val().trim() == ''){
-        alert("Vous devez saisir le nom !");
-        $("#ttNom").focus();
-        return false;
-    }
-
-	if ($("#ttPrenom").val().trim() == ''){
-		alert("Vous devez saisir le prénom !");
-		$("#ttPrenom").focus();
-		return false;
-	}
-
-    return true;
+    return testFormFields(true);
 });
 
 

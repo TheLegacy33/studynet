@@ -66,7 +66,7 @@
 				//Inclusion du formulaire d'authentification
 				if (!$user->isAuthentified()){
 					$includeJs = true;
-					$scriptname[] = 'js_login.js';
+					$scriptname = ['js_login.js', 'js_formscripts.js'];
 
 					include_once ROOTVIEWS.'view_loginform.php';
 				}else{

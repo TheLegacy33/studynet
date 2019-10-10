@@ -9,7 +9,7 @@
 
 	}elseif ($action == 'ajoutecole'){
 		$includeJs = true;
-		$scriptname[] = 'js_ecole.js';
+		$scriptname = ['js_ecole.js', 'js_formscripts.js'];
 
 		$ecole = new Ecole();
 		if (!empty($_POST)){
@@ -35,7 +35,7 @@
 
 	}elseif ($action == 'editecole'){
 		$includeJs = true;
-		$scriptname[] = 'js_ecole.js';
+		$scriptname = ['js_ecole.js', 'js_formscripts.js'];
 
 		$idEcole = isset($_GET['idecole'])?$_GET['idecole']:0;
 		$ecole = Ecole::getById($idEcole);

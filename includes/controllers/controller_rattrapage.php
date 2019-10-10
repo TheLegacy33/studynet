@@ -24,7 +24,7 @@ $idRattrapage = isset($_GET['idrattrapage'])?$_GET['idrattrapage']:0;
 
 if ($action == 'listeforetudiant'){
 	$includeJs = true;
-	$scriptname[] = 'js_listerattrapages.js';
+	$scriptname = ['js_listerattrapages.js', 'js_formscripts.js'];
 
 	$listeRattrapage = Rattrapage::getListeForEtudiant($idEtudiant);
 	if (count($listeRattrapage) > 0){
@@ -54,7 +54,8 @@ if ($action == 'listeforetudiant'){
 	}else{
 		$firstdld = true;
 		$includeJs = true;
-		$scriptname[] = 'js_rattrapages.js';
+		$scriptname = ['js_rattrapages.js', 'js_formscripts.js'];
+
 		//Récupération du sujet : affichage du message d'avertissement et mise à disposition du lien avec timer pour le téléchargement
 		$DTNow = new DateTime('now');
 		$rattrapage->setDateRecup($DTNow->format('Y-m-d H:i:00'));

@@ -17,15 +17,14 @@ function traitePhoto(Etudiant $etudiant, $fichiers){
 	}
 }
 
-
-
-	$idPf = isset($_GET['idpf'])?$_GET['idpf']:0;
+$idPf = isset($_GET['idpf'])?$_GET['idpf']:0;
 if ($action == 'listeetudiants') {
 	$listeEtudiants = Etudiant::getListeFromPf($idPf);
 	include_once ROOTVIEWS.'view_listeetudiants.php';
 }elseif ($action == 'ajoutetudiant'){
 	$includeJs = true;
-	$scriptname[] = 'js_etudiant.js';
+	$scriptname = ['js_etudiant.js', 'js_formscripts.js'];
+
 	$pf = Periodeformation::getById($idPf);
 	$etudiant = new Etudiant();
 
@@ -66,7 +65,8 @@ if ($action == 'listeetudiants') {
 	include_once ROOTVIEWS.'view_ficheetudiant.php';
 }elseif ($action == 'editetudiant'){
 	$includeJs = true;
-	$scriptname[] = 'js_etudiant.js';
+	$scriptname = ['js_etudiant.js', 'js_formscripts.js'];
+
 	$idEtudiant = isset($_GET['idetudiant'])?$_GET['idetudiant']:0;
 	$etudiant = Etudiant::getById($idEtudiant);
 	if (!empty($_POST)){
