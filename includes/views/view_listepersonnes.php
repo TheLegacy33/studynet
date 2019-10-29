@@ -17,9 +17,9 @@
 				if ($user->isAdmin()){
 					$script .= '<option value="administrateur" '.(($type=='administrateur')?' selected':'').'>Administrateurs</option>';
 				}
-				$script .= '<option value=" '.Etudiant::class.'" '.(($type==Etudiant::class)?' selected':'').'>Etudiant</option>';
-				$script .= '<option value=" '.Intervenant::class.'" '.(($type==Intervenant::class)?' selected':'').'>Intervenant</option>';
-				$script .= '<option value=" '.ResponsablePedago::class.'" '.(($type==ResponsablePedago::class)?' selected':'').'>Responsables Pédagogiques</option>';
+				$script .= '<option value="'.Etudiant::class.'" '.(($type==Etudiant::class)?' selected':'').'>Etudiant</option>';
+				$script .= '<option value="'.Intervenant::class.'" '.(($type==Intervenant::class)?' selected':'').'>Intervenant</option>';
+				$script .= '<option value="'.ResponsablePedago::class.'" '.(($type==ResponsablePedago::class)?' selected':'').'>Responsables Pédagogiques</option>';
 				$script .= '<option value="visiteur" '.(($type=='visiteur')?' selected':'').'>Visiteurs</option>';
 				print ($script);
 			?>

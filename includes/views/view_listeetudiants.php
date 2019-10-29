@@ -1,3 +1,11 @@
+<?php
+/**
+ * @var $listeEtudiants
+ * @var Etudiant $etudiant
+ * @var Personne $user
+ * @var Periodeformation $pf
+ */
+?>
 <section id="content_body" class="row">
 	<header class="col-12 text-center text-info">Liste des étudiants</header>
 	<div class="col-12 btnactions">

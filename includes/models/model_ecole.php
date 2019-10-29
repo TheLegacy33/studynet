@@ -3,19 +3,24 @@
 	include_once ROOTMODELS.'model_promotion.php';
 
 	class Ecole {
+		const defaultLogo = 'logo_ecole.png';
 		private $id, $nom, $logo;
 		private $promotions;
 
 		public function __construct($id = 0, $nom = '', $logo = ''){
 			$this->id = $id;
 			$this->nom = $nom;
-			$this->logo = $logo;
+			$this->logo = ($logo==''?null:$logo);
 
 			$this->promotions = array();
 		}
 
 		public function getNom(){
 			return $this->nom;
+		}
+
+		public static function getDefaultLogo(){
+			return Ecole::defaultLogo;
 		}
 
 		public function setNom($nom){

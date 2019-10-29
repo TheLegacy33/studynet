@@ -21,6 +21,7 @@
 	define('ROOTHTMLUPLOADS', ROOTHTML.'/uploads/');
 	define('ROOTHTMLSCRIPTS', ROOTHTML.'/includes/scripts/');
 	define('ROOTHTMLSCRIPTSJS', ROOTHTML.'/includes/scripts/js/');
+	define('ROOTHTMLTEMPLATE', ROOTHTML.'/includes/tpl/');
 
 	if (!file_exists(ROOTEXPORTS)){
 		mkdir(ROOTEXPORTS);
