@@ -100,52 +100,93 @@ if ($action == 'listemodules'){
 		}
 	}
 	include_once ROOTVIEWS.'view_fichemodule.php';
+}elseif ($action == 'editcontenumodule'){
+	$includeJs = true;
+	$scriptname = ['js_contenumodule.js', 'js_formscripts.js'];
+	$idModule = isset($_GET['idmodule'])?$_GET['idmodule']:0;
+	$idCModule = isset($_GET['idcmodule'])?$_GET['idcmodule']:0;
+	$module = Module::getById($idModule);
+	$module->setIntervenant(Intervenant::getByPfAndMod($idPf, $idModule));
+
+	if (!isset($_REQUEST['idcmodule'])){
+		include_once ROOTVIEWS.'view_listecontenumodule.php';
+	}else{
+		$contenuModule = ContenuModule::getById($idCModule);
+		if (!empty($_POST)){
+			$contenuModule->setLibelle($_POST['ttLibelle']);
+			if (ContenuModule::update($contenuModule)){
+				header('Location: index.php?p=periodesformation&a=editcontenumodule&idpf='.$idpf.'&idmodule='.$idModule);
+			}else{
+				var_dump("Erreur d'enregistrement");
+			}
+		}
+		include_once ROOTVIEWS.'view_fichecontenumodule.php';
+	}
+}elseif ($action == 'ajoutcontenumodule'){
+	$includeJs = true;
+	$scriptname = ['js_contenumodule.js', 'js_formscripts.js'];
+	$idModule = isset($_GET['idmodule'])?$_GET['idmodule']:0;
+	$module = Module::getById($idModule);
+	$module->setIntervenant(Intervenant::getByPfAndMod($idPf, $idModule));
+	$contenuModule = new ContenuModule();
+	if (!empty($_POST)){
+		$libCModule = $_POST['ttLibelle'];
+
+		$newCModule = new ContenuModule(0, $libCModule, '', $idModule);
+
+		if (ContenuModule::insert($newCModule)){
+			header('Location: index.php?p=periodesformation&a=editcontenumodule&idpf='.$idpf.'&idmodule='.$idModule);
+		}else{
+			var_dump("Erreur d'enregistrement");
+		}
+	}
+	include_once ROOTVIEWS.'view_fichecontenumodule.php';
 }elseif ($action == 'importmodules'){
 	//TODO Adapter le code aux modules
-//	$checked = false;
-//	if (!empty($_FILES)){
-//		$checked = isset($_POST['chkEntete'])?(($_POST['chkEntete'][0] == 'on')?true:false):false;
-//		$fichier = $_FILES['ttFichier'];
-//		if (is_uploaded_file($fichier['tmp_name'])){
-//			$pf = Periodeformation::getById($idPf);
-//			$promo = Promotion::getByIdPf($idPf);
-//
-//			$contenuFichier = file($fichier['tmp_name'], FILE_IGNORE_NEW_LINES);
-//			$message = '';
-//			$nbEtudiantImportes = 0;
-//			$nbErreurs = 0;
-//			foreach ($contenuFichier as $numligne => $ligne){
-//				if ($checked AND $numligne == 0){
-//					continue;
-//				}
-//				$infosLigne = explode(';', $ligne);
-//				if (count($infosLigne) < 2 OR count($infosLigne) > 3){
-//					$message .= 'Erreur sur la ligne '.($numligne + 1).' : '.$ligne.'<br />';
-//					$nbErreurs++;
-//				}else{
-//					$etudiant = new Etudiant(0, $infosLigne[0], $infosLigne[1], (isset($infosLigne[2])?$infosLigne[2]:''));
-//					$etudiant->setPromo($promo);
-//					if (Etudiant::exists($etudiant)){
-//						$message .= "L'etudiant ".$etudiant." existe déjà !<br />";
-//						$nbErreurs++;
-//					}else{
-//						if (!Etudiant::insert(null, null)){
-//							$message .= "Erreur d'enregistrement de l'etudiant ".$etudiant;
-//							$nbErreurs++;
-//						}else{
-//							$nbEtudiantImportes++;
-//						}
-//					}
-//				}
-//			}
-//			if ($nbErreurs == 0){
-//				header('Location: index.php?p=periodesformation&a=listeetudiants&idpf='.$idPf);
-//			}
-//		}else{
-//			$message = "Erreur lors de l'enregistrement du fichier !<br />Veuillez essayer à nouveau ou contacter l'administrateur de l'application.";
-//		}
+	//	$checked = false;
+	//	if (!empty($_FILES)){
+	//		$checked = isset($_POST['chkEntete'])?(($_POST['chkEntete'][0] == 'on')?true:false):false;
+	//		$fichier = $_FILES['ttFichier'];
+	//		if (is_uploaded_file($fichier['tmp_name'])){
+	//			$pf = Periodeformation::getById($idPf);
+	//			$promo = Promotion::getByIdPf($idPf);
+	//
+	//			$contenuFichier = file($fichier['tmp_name'], FILE_IGNORE_NEW_LINES);
+	//			$message = '';
+	//			$nbEtudiantImportes = 0;
+	//			$nbErreurs = 0;
+	//			foreach ($contenuFichier as $numligne => $ligne){
+	//				if ($checked AND $numligne == 0){
+	//					continue;
+	//				}
+	//				$infosLigne = explode(';', $ligne);
+	//				if (count($infosLigne) < 2 OR count($infosLigne) > 3){
+	//					$message .= 'Erreur sur la ligne '.($numligne + 1).' : '.$ligne.'<br />';
+	//					$nbErreurs++;
+	//				}else{
+	//					$etudiant = new Etudiant(0, $infosLigne[0], $infosLigne[1], (isset($infosLigne[2])?$infosLigne[2]:''));
+	//					$etudiant->setPromo($promo);
+	//					if (Etudiant::exists($etudiant)){
+	//						$message .= "L'etudiant ".$etudiant." existe déjà !<br />";
+	//						$nbErreurs++;
+	//					}else{
+	//						if (!Etudiant::insert(null, null)){
+	//							$message .= "Erreur d'enregistrement de l'etudiant ".$etudiant;
+	//							$nbErreurs++;
+	//						}else{
+	//							$nbEtudiantImportes++;
+	//						}
+	//					}
+	//				}
+	//			}
+	//			if ($nbErreurs == 0){
+	//				header('Location: index.php?p=periodesformation&a=listeetudiants&idpf='.$idPf);
+	//			}
+	//		}else{
+	//			$message = "Erreur lors de l'enregistrement du fichier !<br />Veuillez essayer à nouveau ou contacter l'administrateur de l'application.";
+	//		}
 
-//	}
+	//	}
 	$urlRetour = '<a href="'.ROOTHTML.'/index.php?p=periodesformation&a=listeetudiants&idpf='.$idPf.'" title="Retour à la liste des étudiants"><< Retour</a>';
 	$formatAttendu = 'Le format attendu est un fichier CSV dont les valeurs sont séparées par des point-virgules avec une ligne par étudiant.<br />';
 	$formatAttendu .= 'Exemple : <code><i>nom</i>;<i>prenom</i>;<i>email</i></code>';

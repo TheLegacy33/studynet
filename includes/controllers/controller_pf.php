@@ -111,7 +111,7 @@
 
 			include_once ROOTVIEWS.'view_enteteperiodesformations.php';
 
-			if ($action == 'listemodules' OR $action == 'ajoutmodule' OR $action == 'editmodule' OR $action == 'importmodules'){
+			if ($action == 'listemodules' OR $action == 'ajoutmodule' OR $action == 'editmodule' OR $action == 'importmodules' OR $action == 'editcontenumodule' OR $action == 'ajoutcontenumodule'){
 				include_once ROOTCTRL.'controller_modules.php';
 			}elseif ($action == 'listeetudiants' OR $action == 'ajoutetudiant' OR $action == 'editetudiant' OR $action == 'importetudiants'){
 				include_once ROOTCTRL.'controller_etudiants.php';

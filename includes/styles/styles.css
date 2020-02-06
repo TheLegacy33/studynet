@@ -97,6 +97,10 @@ img.logoecole{
     background-color: rgba(210, 210, 210, 1);
 }
 
+.lignedata>td{
+	cursor: default;
+}
+
 .active td{
 	background-color: rgba(150, 150, 150, 1);
 }

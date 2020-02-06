@@ -26,6 +26,8 @@ $(document).ready(function(){
 		});
 	});
 
+	requiredFields[0].focus();
+
 	$("button[type=reset]").click(function(e){
 		e.preventDefault();
 		e.currentTarget.form.reset();

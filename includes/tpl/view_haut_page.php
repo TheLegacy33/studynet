@@ -14,15 +14,18 @@
 
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+		<!--<link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
 			  integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
 			  rel="stylesheet">
 
-		<link crossorigin="anonymous" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+		<link crossorigin="anonymous" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css"
 			  integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ"
 			  rel="stylesheet">
 
-		<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
+		<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />-->
+		<link rel="stylesheet" href="<?php print(ROOTHTMLLIBS) ?>bootstrap_4.3.1.min.css">
+		<link rel="stylesheet" href="<?php print(ROOTHTMLLIBS) ?>fa_5.11.2_all.css">
+		<link rel="stylesheet" href="<?php print(ROOTHTMLLIBS) ?>jquery-ui_1.12.1.css">
 
 		<link href="<?php print(ROOTHTML) ?>/includes/styles/styles.css" rel="stylesheet" />
 	</head>

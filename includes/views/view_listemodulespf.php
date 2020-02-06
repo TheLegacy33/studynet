@@ -50,7 +50,7 @@
 										$script .= '<td style="font-style: italic; text-align: left; padding-left: 20px">'.$module->getLibelle().($module->getCode() != ''?' - '.$module->getCode():'').'<span class="intervenant">'.$module->getIntervenant().'</span></td>';
 										$script .= '<td><a href="index.php?p=periodesformation&a=editmodule&idpf='.$pf->getId().'&idmodule='.$module->getId().'" title="Editer le module"><span class="fa fa-edit"></span></a></td>';
 //										$script .= '<td><a href="index.php?p=periodesformation&a=listeevaluations&idpf='.$pf->getId().'&idmodule='.$module->getId().'" title="Voir les évaluations notées pour ce module"><span class="fa fa-tasks"></span></a></td>';
-										$script .= '<td><a href="'.REQUESTED_URI.'" title="Gérer le contenu du module"><span class="fa fa-tasks"></span></a></td>';
+										$script .= '<td><a href="index.php?p=periodesformation&a=editcontenumodule&idpf='.$pf->getId().'&idmodule='.$module->getId().'" title="Gérer le contenu du module"><span class="fa fa-tasks"></span></a></td>';
 										$script .= '<td><a style="cursor: pointer" data-name="dropmodule" data-id="'.$module->getId().'" title="Supprimer le module"><span class="fa fa-trash"></span></a></td>';
 										$script .= '</tr>';
 										if ($module->hasContenu()){

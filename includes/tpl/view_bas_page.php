@@ -7,7 +7,7 @@
 		<footer id="footer" class="row"><span>Copyrights © 2017</span></footer>
 	</section>
 
-	<script
+	<!--<script
 		src="https://code.jquery.com/jquery-3.4.1.min.js"
 		integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
 		crossorigin="anonymous"></script>
@@ -24,7 +24,11 @@
 	<script
 		src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
 		integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-		crossorigin="anonymous"></script>
+		crossorigin="anonymous"></script>-->
+	<script type="application/javascript" src="<?php print(ROOTHTMLLIBS); ?>jquery-3.4.1.js"></script>
+	<script type="application/javascript" src="<?php print(ROOTHTMLLIBS); ?>jquery-ui_1.12.1.js"></script>
+	<script type="application/javascript" src="<?php print(ROOTHTMLLIBS); ?>popper.min_1.14.7.js"></script>
+	<script type="application/javascript" src="<?php print(ROOTHTMLLIBS); ?>bootstrap_4.3.1.js"></script>
 	<?php
 		if (isset($includeJs) AND $includeJs == true){
 			foreach ($scriptname as $script){

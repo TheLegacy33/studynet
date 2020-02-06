@@ -19,10 +19,10 @@ $(document).ready(function(){
 		refreshModules(selectedId);
 	});
 
-    $('span[name=chk_all]').click(function(){
+    $('span[data-id=chk_all]').click(function(){
 		checkAllModules();
 	});
-	$('span[name=chk_none]').click(function(){
+	$('span[data-id=chk_none]').click(function(){
 		unchekAllModules();
 	});
 

@@ -13,6 +13,7 @@
 	define('ROOTMODELS', ROOT.'/includes/models/');
 	define('ROOTSCRIPTS', ROOT.'/includes/scripts/');
 	define('ROOTTEMPLATE', ROOT.'/includes/tpl/');
+	define('ROOTLIBS', ROOT.'/includes/libs/');
 
 	define('ROOTEXPORTS', ROOT.'/exports/');
 	define('ROOTUPLOADS', ROOT.'/uploads/');
@@ -22,6 +23,7 @@
 	define('ROOTHTMLSCRIPTS', ROOTHTML.'/includes/scripts/');
 	define('ROOTHTMLSCRIPTSJS', ROOTHTML.'/includes/scripts/js/');
 	define('ROOTHTMLTEMPLATE', ROOTHTML.'/includes/tpl/');
+	define('ROOTHTMLLIBS', ROOTHTML.'/includes/libs/');
 
 	if (!file_exists(ROOTEXPORTS)){
 		mkdir(ROOTEXPORTS);
