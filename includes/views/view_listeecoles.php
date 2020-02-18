@@ -39,8 +39,10 @@
 							$script .= '</div>';
 							$script .= '<div class="card-footer">';
 								$script .= '<span><a href="index.php?p=promotions&a=listepromotions&idecole='.$ecole->getId().'" title="Liste des promotions" class="fa fa-list"><span class="badge badge-info align-middle">'.$ecole->getNbPromos().'</span></a></span>';
-								$script .= '<span><a href="index.php?p=ecoles&a=editecole&idecole='.$ecole->getId().'" title="Modifier"class="fa fa-edit"></a></span>';
-								$script .= '<span><a href="index.php?p=ecoles&a=delecole&idecole='.$ecole->getId().'" title="Supprimer" class="fa fa-trash-alt"></a></span>';
+								if ($user->isAdmin()){
+									$script .= '<span><a href="index.php?p=ecoles&a=editecole&idecole='.$ecole->getId().'" title="Modifier"class="fa fa-edit"></a></span>';
+									$script .= '<span><a href="index.php?p=ecoles&a=delecole&idecole='.$ecole->getId().'" title="Supprimer" class="fa fa-trash-alt"></a></span>';
+								}
 							$script .= '</div>';
 						$script .= '</div>';
 

@@ -46,7 +46,6 @@
 
 		$section = isset($_GET['p'])?$_GET['p']:'';
 		$action = isset($_GET['a'])?$_GET['a']:'';
-
 		if ($section == 'api'){
 			include_once ROOTCTRL.'controller_api.php';
 		}else{
@@ -58,6 +57,17 @@
 				}
 			}
 
+			$entity = '';
+			if ($user->isAdmin()){
+				$entity = 'admin/';
+			}elseif ($user->estEtudiant()){
+				$entity = 'etudiant/';
+			}elseif ($user->estIntervenant()){
+				$entity = 'intervenant/';
+			}else{
+				var_dump("Type user non valide !");
+			}
+var_dump($entity);
 			if ($action != 'print' AND $section != 'ajax'){
 				include_once ROOTTEMPLATE.'view_haut_page.php';
 			}
