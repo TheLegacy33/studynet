@@ -8,9 +8,18 @@
 	define('APPNAME', 'StudyNet');
 	define('MAINDIR', basename(ROOT));
 
-	define('ROOTCTRL', ROOT.'/includes/controllers/');
-	define('ROOTVIEWS', ROOT.'/includes/views/');
-	define('ROOTMODELS', ROOT.'/includes/models/');
+//	define('ROOTCTRL', ROOT.'/includes/controllers/');
+//	define('ROOTVIEWS', ROOT.'/includes/views/');
+//	define('ROOTMODELS', ROOT.'/includes/models/');
+
+	define('ROOTCORE', ROOT.'/core');
+	define('ROOTCTRLCOMMUN', ROOTCORE.'/controllers/');
+	define('ROOTVIEWSCOMMUN', ROOTCORE.'/views/');
+	define('ROOTMODELSCOMMUN', ROOTCORE.'/models/');
+	define('ROOTCTRL', ROOTCORE.'/controllers/');
+	define('ROOTVIEWS', ROOTCORE.'/views/');
+	define('ROOTMODELS', ROOTCORE.'/models/');
+
 	define('ROOTSCRIPTS', ROOT.'/includes/scripts/');
 	define('ROOTTEMPLATE', ROOT.'/includes/tpl/');
 	define('ROOTLIBS', ROOT.'/includes/libs/');
@@ -43,31 +52,33 @@
 	}else{
 		$title = 'Intranet : Le service ENT';
 		$pageTitle = 'StudyNet Services';
-
 		$section = isset($_GET['p'])?$_GET['p']:'';
 		$action = isset($_GET['a'])?$_GET['a']:'';
 		if ($section == 'api'){
 			include_once ROOTCTRL.'controller_api.php';
 		}else{
 			include_once ROOTCTRL.'controller_auth.php';
+			$entity = '';
 			if (isset($user)){
 				if (!$user->isAuthentified()){
 					$section = '';
 					$action = '';
+					$entity = '/visiteur/';
+				}else{
+					if ($user->isAdmin()){
+						$entity = '/admin/';
+					}elseif ($user->estEtudiant()){
+						$entity = '/etudiant/';
+					}elseif ($user->estIntervenant()){
+						$entity = '/intervenant/';
+					}else{
+						$entity = '';
+					}
 				}
 			}
 
-			$entity = '';
-			if ($user->isAdmin()){
-				$entity = 'admin/';
-			}elseif ($user->estEtudiant()){
-				$entity = 'etudiant/';
-			}elseif ($user->estIntervenant()){
-				$entity = 'intervenant/';
-			}else{
-				var_dump("Type user non valide !");
-			}
-var_dump($entity);
+			var_dump($entity);
+
 			if ($action != 'print' AND $section != 'ajax'){
 				include_once ROOTTEMPLATE.'view_haut_page.php';
 			}
@@ -132,7 +143,7 @@ var_dump($entity);
 			}
 
 			if ($action != 'print' AND $section != 'ajax'){
-				include_once ROOTTEMPLATE.'view_bas_page.php';
+				include_once ROOTTEMPLATE . 'view_bas_page.php';
 			}
 		}
 	}

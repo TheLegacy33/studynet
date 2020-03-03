@@ -7,9 +7,9 @@
 
 				$personne = Personne::getById($idPersonne);
 
-				include_once ROOTSCRIPTS.'phpmailer/src/Exception.php';
-				include_once ROOTSCRIPTS.'phpmailer/src/PHPMailer.php';
-				include_once ROOTSCRIPTS.'phpmailer/src/SMTP.php';
+				include_once ROOTSCRIPTS . 'phpmailer/src/Exception.php';
+				include_once ROOTSCRIPTS . 'phpmailer/src/PHPMailer.php';
+				include_once ROOTSCRIPTS . 'phpmailer/src/SMTP.php';
 				include_once ROOTMODELS . 'model_authentification.php';
 
 				$mail = new \PHPMailer\PHPMailer\PHPMailer(true);

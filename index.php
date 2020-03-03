@@ -17,6 +17,4 @@
     define('ROOTHTML', $rootHtml);
 	define('REQUESTED_URI', $_SERVER['REQUEST_URI']);
 
-	include_once ROOT.'/includes/controllers/controller_main.php';
-?>
-
+	include_once ROOT.'/core/controllers/controller_main.php';

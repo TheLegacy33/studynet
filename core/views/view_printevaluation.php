@@ -1,5 +1,5 @@
 <?php
-    include_once ROOTSCRIPTS.'fpdf/fpdf.php';
+    include_once ROOTSCRIPTS . 'fpdf/fpdf.php';
 
     class PDF extends FPDF{
         function __construct($orientation = 'P', $unit = 'mm', $size = 'A4')
