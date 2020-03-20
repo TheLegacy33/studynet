@@ -93,7 +93,7 @@
 				<th style="width: 100px;">Effectif</th>
 				<th style="width: 120px;">Nb Modules</th>
 				<th style="width: 400px;">Resp. Peda.</th>
-				<th  style="" colspan="5">Actions</th>
+				<th  style="" colspan="6">Actions</th>
 			</tr>
 			</thead>
 			<tbody>
@@ -114,12 +114,14 @@
 							$script .= '<td>'.$pf->getEffectif().'</td>';
 							$script .= '<td>'.$pf->getNbModules().'</td>';
 							$script .= '<td>'.$pf->getResponsable().'</td>';
-							$script .= '<td><a href="index.php?p=periodesformation&a=listeetudiants&idpf='.$pf->getId().'" title="Liste des étudiants"><span class="fas fa-users align-middle"></span></a></td>';
-							$script .= '<td><a href="index.php?p=periodesformation&a=listemodules&idpf='.$pf->getId().'" title="Liste des modules"><span class="fas fa-list align-middle"></td>';
-							$script .= '<td><a href="index.php?p=periodesformation&a=participations&idpf='.$pf->getId().'" title="Gérer la participation des étudiants aux modules"><span class="fas fa-check-square align-middle"></td>';
+							$script .= '<td><a href="index.php?p=periodesformation&a=listeetudiants&idpf='.$pf->getId().'" title="Liste des étudiants"><span class="fa fa-users align-middle"></span></a></td>';
+							$script .= '<td><a href="index.php?p=periodesformation&a=listemodules&idpf='.$pf->getId().'" title="Liste des modules"><span class="fa fa-list align-middle"></td>';
+							$script .= '<td><a href="index.php?p=periodesformation&a=participations&idpf='.$pf->getId().'" title="Gérer la participation des étudiants aux modules"><span class="fa fa-check-square align-middle"></td>';
+							$script .= '<td><a href="index.php?p=periodesformation&a=evalenseignement&idpf='.$pf->getId().'" title="Gérer le formulaire d\'évaluation des enseignements"><span class="fa fa-certificate align-middle"></td>';
 							if ($user->isAdmin()){
 								$script .= '<td><a href="index.php?p=periodesformation&a=editpf&idpf='.$pf->getId().'" title="Modifier la période de formation"><span class="fa fa-edit"></td>';
-								$script .= '<td><a href="index.php?p=periodesformation&a=delpf&idpf='.$pf->getId().'" title="Supprimerla période de formation"><span class="fa fa-trash-alt"></td>';
+								//$script .= '<td><a href="index.php?p=periodesformation&a=delpf&idpf='.$pf->getId().'" title="Supprimerla période de formation"><span class="fa fa-trash-alt"></td>';
+								$script .= '<td><a style="cursor: pointer" data-name="droppf" data-id="'.$pf->getId().'" title="Supprimerla période de formation"><span class="fa fa-trash"></td>';
 							}
 							$script .= '</tr>';
 						}

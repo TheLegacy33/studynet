@@ -1,5 +1,5 @@
 <?php
-include_once ROOTMODELS.'model_rattrapage.php';
+include_once ROOTMODELS . 'model_rattrapage.php';
 /**
  * @var $user
  */
@@ -39,7 +39,7 @@ if ($action == 'listeforetudiant'){
 			}
 		}
 
-		include_once ROOTVIEWS.'view_listerattrapagesetudiant.php';
+		include_once ROOTVIEWS . 'view_listerattrapages.php';
 	}
 }elseif ($action == 'getsujet'){
 	if (!Rattrapage::existsForStudent($idRattrapage, $user->getId())){
@@ -65,7 +65,7 @@ if ($action == 'listeforetudiant'){
 		//Update de l'enregistrement avec la date de téléchargement active
 		Rattrapage::update($rattrapage);
 	}
-	include_once ROOTVIEWS.'view_downloadsujetrattrapage.php';
+	include_once ROOTVIEWS . 'view_downloadsujetrattrapage.php';
 }elseif ($action == 'postreponse'){
 	if (!Rattrapage::existsForStudent($idRattrapage, $user->getId())){
 		header('Location: '.ROOTHTML);
@@ -102,7 +102,7 @@ if ($action == 'listeforetudiant'){
 			}
 		}
 	}
-	include_once ROOTVIEWS.'view_formrendurattrapage.php';
+	include_once ROOTVIEWS . 'view_formrendurattrapage.php';
 }else{
 	header('Location: '.ROOTHTML);
 }

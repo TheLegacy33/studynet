@@ -2,8 +2,7 @@
 	ini_set('memory_limit', '1024M'); // or you could use 1G
 
 	$action = isset($_GET['a'])?$_GET['a']:'listepf';
-	include_once ROOTMODELS.'model_periodeformation.php';
-
+	include_once ROOTMODELS . 'model_periodeformation.php';
 	$promo = null;
 	$pf = null;
 	$active = isset($_GET['active'])?$_GET['active']:'1';
@@ -28,7 +27,7 @@
 		$scriptname[] = 'js_listepf.js';
 
 		$listeStatutPf = StatutPeriodeFormation::getListe();
-		include_once ROOTVIEWS.'view_listeperiodesformations.php';
+		include_once ROOTVIEWS . 'view_listeperiodesformations.php';
 	}elseif ($action == 'ajoutpf'){
 		$includeJs = true;
 		$scriptname = ['js_periodeformation.js', 'js_formscripts.js'];
@@ -60,7 +59,7 @@
 				var_dump("Erreur d'enregistrement");
 			}
 		}
-		include_once ROOTVIEWS.'view_fichepf.php';
+		include_once ROOTVIEWS . 'view_fichepf.php';
 	}elseif ($action == 'editpf'){
 		$includeJs = true;
 		$scriptname = ['js_periodeformation.js', 'js_formscripts.js'];
@@ -101,7 +100,7 @@
 				var_dump("Erreur d'enregistrement");
 			}
 		}
-		include_once ROOTVIEWS.'view_fichepf.php';
+		include_once ROOTVIEWS . 'view_fichepf.php';
 
 	}else{
 		if (isset($idPf) AND $idPf != 0){
@@ -109,23 +108,22 @@
 			$pf = Periodeformation::getById($idPf);
 			$listePf = Array($pf);
 
-			include_once ROOTVIEWS.'view_enteteperiodesformations.php';
-
+			include_once ROOTVIEWS . 'view_enteteperiodesformations.php';
 			if ($action == 'listemodules' OR $action == 'ajoutmodule' OR $action == 'editmodule' OR $action == 'importmodules' OR $action == 'editcontenumodule' OR $action == 'ajoutcontenumodule'){
-				include_once ROOTCTRL.'controller_modules.php';
+				include_once ROOTCTRL . 'controller_modules.php';
 			}elseif ($action == 'listeetudiants' OR $action == 'ajoutetudiant' OR $action == 'editetudiant' OR $action == 'importetudiants'){
-				include_once ROOTCTRL.'controller_etudiants.php';
-			}elseif ($action == 'listeevaluations' OR $action == 'gestnotes' OR $action == 'editnotes'){
-				include_once ROOTCTRL.'controller_evaluationmodule.php';
+				include_once ROOTCTRL . 'controller_etudiants.php';
+			}elseif ($action == 'evalenseignement'){
+				include_once ROOTCTRL . 'controller_evalenseignement.php';
 			}elseif ($action == 'editappgenerale' OR $action == 'viewdetailsevaluations' OR $action == 'editdetailsevaluations'){
-				include_once ROOTCTRL.'controller_evaluation.php';
+				include_once ROOTCTRL . 'controller_evaluation.php';
 			}elseif ($action == 'participations'){
 				//Gestion de l'affectation des étudiants aux modules de la pf
 				$includeJs = true;
 				$scriptname[] = 'js_participations.js';
 				$listeEtudiants = Etudiant::getListeFromPf($idPf);
 				$listeModules = Module::getListeFromPf($idPf);
-				include_once ROOTVIEWS.'view_gestparticipation.php';
+				include_once ROOTVIEWS . 'view_gestparticipation.php';
 			}else{
 				header('Location: '.ROOTHTML);
 			}

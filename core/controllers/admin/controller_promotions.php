@@ -1,6 +1,6 @@
 <?php
 	$action = isset($_GET['a'])?$_GET['a']:'listepromotions';
-	include_once ROOTMODELS.'model_promotion.php';
+	include_once ROOTMODELS . 'model_promotion.php';
 
 	if ($action == 'listepromotions'){
 		$idEcole = isset($_GET['idecole'])?$_GET['idecole']:0;
@@ -10,7 +10,7 @@
 			$ecole = Ecole::getById($idEcole);
 			$listePromos = $ecole->getPromotions();
 		}
-		include_once ROOTVIEWS.'view_listepromotions.php';
+		include_once ROOTVIEWS . 'view_listepromotions.php';
 	}elseif ($action == 'ajoutpromo'){
 		$includeJs = true;
 		$scriptname = ['js_promotion.js', 'js_formscripts.js'];
@@ -28,7 +28,7 @@
 				var_dump("Erreur d'enregistrement");
 			}
 		}
-		include_once ROOTVIEWS.'view_fichepromo.php';
+		include_once ROOTVIEWS . 'view_fichepromo.php';
 
 	}elseif ($action == 'editpromo'){
 		$includeJs = true;
@@ -47,7 +47,7 @@
 				var_dump("Erreur d'enregistrement");
 			}
 		}
-		include_once ROOTVIEWS.'view_fichepromo.php';
+		include_once ROOTVIEWS . 'view_fichepromo.php';
 	}else{
 		header('Location: '.ROOTHTML);
 	}

@@ -12,7 +12,7 @@ if ($action == 'listepersonnes'){
 		$typeToGet = array($type);
 	}
     $listePersonnes = Personne::getListe($typeToGet);
-    include_once ROOTVIEWS.'view_listepersonnes.php';
+    include_once ROOTVIEWS . 'view_listepersonnes.php';
 }elseif ($action == 'editprofile'){
 	$idPersonne = isset($_GET['idpersonne'])?$_GET['idpersonne']:0;
 	if ($idPersonne == 0){
@@ -74,7 +74,7 @@ if ($action == 'listepersonnes'){
 				header('Location: '.ROOTHTML.'/index.php?p=personnes&a=listepersonnes');
 			}
 		}
-		include_once ROOTVIEWS.'view_fichepersonne.php';
+		include_once ROOTVIEWS . 'view_fichepersonne.php';
 	}
 }elseif ($action == 'subscribe'){
 

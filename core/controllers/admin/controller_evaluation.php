@@ -1,9 +1,9 @@
 <?php
 $action = isset($_GET['a'])?$_GET['a']:'view';
-include_once ROOTMODELS.'model_evaluation.php';
-include_once ROOTMODELS.'model_etudiant.php';
-include_once ROOTMODELS.'model_periodeformation.php';
-include_once ROOTMODELS.'model_module.php';
+include_once ROOTMODELS . 'model_evaluation.php';
+include_once ROOTMODELS . 'model_etudiant.php';
+include_once ROOTMODELS . 'model_periodeformation.php';
+include_once ROOTMODELS . 'model_module.php';
 
 $idetudiant = isset($_GET['idetudiant'])?$_GET['idetudiant']:0;
 $idpf = isset($_GET['idpf'])?$_GET['idpf']:0;
@@ -21,12 +21,11 @@ if ($idetudiant != 0 AND $idpf != 0 AND $idModule != 0){
     $pf = Periodeformation::getById($idpf);
 	$listeModules = Module::getListeFromPf($idpf, $idetudiant);
 }
-
 if ($action == 'view' OR $action == 'viewdetailsevaluations'){
     if ($idModule == 0){
-        include_once ROOTVIEWS.'view_afficheevaluationstousmodules.php';
+        include_once ROOTVIEWS . 'view_afficheevaluationstousmodules.php';
     }else{
-        include_once ROOTVIEWS.'view_afficheevaluations.php';
+        include_once ROOTVIEWS . 'view_afficheevaluations.php';
     }
 }elseif ($action == 'edit' OR $action == 'editdetailsevaluations'){
 	if ($idModule != 0){ //Traitement appliqué pour un module
@@ -84,7 +83,7 @@ if ($action == 'view' OR $action == 'viewdetailsevaluations'){
 	}
 	include_once ROOTVIEWS . 'view_editappgenerale.php';
 }elseif ($action=='print') {
-    include_once ROOTVIEWS.'view_printevaluation.php';
+    include_once ROOTVIEWS . 'view_printevaluation.php';
 }else{
 	header('Location: '.$_SERVER['HTTP_REFERER']);
 }

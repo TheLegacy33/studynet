@@ -1,6 +1,6 @@
 <?php
 $action = isset($_GET['a'])?$_GET['a']:'listeetudiants';
-include_once ROOTMODELS.'model_periodeformation.php';
+include_once ROOTMODELS . 'model_periodeformation.php';
 
 
 function traitePhoto(Etudiant $etudiant, $fichiers){
@@ -20,7 +20,7 @@ function traitePhoto(Etudiant $etudiant, $fichiers){
 $idPf = isset($_GET['idpf'])?$_GET['idpf']:0;
 if ($action == 'listeetudiants') {
 	$listeEtudiants = Etudiant::getListeFromPf($idPf);
-	include_once ROOTVIEWS.'view_listeetudiants.php';
+	include_once ROOTVIEWS . 'view_listeetudiants.php';
 }elseif ($action == 'ajoutetudiant'){
 	$includeJs = true;
 	$scriptname = ['js_etudiant.js', 'js_formscripts.js'];
@@ -62,7 +62,7 @@ if ($action == 'listeetudiants') {
 			}
 		}
 	}
-	include_once ROOTVIEWS.'view_ficheetudiant.php';
+	include_once ROOTVIEWS . 'view_ficheetudiant.php';
 }elseif ($action == 'editetudiant'){
 	$includeJs = true;
 	$scriptname = ['js_etudiant.js', 'js_formscripts.js'];
@@ -82,7 +82,7 @@ if ($action == 'listeetudiants') {
 			var_dump("Erreur d'enregistrement");
 		}
 	}
-	include_once ROOTVIEWS.'view_ficheetudiant.php';
+	include_once ROOTVIEWS . 'view_ficheetudiant.php';
 }elseif ($action == 'importetudiants'){
 	$checked = false;
 	if (!empty($_FILES)){
@@ -156,7 +156,7 @@ if ($action == 'listeetudiants') {
 	$formatAttendu .= 'Exemple : <code><i>nom</i>;<i>prenom</i>;<i>email</i></code>';
 	$formatAttendu .= '<p class="text-danger">Attention à respecter l\'ordre et le format demandé !<br />';
 	$formatAttendu .= 'L\'email n\'étant pas obligatoire, il faut tout de même laisser le point-virgule après le prénom !</p>';
-	include_once ROOTVIEWS.'view_formimport.php';
+	include_once ROOTVIEWS . 'view_formimport.php';
 }else{
 	header('Location: '.ROOTHTML);
 }

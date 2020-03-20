@@ -5,7 +5,7 @@
 	if ($action == 'listeecoles'){
 		$listeEcoles = Ecole::getListe();
 
-		include_once ROOTVIEWS.'view_listeecoles.php';
+		include_once ROOTVIEWS . 'view_listeecoles.php';
 
 	}elseif ($action == 'ajoutecole'){
 		$includeJs = true;
@@ -31,7 +31,7 @@
 				var_dump("Erreur d'enregistrement");
 			}
 		}
-		include_once ROOTVIEWS.'view_ficheecole.php';
+		include_once ROOTVIEWS . 'view_ficheecole.php';
 
 	}elseif ($action == 'editecole'){
 		$includeJs = true;
@@ -57,7 +57,7 @@
 				var_dump("Erreur d'enregistrement");
 			}
 		}
-		include_once ROOTVIEWS.'view_ficheecole.php';
+		include_once ROOTVIEWS . 'view_ficheecole.php';
 	}else{
 		header('Location: '.ROOTHTML);
 	}

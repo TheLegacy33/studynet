@@ -29,7 +29,7 @@
 			<thead class="thead-light">
 			<tr>
 				<th style="width: 600px;"></th>
-				<th style="width: 100px;" colspan="3">Actions</th>
+				<th style="width: 100px;" colspan="4">Actions</th>
 			</tr>
 			</thead>
 			<tbody>
@@ -42,16 +42,16 @@
 					}else{
 						foreach ($listeUnitesEnseignement as $uniteenseignement){
 							$script .= '<tr><td style="font-style: italic; color: blue; text-align: left; padding-left: 2px">'.$uniteenseignement->getLibelle().'</td>';
-							$script .= '<td style="background-color: gray" colspan="3"></td></tr>';
+							$script .= '<td style="background-color: gray" colspan="4"></td></tr>';
 							if (isset($listeModules)){
 								foreach ($listeModules as $module){
 									if ($uniteenseignement->equals($module->getUniteEnseignement())){
 										$script .= '<tr>';
 										$script .= '<td style="font-style: italic; text-align: left; padding-left: 20px">'.$module->getLibelle().($module->getCode() != ''?' - '.$module->getCode():'').'<span class="intervenant">'.$module->getIntervenant().'</span></td>';
 										$script .= '<td><a href="index.php?p=periodesformation&a=editmodule&idpf='.$pf->getId().'&idmodule='.$module->getId().'" title="Editer le module"><span class="fa fa-edit"></span></a></td>';
-//										$script .= '<td><a href="index.php?p=periodesformation&a=listeevaluations&idpf='.$pf->getId().'&idmodule='.$module->getId().'" title="Voir les évaluations notées pour ce module"><span class="fa fa-tasks"></span></a></td>';
 										$script .= '<td><a href="index.php?p=periodesformation&a=editcontenumodule&idpf='.$pf->getId().'&idmodule='.$module->getId().'" title="Gérer le contenu du module"><span class="fa fa-tasks"></span></a></td>';
 										$script .= '<td><a style="cursor: pointer" data-name="dropmodule" data-id="'.$module->getId().'" title="Supprimer le module"><span class="fa fa-trash"></span></a></td>';
+										//$script .= '<td><a href="index.php?p=periodesformation&a=evalenseignement&idpf='.$pf->getId().'&idmodule='.$module->getId().'" title="Evaluation des enseignements du module"><span class="fa fa-certificate"></span></a></td>';
 										$script .= '</tr>';
 										if ($module->hasContenu()){
 											$script .= '<tr>';
