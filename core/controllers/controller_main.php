@@ -100,7 +100,7 @@
 						if ($user->hasRattrapages()){
 							$section = 'rattrapages';
 							$action = 'listeforetudiant';
-							include_once(ROOTCTRL . 'controller_rattrapage.php');
+							include_once(ROOTCTRL.'controller_rattrapage.php');
 						}
 					}
 				}
@@ -109,39 +109,39 @@
 				include_once ROOTCTRL.'controller_ecoles.php';
 			}elseif ($section == 'promotions'){
 				//Gestion des promotions
-				include_once ROOTCTRL . 'controller_promotions.php';
+				include_once ROOTCTRL.'controller_promotions.php';
 			}elseif ($section == 'periodesformation'){
 				//Gestion des périodes de formations
-				include_once ROOTCTRL . 'controller_pf.php';
+				include_once ROOTCTRL.'controller_pf.php';
 			}elseif ($section == 'modules'){
 				//Gestion des modules
-				include_once ROOTCTRL . 'controller_modules.php';
+				include_once ROOTCTRL.'controller_modules.php';
 			}elseif ($section == 'evaluations'){
 				//Gestion des évaluations
-				include_once ROOTCTRL . 'controller_evaluation.php';
+				include_once ROOTCTRL.'controller_evaluation.php';
 			}elseif ($section == "etudiants"){
 				//Gestion des étudiants
-				include_once ROOTCTRL . 'controller_etudiants.php';
+				include_once ROOTCTRL.'controller_etudiants.php';
 			}elseif ($section == "intervenants"){
 				//Gestion des intervenants
 				include_once ROOTCTRL.'controller_intervenant.php';
 			}elseif ($section == "users"){
 				//Gestion des utilisateurs
-				include_once ROOTCTRL . 'controller_users.php';
+				include_once ROOTCTRL.'controller_users.php';
 			}elseif ($section == "personnes"){
 				//Gestion des personnes
-				include_once ROOTCTRL . 'controller_personnes.php';
+				include_once ROOTCTRL.'controller_personnes.php';
 			}elseif ($section == "ajax"){
 				//Gestion des api
 				include_once ROOTCTRLCOMMUN.'controller_ajax.php';
 			}elseif ($section == 'rattrapages'){
-				include_once(ROOTCTRL . 'controller_rattrapage.php');
+				include_once(ROOTCTRL.'controller_rattrapage.php');
 			}else{
 				header('Location: '.ROOTHTML);
 			}
 
 			if ($action != 'print' AND $section != 'ajax'){
-				include_once ROOTTEMPLATE . 'view_bas_page.php';
+				include_once ROOTTEMPLATE.'view_bas_page.php';
 			}
 		}
 	}
