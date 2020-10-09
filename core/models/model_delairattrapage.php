@@ -6,10 +6,6 @@
 			$this->valeur = $val;
 			$this->unite = $unit;
 			switch ($unit){
-				case 'h':{
-					$this->valInterval = 'PT'.$this->valeur.'H';
-					break;
-				}
 				case 'd':{
 					$this->valInterval = 'P'.$this->valeur.'D';
 					break;
@@ -22,6 +18,7 @@
 					$this->valInterval = 'P'.$this->valeur.'Y';
 					break;
 				}
+				case 'h':
 				default: {
 					$this->valInterval = 'PT'.$this->valeur.'H';
 					break;

@@ -1,4 +1,9 @@
 <?php
+	/**
+	 * @var Etudiant $etudiant
+	 * @var Periodeformation $pf
+	 *
+	 */
 $appreciationG = Evaluation::getAppreciationGenerale($etudiant->getId(), $pf->getId());
 ?>
 <section id="content_body" class="row formaffiche">

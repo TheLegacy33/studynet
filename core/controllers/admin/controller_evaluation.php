@@ -19,7 +19,7 @@ if ($idetudiant != 0 AND $idpf != 0 AND $idModule != 0){
 }elseif ($idetudiant != 0 AND $idpf != 0){
     $etudiant = Etudiant::getById($idetudiant);
     $pf = Periodeformation::getById($idpf);
-	$listeModules = Module::getListeFromPf($idpf, $idetudiant);
+	$listeModules = Module::getListeFromPf($idpf);
 }
 if ($action == 'view' OR $action == 'viewdetailsevaluations'){
     if ($idModule == 0){

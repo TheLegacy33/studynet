@@ -2,6 +2,7 @@
 	/**
 	 * @var Etudiant $etudiant
 	 * @var Module $module
+	 * @var Periodeformation $pf
 	 *
 	 */
 
@@ -12,7 +13,7 @@
 ?>
 <section id="content_body" class="row formaffiche">
 	<nav class="navinterne">
-		<?php print('<a href="index.php?p=periodesformation&a=listemodules&idetudiant='.$idetudiant.'&idpf='.$idpf.'" title="Retour à la liste des modules"><< Retour</a>'); ?>
+		<?php print('<a href="index.php?p=periodesformation&a=listemodules&idetudiant='.$etudiant->getId().'&idpf='.$pf->getId().'" title="Retour à la liste des modules"><< Retour</a>'); ?>
 	</nav>
 	<header class="col-12 text-center text-info" style="font-size: 20px">
 		Evaluations du module <?php print($module->getLibelle()); ?> pour

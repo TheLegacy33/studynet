@@ -86,7 +86,7 @@ if ($action == 'listeetudiants') {
 }elseif ($action == 'importetudiants'){
 	$checked = false;
 	if (!empty($_FILES)){
-		$checked = isset($_POST['chkEntete'])?(($_POST['chkEntete'][0] == 'on')?true:false):false;
+		$checked = isset($_POST['chkEntete'])? $_POST['chkEntete'][0] == 'on' : false;
 		$fichier = $_FILES['ttFichier'];
 		if (is_uploaded_file($fichier['tmp_name'])){
 			$pf = Periodeformation::getById($idPf);

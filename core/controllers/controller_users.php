@@ -1,4 +1,7 @@
 <?php
+	/**
+	 * @var $action
+	 */
 include_once ROOTMODELS . 'model_authentification.php';
 
 if ($action == 'profile'){

@@ -1,6 +1,7 @@
 <?php
 	/**
 	 * Controller principal qui va charger l'ensemble des controllers
+	 * @var Personne $user
 	 */
 
 	define('DEBUGMODE', false);

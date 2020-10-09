@@ -1,4 +1,7 @@
 <?php
+
+	use PHPMailer\PHPMailer\PHPMailer;
+
 	$action = trim(isset($_GET['a'])?$_GET['a']:'');
 	if ($action != ''){
 		if ($action == 'sendprofile'){
@@ -12,7 +15,7 @@
 				include_once ROOTSCRIPTS . 'phpmailer/src/SMTP.php';
 				include_once ROOTMODELS . 'model_authentification.php';
 
-				$mail = new \PHPMailer\PHPMailer\PHPMailer(true);
+				$mail = new PHPMailer(true);
 				$mail->setLanguage('fr', ROOTSCRIPTS.'phpmailer/language');
 				$mail->CharSet = 'utf-8';
 				// Create the email object

@@ -66,7 +66,7 @@
 
 		public function getDate(){
 			$ret = new DateTime($this->date);
-			return $ret->format('d/m/Y');;
+			return $ret->format('d/m/Y');
 		}
 
 		public function getDuree(){

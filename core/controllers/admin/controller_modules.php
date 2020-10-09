@@ -5,7 +5,7 @@ include_once ROOTMODELS . 'model_periodeformation.php';
 
 $idetudiant = isset($_GET['idetudiant'])?$_GET['idetudiant']:0;
 $idpf = isset($_GET['idpf'])?$_GET['idpf']:0;
-$pf = Periodeformation::getById($idPf);
+$pf = Periodeformation::getById($idpf);
 if ($action == 'listemodules'){
 	if ($idetudiant == 0){
 		//Affichage de la liste des modules de la pf

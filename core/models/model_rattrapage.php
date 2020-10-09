@@ -41,7 +41,7 @@
 
 		public function getDateRecup(){
 			$ret = new DataTime($this->daterecup);
-			return $ret->format('d/m/Y');;
+			return $ret->format('d/m/Y');
 		}
 
 		public function getDateRetour(){

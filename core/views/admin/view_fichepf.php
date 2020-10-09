@@ -3,6 +3,7 @@
 	 * @var Periodeformation $pf
 	 * @var $listePersonnes
 	 * @var Personne $personne
+	 * @var Promotion $promo
 	 */
 ?>
 <nav class="navinterne">

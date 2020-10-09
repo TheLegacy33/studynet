@@ -1,3 +1,8 @@
+<?php
+	/**
+	 * @var Promotion $promo
+	 */
+?>
 <nav class="navinterne">
 	<a href="index.php?p=promotions&a=listepromotions&idecole=<?php print((isset($idEcole)) ? $idEcole : 0); ?>" title="Retour à la liste des promotions"><< Retour</a>
 </nav>

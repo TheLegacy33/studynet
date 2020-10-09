@@ -2,6 +2,7 @@
 include_once ROOTMODELS . 'model_rattrapage.php';
 /**
  * @var $user
+ * @var $action
  */
 if (!file_exists(ROOTUPLOADS.'/sujets/')){
 	mkdir(ROOTUPLOADS.'/sujets/', 0755, true);
@@ -49,7 +50,11 @@ if ($action == 'listeforetudiant'){
 	if ($rattrapage->downloaded()){
 		//Le sujet a déjà été récupéré : affichage de la date et message
 		$firstdld = false;
-		$dateRecup = new DateTime($rattrapage->getDateRecup());
+		try{
+			$dateRecup = new DateTime($rattrapage->getDateRecup());
+		}catch (Exception $e){
+			$dateRecup = $rattrapage->getDateRecup();
+		}
 		$dateRenduAttendue = $dateRecup->add(new DateInterval($rattrapage->getDelai()->getInterval()))->add(new DateInterval('PT1M'))->format('Y-m-d H:i:00');
 	}else{
 		$firstdld = true;
