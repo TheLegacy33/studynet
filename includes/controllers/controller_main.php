@@ -1,6 +1,7 @@
 <?php
 	/**
 	 * Controller principal qui va charger l'ensemble des controllers
+	 * @var Personne $user
 	 */
 
 	define('DEBUGMODE', false);
@@ -44,8 +45,8 @@
 		$title = 'Intranet : Le service ENT';
 		$pageTitle = 'StudyNet Services';
 
-		$section = isset($_GET['p'])?$_GET['p']:'';
-		$action = isset($_GET['a'])?$_GET['a']:'';
+		$section = $_GET['p'] ?? '';
+		$action = $_GET['a'] ?? '';
 		if ($section == 'api'){
 			include_once ROOTCTRL.'controller_api.php';
 		}else{
@@ -136,4 +137,3 @@ var_dump($entity);
 			}
 		}
 	}
-?>

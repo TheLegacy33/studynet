@@ -1,8 +1,11 @@
 <?php
-	$action = trim(isset($_GET['a'])?$_GET['a']:'');
+
+	use PHPMailer\PHPMailer\PHPMailer;
+
+	$action = trim($_GET['a'] ?? '');
 	if ($action != ''){
 		if ($action == 'sendprofile'){
-			$idPersonne = isset($_GET['id'])?$_GET['id']:0;
+			$idPersonne = $_GET['id'] ?? 0;
 			if ($idPersonne != 0){
 
 				$personne = Personne::getById($idPersonne);
@@ -12,7 +15,7 @@
 				include_once ROOTSCRIPTS.'phpmailer/src/SMTP.php';
 				include_once ROOTMODELS . 'model_authentification.php';
 
-				$mail = new \PHPMailer\PHPMailer\PHPMailer(true);
+				$mail = new PHPMailer(true);
 				$mail->setLanguage('fr', ROOTSCRIPTS.'phpmailer/language');
 				$mail->CharSet = 'utf-8';
 				// Create the email object
@@ -38,7 +41,7 @@
 						//Content
 						$mail->isHTML(true);                                  // Set email format to HTML
 						$mail->Subject = "Vos informations d'accès à la plateforme " . APPNAME;
-						$messageHtml = "<html><body>Bonjour,<br /> vous recevez ce message de la part de la plateforme " . APPNAME . ".<br />";
+						$messageHtml = '<html lang="fr"><body>Bonjour,<br /> vous recevez ce message de la part de la plateforme ' . APPNAME . '.<br />';
 						$messageHtml .= 'Pour vous connecter : <a href="' . ROOTHTML . '" title="' . APPNAME . '">' . APPNAME . '</a><br />';
 						if (!$personne->getUserAuth()->getId() == 0){
 							$messageHtml .= 'Votre identifiant : ' . $personne->getUserAuth()->getLogin() . '<br />';
@@ -73,7 +76,7 @@
 		}elseif ($action == 'delpersonne'){
 			var_dump($_GET);
 		}elseif ($action == 'renewpassword'){
-			$idPersonne = isset($_GET['id'])?$_GET['id']:0;
+			$idPersonne = $_GET['id'] ?? 0;
 			if ($idPersonne != 0) {
 				$personne = Personne::getById($idPersonne);
 
@@ -86,7 +89,7 @@
 				}
 			}
 		}elseif ($action == 'dropuserauth'){
-			$idPersonne = isset($_GET['id'])?$_GET['id']:0;
+			$idPersonne = $_GET['id'] ?? 0;
 			if ($idPersonne != 0) {
 				$personne = Personne::getById($idPersonne);
 				if ($personne->getUserAuth()->exists()){
@@ -97,15 +100,15 @@
 				}
 			}
 		}elseif ($action == 'dropmodule'){
-			$idModule = isset($_GET['id'])?$_GET['id']:0;
+			$idModule = $_GET['id'] ?? 0;
 			if ($idModule != 0){
 				$module = Module::getById($idModule);
 
 			}
 		}elseif ($action == 'getmodulesforstudent'){
 			include_once ROOTMODELS.'model_module.php';
-			$idPf = isset($_GET['idpf'])?$_GET['idpf']:0;
-			$idEtudiant = isset($_GET['idetudiant'])?$_GET['idetudiant']:0;
+			$idPf = $_GET['idpf'] ?? 0;
+			$idEtudiant = $_GET['idetudiant'] ?? 0;
 			$listeModules = Module::getListeFromEtudiant($idEtudiant, $idPf);
 			$listeIdModules = Array();
 			foreach ($listeModules as $module){
@@ -114,19 +117,19 @@
 			print(json_encode($listeIdModules));
 		}elseif ($action == 'setmodulesforstudent'){
 			include_once ROOTMODELS.'model_etudiant.php';
-			$idPf = isset($_GET['idpf'])?$_GET['idpf']:0;
-			$idModule = isset($_GET['idmodule'])?$_GET['idmodule']:0;
-			$idEtudiant = isset($_GET['idetudiant'])?$_GET['idetudiant']:0;
-			$participe = isset($_GET['participe'])?$_GET['participe']=='true':false;
+			$idPf = $_GET['idpf'] ?? 0;
+			$idModule = $_GET['idmodule'] ?? 0;
+			$idEtudiant = $_GET['idetudiant'] ?? 0;
+			$participe = isset($_GET['participe']) && $_GET['participe'] == 'true';
 			$etudiant = Etudiant::getById($idEtudiant);
 			$retVal = $etudiant->setModuleParticipation($idPf, $idModule, $participe);
 			print($retVal);
 		}elseif ($action == 'setStudentNote'){
 			include_once ROOTMODELS.'model_etudiant.php';
-			$idEval = isset($_GET['idevaluation'])?$_GET['idevaluation']:0;
-			$idEtudiant = isset($_GET['idetudiant'])?$_GET['idetudiant']:0;
-			$note = isset($_GET['note'])?$_GET['note']:0;
-			$idStatut = isset($_GET['idstatut'])?$_GET['idstatut']:0;
+			$idEval = $_GET['idevaluation'] ?? 0;
+			$idEtudiant = $_GET['idetudiant'] ?? 0;
+			$note = $_GET['note'] ?? 0;
+			$idStatut = $_GET['idstatut'] ?? 0;
 			if (EvaluationModule::setNote($idEval, $idEtudiant, $note, $idStatut)){
 				print('ok');
 			}else{
@@ -136,4 +139,3 @@
 		    print('404');
         }
 	}
-?>

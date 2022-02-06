@@ -1,5 +1,5 @@
 <?php
-	$action = isset($_GET['a'])?$_GET['a']:'listeecoles';
+	$action = $_GET['a'] ?? 'listeecoles';
 	include_once ROOTMODELS.'model_ecole.php';
 
 	if ($action == 'listeecoles'){
@@ -37,7 +37,7 @@
 		$includeJs = true;
 		$scriptname = ['js_ecole.js', 'js_formscripts.js'];
 
-		$idEcole = isset($_GET['idecole'])?$_GET['idecole']:0;
+		$idEcole = $_GET['idecole'] ?? 0;
 		$ecole = Ecole::getById($idEcole);
 		if (!empty($_POST)){
 			$ecole->setNom(trim($_POST['ttNom']));
@@ -61,4 +61,3 @@
 	}else{
 		header('Location: '.ROOTHTML);
 	}
-?>

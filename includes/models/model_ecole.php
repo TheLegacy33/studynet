@@ -5,7 +5,7 @@
 	class Ecole {
 		const defaultLogo = 'logo_ecole.png';
 		private $id, $nom, $logo;
-		private $promotions;
+		private array $promotions;
 
 		public function __construct($id = 0, $nom = '', $logo = ''){
 			$this->id = $id;
@@ -19,7 +19,7 @@
 			return $this->nom;
 		}
 
-		public static function getDefaultLogo(){
+		public static function getDefaultLogo() : string{
 			return Ecole::defaultLogo;
 		}
 
@@ -43,16 +43,16 @@
 			$this->promotions = $promotions;
 		}
 
-		public function getPromotions(){
+		public function getPromotions() : array{
 			return $this->promotions;
 		}
 
-		public function getNbPromos(){
+		public function getNbPromos() : int{
 			return (count($this->promotions));
 		}
 
-		public static function getListe(){
-			$SQLStmt = DAO::getInstance()->prepare("SELECT eco_id FROM ecole ORDER BY eco_nom");
+		public static function getListe() : array{
+			$SQLStmt = DAO::getInstance()->prepare("SELECT eco_id FROM studynet.ecole ORDER BY eco_nom");
 			$SQLStmt->execute();
 			$retVal = array();
 			while ($SQLRow = $SQLStmt->fetchObject()){
@@ -63,8 +63,8 @@
 			return $retVal;
 		}
 
-		public static function getListeForAPI(){
-			$SQLStmt = DAO::getInstance()->prepare("SELECT * FROM ecole ORDER BY eco_nom");
+		public static function getListeForAPI() : array{
+			$SQLStmt = DAO::getInstance()->prepare("SELECT * FROM studynet.ecole ORDER BY eco_nom");
 			$SQLStmt->execute();
 			$retVal = array();
 			while ($SQLRow = $SQLStmt->fetchObject()){
@@ -75,8 +75,8 @@
 			return $retVal;
 		}
 
-		public static function getById($id){
-			$SQLStmt = DAO::getInstance()->prepare("SELECT * FROM ecole WHERE eco_id = :idecole");
+		public static function getById($id) : Ecole{
+			$SQLStmt = DAO::getInstance()->prepare("SELECT * FROM studynet.ecole WHERE eco_id = :idecole");
 			$SQLStmt->bindValue(':idecole', $id);
 			$SQLStmt->execute();
 			$SQLRow = $SQLStmt->fetchObject();
@@ -86,8 +86,8 @@
 			return $newEcole;
 		}
 
-		public static function update(Ecole $ecole){
-			$SQLQuery = "UPDATE ecole SET eco_nom = :nom, eco_logo = :logo WHERE eco_id = :idecole";
+		public static function update(Ecole $ecole) : bool{
+			$SQLQuery = "UPDATE studynet.ecole SET eco_nom = :nom, eco_logo = :logo WHERE eco_id = :idecole";
 			$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
 			$SQLStmt->bindValue(':nom', $ecole->getNom());
 			$SQLStmt->bindValue(':logo', $ecole->getLogo());
@@ -101,8 +101,8 @@
 			}
 		}
 
-		public static function insert(Ecole $ecole){
-			$SQLQuery = 'INSERT INTO ecole(eco_nom, eco_logo) VALUES (:nom, :logo)';
+		public static function insert(Ecole $ecole) : bool{
+			$SQLQuery = 'INSERT INTO studynet.ecole(eco_nom, eco_logo) VALUES (:nom, :logo)';
 			$SQLStmt = DAO::getInstance()->prepare($SQLQuery);
 			$SQLStmt->bindValue(':nom', $ecole->getNom());
 			$SQLStmt->bindValue(':logo', $ecole->getLogo());
@@ -114,4 +114,3 @@
 			}
 		}
 	}
-?>
