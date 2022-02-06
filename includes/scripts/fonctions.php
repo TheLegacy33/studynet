@@ -50,8 +50,7 @@ function convertPHPSizeToBytes($sSize){
 
 function randomPassword($length = 8) {
 	$chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_-=+;:,.?";
-	$password = substr(str_shuffle($chars), 0, $length);
-	return $password;
+	return substr(str_shuffle($chars), 0, $length);
 }
 
 function sessionStatus(){
@@ -65,6 +64,9 @@ function sessionStatus(){
 		}
 		case PHP_SESSION_DISABLED:{
 			return 'Sessions désactivées';
+		}
+		default:{
+			return 'Erreur de session';
 		}
 	}
 }

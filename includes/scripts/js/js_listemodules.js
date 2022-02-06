@@ -2,6 +2,7 @@ $(document).ready(function(){
 	$('a[data-name=dropmodule]').each(function(){
 		$(this).click(function(){
 			alert('La suppression d\'un module n\'est pas encore active !');
+			return;
 			if (confirm('Etes-vous sûr de vouloir supprimer ce module ?')){
 				$.ajax({
 					url: 'index.php',
