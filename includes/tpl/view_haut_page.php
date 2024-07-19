@@ -2,6 +2,13 @@
 
 /**
  * Définition des éléments de haut de page
+ * @var $title
+ * 			Titre de la page
+ * @var $pageTitle
+ * 			Titre sur la page
+ * @var $user
+ * 			Utillisateur
+ *
  */
 	include_once ROOTSCRIPTS.'NavBar.php';
 ?>
@@ -22,8 +29,11 @@
 			  integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ"
 			  rel="stylesheet">
 
-		<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />-->
+		<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
 		<link rel="stylesheet" href="<?php print(ROOTHTMLLIBS) ?>bootstrap_4.3.1.min.css">
+		<link rel="stylesheet" href="<?php print(ROOTHTMLLIBS) ?>fa_5.11.2_all.css">
+		<link rel="stylesheet" href="<?php print(ROOTHTMLLIBS) ?>jquery-ui_1.12.1.css"> -->
+		<link rel="stylesheet" href="<?php print(ROOTHTMLLIBS) ?>bootstrap_4.6.0.min.css">
 		<link rel="stylesheet" href="<?php print(ROOTHTMLLIBS) ?>fa_5.11.2_all.css">
 		<link rel="stylesheet" href="<?php print(ROOTHTMLLIBS) ?>jquery-ui_1.12.1.css">
 

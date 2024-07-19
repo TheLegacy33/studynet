@@ -9,15 +9,9 @@
 	define('APPNAME', 'StudyNet');
 	define('MAINDIR', basename(ROOT));
 
-//	define('ROOTCTRL', ROOT.'/includes/controllers/');
-//	define('ROOTVIEWS', ROOT.'/includes/views/');
-//	define('ROOTMODELS', ROOT.'/includes/models/');
-
-	define('ROOTCORE', ROOT.'/core');
-	define('ROOTCTRLCOMMUN', ROOTCORE.'/controllers/');
-	define('ROOTVIEWSCOMMUN', ROOTCORE.'/views/');
-	define('ROOTMODELS', ROOTCORE.'/models/');
-
+	define('ROOTCTRL', ROOT.'/includes/controllers/');
+	define('ROOTVIEWS', ROOT.'/includes/views/');
+	define('ROOTMODELS', ROOT.'/includes/models/');
 	define('ROOTSCRIPTS', ROOT.'/includes/scripts/');
 	define('ROOTTEMPLATE', ROOT.'/includes/tpl/');
 	define('ROOTLIBS', ROOT.'/includes/libs/');
@@ -50,34 +44,31 @@
 	}else{
 		$title = 'Intranet : Le service ENT';
 		$pageTitle = 'StudyNet Services';
-		$section = isset($_GET['p'])?$_GET['p']:'';
-		$action = isset($_GET['a'])?$_GET['a']:'';
-		if ($section == 'api'){
-			include_once ROOTCTRLCOMMUN.'controller_api.php';
-		}else{
-			include_once ROOTCTRLCOMMUN.'controller_auth.php';
-			$entity = '';
 
+		$section = $_GET['p'] ?? '';
+		$action = $_GET['a'] ?? '';
+		if ($section == 'api'){
+			include_once ROOTCTRL.'controller_api.php';
+		}else{
+			include_once ROOTCTRL.'controller_auth.php';
 			if (isset($user)){
 				if (!$user->isAuthentified()){
 					$section = '';
 					$action = '';
-					$entity = 'visiteur/';
-				}else{
-					if ($user->isAdmin()){
-						$entity = 'admin/';
-					}elseif ($user->estEtudiant()){
-						$entity = 'etudiant/';
-					}elseif ($user->estIntervenant()){
-						$entity = 'intervenant/';
-					}else{
-						$entity = '';
-					}
 				}
 			}
-			define('ROOTCTRL', ROOTCTRLCOMMUN.$entity);
-			define('ROOTVIEWS', ROOTVIEWSCOMMUN.$entity);
 
+			$entity = '';
+			if ($user->isAdmin()){
+				$entity = 'admin/';
+			}elseif ($user->estEtudiant()){
+				$entity = 'etudiant/';
+			}elseif ($user->estIntervenant()){
+				$entity = 'intervenant/';
+			}else{
+				var_dump("Type user non valide !");
+			}
+var_dump($entity);
 			if ($action != 'print' AND $section != 'ajax'){
 				include_once ROOTTEMPLATE.'view_haut_page.php';
 			}
@@ -91,9 +82,9 @@
 					$includeJs = true;
 					$scriptname = ['js_login.js', 'js_formscripts.js'];
 
-					include_once ROOTVIEWSCOMMUN.'view_loginform.php';
+					include_once ROOTVIEWS.'view_loginform.php';
 				}else{
-					include_once ROOTVIEWSCOMMUN.'view_logoutform.php';
+					include_once ROOTVIEWS.'view_logoutform.php';
 
 					//Dans le cas de l'authentification par un étudiant, vérifier si il doit récupérer des sujets de rattrapage.
 					//Si oui, affichage de l'information d'avertissement et lui donner le lien
@@ -122,19 +113,19 @@
 				include_once ROOTCTRL.'controller_evaluation.php';
 			}elseif ($section == "etudiants"){
 				//Gestion des étudiants
-				include_once ROOTCTRL.'controller_etudiants.php';
+				include_once ROOTCTRL . 'controller_etudiants.php';
 			}elseif ($section == "intervenants"){
 				//Gestion des intervenants
 				include_once ROOTCTRL.'controller_intervenant.php';
 			}elseif ($section == "users"){
 				//Gestion des utilisateurs
-				include_once ROOTCTRL.'controller_users.php';
+				include_once ROOTCTRL . 'controller_users.php';
 			}elseif ($section == "personnes"){
 				//Gestion des personnes
 				include_once ROOTCTRL.'controller_personnes.php';
 			}elseif ($section == "ajax"){
 				//Gestion des api
-				include_once ROOTCTRLCOMMUN.'controller_ajax.php';
+				include_once ROOTCTRL.'controller_ajax.php';
 			}elseif ($section == 'rattrapages'){
 				include_once(ROOTCTRL.'controller_rattrapage.php');
 			}else{
@@ -146,4 +137,3 @@
 			}
 		}
 	}
-?>

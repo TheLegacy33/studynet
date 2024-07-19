@@ -28,7 +28,8 @@
 	<script type="application/javascript" src="<?php print(ROOTHTMLLIBS); ?>jquery-3.4.1.js"></script>
 	<script type="application/javascript" src="<?php print(ROOTHTMLLIBS); ?>jquery-ui_1.12.1.js"></script>
 	<script type="application/javascript" src="<?php print(ROOTHTMLLIBS); ?>popper.min_1.14.7.js"></script>
-	<script type="application/javascript" src="<?php print(ROOTHTMLLIBS); ?>bootstrap_4.3.1.js"></script>
+	<!--<script type="application/javascript" src="<?php print(ROOTHTMLLIBS); ?>bootstrap_4.3.1.js"></script>-->
+	<script type="application/javascript" src="<?php print(ROOTHTMLLIBS); ?>bootstrap_4.6.0.js"></script>
 	<?php
 		if (isset($includeJs) AND $includeJs == true){
 			foreach ($scriptname as $script){
