@@ -1,10 +1,9 @@
 <?php
-$action = isset($_GET['a'])?$_GET['a']:'listemodules';
+$action = $_GET['a'] ?? 'listemodules';
 include_once ROOTMODELS . 'model_periodeformation.php';
 //include_once ROOTMODELS.'model_evaluation.php';
-
-$idetudiant = isset($_GET['idetudiant'])?$_GET['idetudiant']:0;
-$idpf = isset($_GET['idpf'])?$_GET['idpf']:0;
+$idetudiant = $_GET['idetudiant'] ?? 0;
+$idpf = $_GET['idpf'] ?? 0;
 $pf = Periodeformation::getById($idpf);
 if ($action == 'listemodules'){
 	if ($idetudiant == 0){

@@ -1,4 +1,5 @@
 <?php
+	ini_set('display_errors', 'on');
 	define('ROOT', __DIR__);
     define('SERVERNAME', $_SERVER['SERVER_NAME']);
 	if (substr($_SERVER['SERVER_PROTOCOL'], 0, 5) == 'HTTP/'){

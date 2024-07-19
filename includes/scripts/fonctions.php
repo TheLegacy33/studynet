@@ -71,16 +71,6 @@ function sessionStatus(){
 	}
 }
 
-function Debug($message = "", $variable = null){
-    global $debugbar;
-    if (!is_null($message)){
-        $debugbar["messages"]->addMessage($message);
-    }
-    if (!is_null($variable)){
-        $debugbar["messages"]->addMessage("Variable : ".$variable);
-    }
-}
-
 function date_fr_to_mysql($datefr){
 	if (!is_null($datefr)){
 		return date_create_from_format('d/m/Y', $datefr)->format('Y-m-d');

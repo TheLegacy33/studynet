@@ -31,7 +31,7 @@
 		<thead class="thead-light">
 		<tr>
 			<th style="width: 700px;">Libellé</th>
-			<th style="width: 100px;" colspan="3">Action</th>
+			<th style="width: 100px;" colspan="3">Actions</th>
 		</tr>
 		</thead>
 		<tbody>

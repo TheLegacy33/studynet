@@ -8,7 +8,6 @@ include_once ROOTMODELS . 'model_module.php';
 $idetudiant = isset($_GET['idetudiant'])?$_GET['idetudiant']:0;
 $idpf = isset($_GET['idpf'])?$_GET['idpf']:0;
 $idModule = isset($_GET['idmodule'])?$_GET['idmodule']:0;
-
 if ($idetudiant != 0 AND $idpf != 0 AND $idModule != 0){
 	$etudiant = Etudiant::getById($idetudiant);
 	$pf = Periodeformation::getById($idpf);

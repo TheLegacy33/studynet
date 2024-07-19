@@ -135,7 +135,7 @@
 			}
         }
 
-        public static function update($evaluation){
+        public static function update($evaluation): bool{
 			$SQLQuery = 'UPDATE evaluer SET eval_acquis = :acquis, eval_enacquisition = :enacquisition, eval_nonacquis = :nonacquis, eval_commentaire = :commentaire 
             			WHERE etu_id = :idetudiant AND cmod_id = :idcmod AND int_id = :idintervenant';
             $SQLStmt = DAO::getInstance()->prepare($SQLQuery);
@@ -154,7 +154,7 @@
 			}
         }
 
-		public static function insert($evaluation){
+		public static function insert($evaluation): bool{
 			$SQLQuery = 'INSERT INTO evaluer (eval_acquis, eval_enacquisition, eval_nonacquis, eval_commentaire, etu_id, cmod_id, int_id) 
 						VALUES(:acquis, :enacquisition, :nonacquis, :commentaire, :idetudiant, :idcmod, :idintervenant)';
 
