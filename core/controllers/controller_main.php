@@ -9,9 +9,9 @@
 	define('APPNAME', 'StudyNet');
 	define('MAINDIR', basename(ROOT));
 
-	define('ROOTCTRL', ROOT.'/includes/controllers/');
-	define('ROOTVIEWS', ROOT.'/includes/views/');
-	define('ROOTMODELS', ROOT.'/includes/models/');
+	define('ROOTCTRL', ROOT.'/core/controllers/');
+	define('ROOTVIEWS', ROOT.'/core/views/');
+	define('ROOTMODELS', ROOT.'/core/models/');
 	define('ROOTSCRIPTS', ROOT.'/includes/scripts/');
 	define('ROOTTEMPLATE', ROOT.'/includes/tpl/');
 	define('ROOTLIBS', ROOT.'/includes/libs/');
@@ -68,7 +68,7 @@
 			}else{
 				var_dump("Type user non valide !");
 			}
-var_dump($entity);
+			var_dump($entity);
 			if ($action != 'print' AND $section != 'ajax'){
 				include_once ROOTTEMPLATE.'view_haut_page.php';
 			}
@@ -82,9 +82,9 @@ var_dump($entity);
 					$includeJs = true;
 					$scriptname = ['js_login.js', 'js_formscripts.js'];
 
-					include_once ROOTVIEWS.'view_loginform.php';
+					include_once ROOTVIEWS.$entity.'view_loginform.php';
 				}else{
-					include_once ROOTVIEWS.'view_logoutform.php';
+					include_once ROOTVIEWS.$entity.'view_logoutform.php';
 
 					//Dans le cas de l'authentification par un étudiant, vérifier si il doit récupérer des sujets de rattrapage.
 					//Si oui, affichage de l'information d'avertissement et lui donner le lien
@@ -92,28 +92,28 @@ var_dump($entity);
 						if ($user->hasRattrapages()){
 							$section = 'rattrapages';
 							$action = 'listeforetudiant';
-							include_once(ROOTCTRL.'controller_rattrapage.php');
+							include_once(ROOTCTRL.$entity.'controller_rattrapage.php');
 						}
 					}
 				}
 			}elseif ($section == 'ecoles'){
 				//Gestion des écoles
-				include_once ROOTCTRL.'controller_ecoles.php';
+				include_once ROOTCTRL.$entity.'controller_ecoles.php';
 			}elseif ($section == 'promotions'){
 				//Gestion des promotions
-				include_once ROOTCTRL.'controller_promotions.php';
+				include_once ROOTCTRL.$entity.'controller_promotions.php';
 			}elseif ($section == 'periodesformation'){
 				//Gestion des périodes de formations
-				include_once ROOTCTRL.'controller_pf.php';
+				include_once ROOTCTRL.$entity.'controller_pf.php';
 			}elseif ($section == 'modules'){
 				//Gestion des modules
-				include_once ROOTCTRL.'controller_modules.php';
+				include_once ROOTCTRL.$entity.'controller_modules.php';
 			}elseif ($section == 'evaluations'){
 				//Gestion des évaluations
-				include_once ROOTCTRL.'controller_evaluation.php';
+				include_once ROOTCTRL.$entity.'controller_evaluation.php';
 			}elseif ($section == "etudiants"){
 				//Gestion des étudiants
-				include_once ROOTCTRL . 'controller_etudiants.php';
+				include_once ROOTCTRL.$entity.'controller_etudiants.php';
 			}elseif ($section == "intervenants"){
 				//Gestion des intervenants
 				include_once ROOTCTRL.'controller_intervenant.php';
@@ -122,12 +122,12 @@ var_dump($entity);
 				include_once ROOTCTRL . 'controller_users.php';
 			}elseif ($section == "personnes"){
 				//Gestion des personnes
-				include_once ROOTCTRL.'controller_personnes.php';
+				include_once ROOTCTRL.$entity.'controller_personnes.php';
 			}elseif ($section == "ajax"){
 				//Gestion des api
 				include_once ROOTCTRL.'controller_ajax.php';
 			}elseif ($section == 'rattrapages'){
-				include_once(ROOTCTRL.'controller_rattrapage.php');
+				include_once(ROOTCTRL.$entity.'controller_rattrapage.php');
 			}else{
 				header('Location: '.ROOTHTML);
 			}
