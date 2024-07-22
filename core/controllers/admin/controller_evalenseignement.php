@@ -9,10 +9,10 @@ include_once ROOTMODELS . 'model_etudiant.php';
 include_once ROOTMODELS . 'model_periodeformation.php';
 include_once ROOTMODELS . 'model_module.php';
 
-$idetudiant = isset($_GET['idetudiant'])?$_GET['idetudiant']:0;
-$idpf = isset($_GET['idpf'])?$_GET['idpf']:0;
-$idModule = isset($_GET['idmodule'])?$_GET['idmodule']:0;
-$idEvaluation = isset($_GET['idevaluation'])?$_GET['idevaluation']:0;
+$idetudiant = $_GET['idetudiant'] ?? 0;
+$idpf = $_GET['idpf'] ?? 0;
+$idModule = $_GET['idmodule'] ?? 0;
+$idEvaluation = $_GET['idevaluation'] ?? 0;
 
 if ($idetudiant != 0){
 	$etudiant = Etudiant::getById($idetudiant);

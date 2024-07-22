@@ -13,13 +13,13 @@ if ($action == 'listemodules'){
 
 		$listeUnitesEnseignement = $pf->getUnitesenseignement();
 		$listeModules = $pf->getModules();
-		include_once ROOTVIEWS . 'view_listemodulespf.php';
+		include_once ROOTVIEWS.$entity.'view_listemodulespf.php';
 	}elseif ($idetudiant != 0 AND $idpf != 0){
 		//Affichage de la liste des modules suivis par un étudiant
 		$etudiant = Etudiant::getById($idetudiant);
 
 		$listeModules = Module::getListeFromEtudiant($idetudiant, $idpf);
-		include_once ROOTVIEWS . 'view_listemodulesetudiants.php';
+		include_once ROOTVIEWS.$entity.'view_listemodulesetudiants.php';
 	}
 }elseif ($action == 'ajoutmodule'){
 	$includeJs = true;
@@ -59,7 +59,7 @@ if ($action == 'listemodules'){
 			var_dump("Erreur d'enregistrement");
 		}
 	}
-	include_once ROOTVIEWS . 'view_fichemodule.php';
+	include_once ROOTVIEWS.$entity.'view_fichemodule.php';
 }elseif ($action == 'editmodule'){
 	$includeJs = true;
 	$scriptname = ['js_module.js', 'js_formscripts.js'];
@@ -98,7 +98,7 @@ if ($action == 'listemodules'){
 			var_dump("Erreur d'enregistrement");
 		}
 	}
-	include_once ROOTVIEWS . 'view_fichemodule.php';
+	include_once ROOTVIEWS.$entity.'view_fichemodule.php';
 }elseif ($action == 'editcontenumodule'){
 	$includeJs = true;
 	$scriptname = ['js_contenumodule.js', 'js_formscripts.js'];
@@ -108,7 +108,7 @@ if ($action == 'listemodules'){
 	$module->setIntervenant(Intervenant::getByPfAndMod($idPf, $idModule));
 
 	if (!isset($_REQUEST['idcmodule'])){
-		include_once ROOTVIEWS . 'view_listecontenumodule.php';
+		include_once ROOTVIEWS.$entity.'view_listecontenumodule.php';
 	}else{
 		$contenuModule = ContenuModule::getById($idCModule);
 		if (!empty($_POST)){
@@ -119,7 +119,7 @@ if ($action == 'listemodules'){
 				var_dump("Erreur d'enregistrement");
 			}
 		}
-		include_once ROOTVIEWS . 'view_fichecontenumodule.php';
+		include_once ROOTVIEWS.$entity.'view_fichecontenumodule.php';
 	}
 }elseif ($action == 'ajoutcontenumodule'){
 	$includeJs = true;
@@ -139,7 +139,7 @@ if ($action == 'listemodules'){
 			var_dump("Erreur d'enregistrement");
 		}
 	}
-	include_once ROOTVIEWS . 'view_fichecontenumodule.php';
+	include_once ROOTVIEWS.$entity.'view_fichecontenumodule.php';
 }elseif ($action == 'importmodules'){
 	//TODO Adapter le code aux modules
 	//	$checked = false;
@@ -191,7 +191,7 @@ if ($action == 'listemodules'){
 	$formatAttendu .= 'Exemple : <code><i>nom</i>;<i>prenom</i>;<i>email</i></code>';
 	$formatAttendu .= '<p class="text-danger">Attention à respecter l\'ordre et le format demandé !<br />';
 	$formatAttendu .= 'L\'email n\'étant pas obligatoire, il faut tout de même laisser le point-virgule après le prénom !</p>';
-	include_once ROOTVIEWS . 'view_formimport.php';
+	include_once ROOTVIEWS.$entity.'view_formimport.php';
 }else{
 	header('Location: '.ROOTHTML);
 }

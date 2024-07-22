@@ -3,28 +3,24 @@
 	 * Controller principal qui va charger l'ensemble des controllers
 	 * @var Personne $user
 	 */
-
-	define('DEBUGMODE', false);
-	define('SESSIONNAME', 'STUDYNETSESS');
-	define('APPNAME', 'StudyNet');
+	const DEBUGMODE = false;
+	const SESSIONNAME = 'STUDYNETSESS';
+	const APPNAME = 'StudyNet';
 	define('MAINDIR', basename(ROOT));
-
-	define('ROOTCTRL', ROOT.'/core/controllers/');
-	define('ROOTVIEWS', ROOT.'/core/views/');
-	define('ROOTMODELS', ROOT.'/core/models/');
-	define('ROOTSCRIPTS', ROOT.'/includes/scripts/');
-	define('ROOTTEMPLATE', ROOT.'/includes/tpl/');
-	define('ROOTLIBS', ROOT.'/includes/libs/');
-
-	define('ROOTEXPORTS', ROOT.'/exports/');
-	define('ROOTUPLOADS', ROOT.'/uploads/');
-
-	define('ROOTHTMLEXPORTS', ROOTHTML.'/exports/');
-	define('ROOTHTMLUPLOADS', ROOTHTML.'/uploads/');
-	define('ROOTHTMLSCRIPTS', ROOTHTML.'/includes/scripts/');
-	define('ROOTHTMLSCRIPTSJS', ROOTHTML.'/includes/scripts/js/');
-	define('ROOTHTMLTEMPLATE', ROOTHTML.'/includes/tpl/');
-	define('ROOTHTMLLIBS', ROOTHTML.'/includes/libs/');
+	const ROOTCTRL = ROOT . '/core/controllers/';
+	const ROOTVIEWS = ROOT . '/core/views/';
+	const ROOTMODELS = ROOT . '/core/models/';
+	const ROOTSCRIPTS = ROOT . '/includes/scripts/';
+	const ROOTTEMPLATE = ROOT . '/includes/tpl/';
+	const ROOTLIBS = ROOT . '/includes/libs/';
+	const ROOTEXPORTS = ROOT . '/exports/';
+	const ROOTUPLOADS = ROOT . '/uploads/';
+	const ROOTHTMLEXPORTS = ROOTHTML . '/exports/';
+	const ROOTHTMLUPLOADS = ROOTHTML . '/uploads/';
+	const ROOTHTMLSCRIPTS = ROOTHTML . '/includes/scripts/';
+	const ROOTHTMLSCRIPTSJS = ROOTHTML . '/includes/scripts/js/';
+	const ROOTHTMLTEMPLATE = ROOTHTML . '/includes/tpl/';
+	const ROOTHTMLLIBS = ROOTHTML . '/includes/libs/';
 
 	if (!file_exists(ROOTEXPORTS)){
 		mkdir(ROOTEXPORTS);
@@ -35,6 +31,8 @@
 		mkdir(ROOTUPLOADS);
 		@chmod(ROOTUPLOADS, 0775);
 	}
+
+	ini_set('display_errors', 'on');
 
 	include_once ROOTSCRIPTS.'fonctions.php';
 
@@ -68,7 +66,6 @@
 			}else{
 				var_dump("Type user non valide !");
 			}
-			var_dump($entity);
 			if ($action != 'print' AND $section != 'ajax'){
 				include_once ROOTTEMPLATE.'view_haut_page.php';
 			}
@@ -82,9 +79,9 @@
 					$includeJs = true;
 					$scriptname = ['js_login.js', 'js_formscripts.js'];
 
-					include_once ROOTVIEWS.$entity.'view_loginform.php';
+					include_once ROOTVIEWS.'view_loginform.php';
 				}else{
-					include_once ROOTVIEWS.$entity.'view_logoutform.php';
+					include_once ROOTVIEWS.'view_logoutform.php';
 
 					//Dans le cas de l'authentification par un étudiant, vérifier si il doit récupérer des sujets de rattrapage.
 					//Si oui, affichage de l'information d'avertissement et lui donner le lien

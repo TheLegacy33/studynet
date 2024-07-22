@@ -5,9 +5,9 @@ include_once ROOTMODELS . 'model_etudiant.php';
 include_once ROOTMODELS . 'model_periodeformation.php';
 include_once ROOTMODELS . 'model_module.php';
 
-$idetudiant = isset($_GET['idetudiant'])?$_GET['idetudiant']:0;
-$idpf = isset($_GET['idpf'])?$_GET['idpf']:0;
-$idModule = isset($_GET['idmodule'])?$_GET['idmodule']:0;
+$idetudiant = $_GET['idetudiant'] ?? 0;
+$idpf = $_GET['idpf'] ?? 0;
+$idModule = $_GET['idmodule'] ?? 0;
 if ($idetudiant != 0 AND $idpf != 0 AND $idModule != 0){
 	$etudiant = Etudiant::getById($idetudiant);
 	$pf = Periodeformation::getById($idpf);
@@ -24,7 +24,7 @@ if ($action == 'view' OR $action == 'viewdetailsevaluations'){
     if ($idModule == 0){
         include_once ROOTVIEWS . 'view_afficheevaluationstousmodules.php';
     }else{
-        include_once ROOTVIEWS . 'view_afficheevaluations.php';
+        include_once ROOTVIEWS.$entity.'view_afficheevaluations.php';
     }
 }elseif ($action == 'edit' OR $action == 'editdetailsevaluations'){
 	if ($idModule != 0){ //Traitement appliqué pour un module
@@ -57,7 +57,7 @@ if ($action == 'view' OR $action == 'viewdetailsevaluations'){
 			}
 			header('Location: index.php?p=periodesformation&a=listemodules&idetudiant=' . $idetudiant . '&idpf=' . $idpf);
 		}
-		include_once ROOTVIEWS . 'view_editevaluations.php';
+		include_once ROOTVIEWS.$entity.'view_editevaluations.php';
 	}else{
 		//Traitement appliqué pour le commentaire grlobal l'ensemble des modules
 		if (!empty($_POST)){
@@ -78,11 +78,11 @@ if ($action == 'view' OR $action == 'viewdetailsevaluations'){
 			$appgenerale = '';
 		}
 		Evaluation::updateAppreciationGenerale($appgenerale, $idetudiant, $idpf);
-		header('Location: index.php?p=periodesformation&a=listemodules&idetudiant=' . $idetudiant . '&idpf=' . $idpf);
+//		header('Location: index.php?p=periodesformation&a=listemodules&idetudiant=' . $idetudiant . '&idpf=' . $idpf);
 	}
-	include_once ROOTVIEWS . 'view_editappgenerale.php';
+	include_once ROOTVIEWS.$entity.'view_editappgenerale.php';
 }elseif ($action=='print') {
-    include_once ROOTVIEWS . 'view_printevaluation.php';
+    include_once ROOTVIEWS.$entity.'view_printevaluation.php';
 }else{
 	header('Location: '.$_SERVER['HTTP_REFERER']);
 }

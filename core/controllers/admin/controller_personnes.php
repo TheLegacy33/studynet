@@ -15,9 +15,9 @@ if ($action == 'listepersonnes'){
 		$typeToGet = array($type);
 	}
     $listePersonnes = Personne::getListe($typeToGet);
-    include_once ROOTVIEWS . 'view_listepersonnes.php';
+    include_once ROOTVIEWS.$entity.'view_listepersonnes.php';
 }elseif ($action == 'editprofile'){
-	$idPersonne = isset($_GET['idpersonne'])?$_GET['idpersonne']:0;
+	$idPersonne = $_GET['idpersonne'] ?? 0;
 	if ($idPersonne == 0){
 		if (!empty($_POST)){
 			var_dump($_POST);
@@ -31,8 +31,8 @@ if ($action == 'listepersonnes'){
 		$personne = Personne::getById($idPersonne);
 
 		if (!empty($_POST)){
-			$newLogin = trim(isset($_POST['ttLogin'])?$_POST['ttLogin']:'');
-			$newPassword = trim(isset($_POST['ttPassword'])?$_POST['ttPassword']:'');
+			$newLogin = trim($_POST['ttLogin'] ?? '');
+			$newPassword = trim($_POST['ttPassword'] ?? '');
 			$newNom = trim($_POST['ttNom']);
 			$newPrenom = trim($_POST['ttPrenom']);
 			$newEmail = trim($_POST['ttEmail']);
@@ -77,7 +77,7 @@ if ($action == 'listepersonnes'){
 				header('Location: '.ROOTHTML.'/index.php?p=personnes&a=listepersonnes');
 			}
 		}
-		include_once ROOTVIEWS . 'view_fichepersonne.php';
+		include_once ROOTVIEWS.$entity.'view_fichepersonne.php';
 	}
 }elseif ($action == 'subscribe'){
 
